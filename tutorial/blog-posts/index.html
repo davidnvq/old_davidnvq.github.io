@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Blog Post | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+
+
+<main id="index" class="index container">
+    <br>
+    <div class="container">
+        <!--
+        <!- - Nav tabs - ->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#all">All Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#paper">Paper Notes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tutorial">Tech Tutorials</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#book">Book Notes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#other">Travel and Others</a>
+            </li>
+
+        </ul>
+
+        <!- - Tab panes - ->
+        <div class="tab-content">
+            <div id="all" class="container tab-pane active"><br>
+                <h3>All of My Posts</h3>
+
+                <!- -input box for searching and filtering posts by titles and tags- ->
+                <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+
+                <!- -Few words to readers and myself- ->
+                <div class="row">
+                        <div class="hidden-md-down col-sm-6">
+                            <div class="alert alert-info" style="text-align: center" onclick="displaytomyself()" role="alert" data-toggle="collapse" data-target="#readers" aria-expanded="false" aria-controls="myself">
+                                Dear my future self,
+                            </div>
+                        </div>
+                        <div class="hidden-md-down col-sm-6">
+                            <div class="alert alert-warning" style="text-align: center"  onclick="displaytoreaders()" role="alert" data-toggle="collapse" data-target="#readers" aria-expanded="true" aria-controls="readers">
+                                Dear my potential readers,
+                            </div>
+
+                        </div>
+                </div>
+                <!- - Text to readers- ->
+                <div class="collapse" id="readers">
+                    <div class="card card-body" id="text2you">
+                    </div>
+                </div>
+
+
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="item in filteredItems">
+                            <a :href="item.url">{{ item.title }}</a>
+                            <span class="date">{{ item.date }}</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!- - Paper Notes pane- ->
+            <div id="paper" class="container tab-pane fade"><br>
+                <h3>Paper Notes</h3>
+                <!- -search input for filtering- ->
+                <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+
+
+                <!- - Introduction and A list of top post - ->
+                <div class="row">
+                        <div class="hidden-md-down col-sm-4">
+                            <div class="alert alert-info" style="text-align: center" role="alert" data-toggle="collapse" data-target="#paper_introduction" aria-expanded="false" aria-controls="myself">
+                                Introduction
+                            </div>
+                        </div>
+                        <div class="hidden-md-down col-sm-8">
+                            <div class="alert alert-warning" style="text-align: center" role="alert" data-toggle="collapse" data-target="#top_paper_posts" aria-expanded="true" aria-controls="readers">
+                                Top Posts in Tutorial Notes
+                            </div>
+
+                        </div>
+                </div>
+                <!- - Text to readers - ->
+                <div class="collapse" id="paper_introduction">
+                    <div class="card card-body" id="introduction">
+                        <p>Here are several learning notes during my reading on papers from Computer Vision, Deep Learning, Machine Learning,
+                            Artificial Intelligence to the other interdisciplinary fields. If you find any errors and papers or sources
+                            I forget to cite in the References part, please feel free to leave me a message. I'll also be happy to hear some ideas,
+                            comments and other things related to the topics.
+                        </p>
+                    </div>
+                </div>
+                <!- - Top posts - ->
+                <div class="collapse" id="top_paper_posts">
+                    <div class="card card-body">
+                        <ul class="double-list" style="padding: 0px">
+                            <li v-for="item in filteredItems" style="padding: 0px">
+                                <span v-if="item.category == 'paper'" style="padding: 0px">
+                                    <span v-if="item.toppost == 'yes'" style="padding: 0px">
+                                        <a :href="item.url">{{ item.title }}</a>
+                                        <span class="date">{{ item.date }}</span>
+                                    </span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!- - List of filtered posts - ->
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="item in filteredItems">
+                            <span v-if="item.category == 'paper'">
+                                <a :href="item.url">{{ item.title }}</a>
+                                <span class="date">{{ item.date }}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!- - Tutorial Notes pane - ->
+            <div id="tutorial" class="container tab-pane fade"><br>
+                <h3>Tutorial Notes</h3>
+
+                <!- - search input for filtering - ->
+                <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+
+
+                <!- - Introduction and A list of top post - ->
+                <div class="row">
+                        <div class="hidden-md-down col-sm-4">
+                            <div class="alert alert-info" style="text-align: center" role="alert" data-toggle="collapse" data-target="#tutorial_introduction" aria-expanded="false" aria-controls="myself">
+                                Introduction
+                            </div>
+                        </div>
+                        <div class="hidden-md-down col-sm-8">
+                            <div class="alert alert-warning" style="text-align: center"  role="alert" data-toggle="collapse" data-target="#top_tutorial_posts" aria-expanded="true" aria-controls="readers">
+                                Top Posts in Tutorial Notes
+                            </div>
+
+                        </div>
+                </div>
+                <!- - Text to readers - ->
+                <div class="collapse" id="tutorial_introduction">
+                    <div class="card card-body" id="introduction">
+                        <p>In this corner, I make a collection of tutorial notes which are generated by myself.
+                            There are also several tutorials from the other sources on the Internet that I find interesting to note here.
+                        </p>
+                    </div>
+                </div>
+                <!- - Top posts - ->
+                <div class="collapse" id="top_tutorial_posts">
+                    <div class="card card-body">
+                        <ul class="double-list" style="padding: 0px">
+                            <li v-for="item in filteredItems" style="padding: 0px">
+                                <span v-if="item.category == 'tutorial'" style="padding: 0px">
+                                    <span v-if="item.toppost == 'yes'" style="padding: 0px">
+                                        <a :href="item.url">{{ item.title }}</a>
+                                        <span class="date">{{ item.date }}</span>
+                                    </span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!- -Filter posts- ->
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="item in filteredItems">
+                            <span v-if="item.category == 'tutorial'">
+                                <a :href="item.url">{{ item.title }}</a>
+                                <span class="date">{{ item.date }}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!- -Book Notes pane- ->
+            <div id="book" class="container tab-pane fade"><br>
+                <h3>Book Notes</h3>
+                <!- -search input for filtering- ->
+                <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+
+
+                <!- -Introduction and A list of top post- ->
+                <div class="row">
+                        <div class="hidden-md-down col-sm-4">
+                            <div class="alert alert-info" style="text-align: center" role="alert" data-toggle="collapse" data-target="#book_introduction" aria-expanded="false" aria-controls="myself">
+                                Introduction
+                            </div>
+                        </div>
+                        <div class="hidden-md-down col-sm-8">
+                            <div class="alert alert-warning" style="text-align: center" role="alert" data-toggle="collapse" data-target="#top_book_posts" aria-expanded="true" aria-controls="readers">
+                                Top Posts in Tutorial Notes
+                            </div>
+
+                        </div>
+                </div>
+                <!- - Text to readers- ->
+                <div class="collapse" id="book_introduction">
+                    <div class="card card-body" id="introduction">
+                        <p>This pane is dedicated to the thought notes I create during my reading.
+                            I'm really pleased if you can introduce me some good books.
+                        </p>
+                    </div>
+                </div>
+                <!- - Top posts - ->
+                <div class="collapse" id="top_book_posts">
+                    <div class="card card-body">
+                        <ul class="double-list" style="padding: 0px">
+                            <li v-for="item in filteredItems" style="padding: 0px">
+                                <span v-if="item.category == 'book'" style="padding: 0px">
+                                    <span v-if="item.toppost == 'yes'" style="padding: 0px">
+                                        <a :href="item.url">{{ item.title }}</a>
+                                        <span class="date">{{ item.date }}</span>
+                                    </span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!- - List of filtered posts - ->
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="item in filteredItems">
+                            <span v-if="item.category == 'book'">
+                                <a :href="item.url">{{ item.title }}</a>
+                                <span class="date">{{ item.date }}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!- - Personal corners pane - ->
+            <div id="other" class="container tab-pane fade"><br>
+                <h3>Traveling and Other Hobbies</h3>
+                <p> I write some posts here for my future self about the memories that I go through.
+                </p>
+
+                <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="item in filteredItems">
+                            <span v-if="item.category == 'other'">
+                                <a :href="item.url">{{ item.title }}</a>
+                                <span class="date">{{ item.date }}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        -->
+
+        <h3>All Posts</h3>
+
+        <!- -input box for searching and filtering posts by titles and tags- ->
+        <form class="filter d-flex align-items-center">
+            <span style="position: relative; display: inline-block; direction: ltr;">
+                <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+            </span>
+        </form>
+
+        <nav>
+            <ul class="double-list">
+                <li v-for="item in filteredItems">
+                    <a :href="item.url">{{ item.title }}</a>
+                    <span class="date">{{ item.date }}</span>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!- -cloud of Tags here- ->
+        <div class="tags" style="text-align: center">
+                <a href="../../tag/tutorial.html" class="tag">TUTORIAL (23)</a>
+                <a href="../../tag/other.html" class="tag">OTHER (10)</a>
+                <a href="../../tag/make.html" class="tag">Make (1)</a>
+                <a href="../../tag/automation.html" class="tag">Automation (1)</a>
+                <a href="../../tag/jupyter-notebook.html" class="tag">Jupyter Notebook (1)</a>
+                <a href="../../tag/face-detection.html" class="tag">Face Detection (4)</a>
+                <a href="../../tag/cdiscount.html" class="tag">Cdiscount (1)</a>
+                <a href="../../tag/kaggle.html" class="tag">Kaggle (1)</a>
+                <a href="../../tag/afw.html" class="tag">AFW (1)</a>
+                <a href="../../tag/matlab.html" class="tag">Matlab (1)</a>
+                <a href="../../tag/2018.html" class="tag">2018 (1)</a>
+                <a href="../../tag/paper.html" class="tag">PAPER (4)</a>
+                <a href="../../tag/ojbect-detection.html" class="tag">Ojbect Detection (1)</a>
+                <a href="../../tag/resnet.html" class="tag">Resnet (2)</a>
+                <a href="../../tag/cifar10.html" class="tag">Cifar10 (1)</a>
+                <a href="../../tag/tensorflow.html" class="tag">Tensorflow (2)</a>
+                <a href="../../tag/pytorch.html" class="tag">Pytorch (6)</a>
+                <a href="../../tag/pelican.html" class="tag">Pelican (1)</a>
+                <a href="../../tag/deep-learning.html" class="tag">Deep Learning (1)</a>
+                <a href="../../tag/book.html" class="tag">BOOK (1)</a>
+                <a href="../../tag/dac-nhan-tam.html" class="tag">Đắc Nhân Tâm (1)</a>
+                <a href="../../tag/object-detection.html" class="tag">Object Detection (2)</a>
+                <a href="../../tag/challenge.html" class="tag">Challenge (1)</a>
+                <a href="../../tag/contest.html" class="tag">Contest (1)</a>
+                <a href="../../tag/cnn.html" class="tag">CNN (3)</a>
+                <a href="../../tag/git.html" class="tag">GIT (1)</a>
+                <a href="../../tag/inspiration.html" class="tag">Inspiration (4)</a>
+                <a href="../../tag/image-classification.html" class="tag">Image Classification (1)</a>
+                <a href="../../tag/2015.html" class="tag">2015 (1)</a>
+                <a href="../../tag/data-parallel.html" class="tag">Data Parallel (1)</a>
+                <a href="../../tag/data-loader.html" class="tag">Data Loader (1)</a>
+                <a href="../../tag/cheatsheet.html" class="tag">Cheatsheet (1)</a>
+                <a href="../../tag/bash.html" class="tag">Bash (1)</a>
+                <a href="../../tag/maxout.html" class="tag">Maxout (1)</a>
+                <a href="../../tag/icml.html" class="tag">ICML (1)</a>
+                <a href="../../tag/dropout.html" class="tag">Dropout (1)</a>
+                <a href="../../tag/2013.html" class="tag">2013 (1)</a>
+                <a href="../../tag/slim.html" class="tag">Slim (1)</a>
+                <a href="../../tag/fine-tuning.html" class="tag">Fine-tuning (1)</a>
+                <a href="../../tag/image-recognition.html" class="tag">Image Recognition (1)</a>
+                <a href="../../tag/alexnet.html" class="tag">Alexnet (1)</a>
+                <a href="../../tag/imagenet.html" class="tag">ImageNet (1)</a>
+                <a href="../../tag/2012.html" class="tag">2012 (1)</a>
+        </div>
+
+    </div>
+
+
+</main>
+
+
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+
+<!- -Few words to readers and myself- ->
+<script>
+    function displaytomyself() {
+        document.getElementById("text2you").innerHTML = "<span><strong>Dear my future self</strong>,<br></span>When you are reading these notes, you will be amazed at how far you are. Please keep writing while enjoying life.";
+    }
+    function displaytoreaders() {
+        document.getElementById("text2you").innerHTML = "<span><strong>Dear my potential readers</strong>, <br> </span> Welcome to my blog where I share part of what I see, learn and understand about our world. I hope that you will find some interesting. Enjoy your time and text me if you can."
+    }
+</script>
+
+<!- -Filter the posts with title and tags- ->
+
+
+<script>
+items = [
+        { title: "Training Models in Parallel with Keras", url: "/blog/tutorial/2018/training-models-in-parallel-with-keras/",
+        category: "tutorial",
+        toppost: "no",
+        date: "28.11.2018",
+        tags: ["TUTORIAL",],
+        headers: "Sample code to check the speed",
+        },
+
+        { title: "Something you need to know about Aobayama Dormitory", url: "/blog/other/2018/something-you-need-to-know-about-aobayama-dormitory/",
+        category: "other",
+        toppost: "no",
+        date: "04.09.2018",
+        tags: ["OTHER",],
+        headers: "Residence Registration The UH Aobayama office is open for residence registration during the following hours. Please be sure to bring your residence permit and your ID with you when you move in. After attending the registration meeting, you can receive your room key. Facilities in your Residence Furnishings: Shared facilities Regulations and Restrictions Cases of residence permit cancellation or eviction Smoking Rules Restriction of baggage UH Regulations Contact address",
+        },
+
+        { title: "Automation and Make", url: "/blog/tutorial/2018/automation-and-make/",
+        category: "tutorial",
+        toppost: "no",
+        date: "27.08.2018",
+        tags: ["Make","Automation","TUTORIAL",],
+        headers: "Automation and Make: Running Make Key Points",
+        },
+
+        { title: "Use Jupyter notebook remotely", url: "/blog/tutorial/2018/use-jupyter-notebook-remotely/",
+        category: "tutorial",
+        toppost: "no",
+        date: "24.08.2018",
+        tags: ["Jupyter Notebook","TUTORIAL",],
+        headers: "Motivation In remote host In your local computer",
+        },
+
+        { title: "Result on Face Detection", url: "/blog/tutorial/2018/result-on-face-detection/",
+        category: "tutorial",
+        toppost: "no",
+        date: "24.08.2018",
+        tags: ["Face Detection","TUTORIAL",],
+        headers: "Benchmarks Validation Test Methods HR - Finding Tiny Faces Face R-CNN ScaleFace SSH SFD Face R-FCN MSCNN FAN Seeing Small Face CVPR 2018 PyramidBox",
+        },
+
+        { title: "Keras model for Cdiscount Kaggle competition", url: "/blog/tutorial/2018/keras-model-for-cdiscount-kaggle-competition/",
+        category: "tutorial",
+        toppost: "no",
+        date: "23.08.2018",
+        tags: ["Cdiscount","Kaggle","TUTORIAL",],
+        headers: "Deepsense.ai",
+        },
+
+        { title: "Read the AFW  mat file", url: "/blog/tutorial/2018/read-the-afw-mat-file/",
+        category: "tutorial",
+        toppost: "no",
+        date: "23.08.2018",
+        tags: ["AFW","Matlab","Face Detection","TUTORIAL",],
+        headers: "None None None None None None None None",
+        },
+
+        { title: "AI nào cho Việt Nam", url: "/blog/other/2018/ai-nao-cho-viet-nam/",
+        category: "other",
+        toppost: "no",
+        date: "23.08.2018",
+        tags: ["OTHER",],
+        headers: "AI nào cho Việt Nam?",
+        },
+
+        { title: "Face Detector Report", url: "/blog/paper/2018/face-detector-report/",
+        category: "paper",
+        toppost: "no",
+        date: "23.08.2018",
+        tags: ["Face Detection","2018","PAPER",],
+        headers: "Dataset Timer and speed Write clean code like The incredible pytorch How to train Combined Result Methods Post Processing Current work Table of deepresnet What I'm doing now? Table of results Resnet101 layers The best is wf_scale1: Table of results Resnet101_New 2 layers Resnet101_newer 3 layers To-do list Data analysis Test with different scales Train with lower anchors Train with lower connection Train with focal_loss Train with lower topN Build Tensorflow NOTES Result on Face Dataset WiderFace Dataset Table of results Resnet_newer Resnet_maxout FDDB Dataset AFW Dataset Pascal Dataset Charts and Graphs False positive in different ranges. FPN models AFW & Pascal Face, Wider Face Deep Resnet with Maxout",
+        },
+
+        { title: "Reduce false positive rate of Object Detector", url: "/blog/tutorial/2018/reduce-false-positive-rate-of-object-detector/",
+        category: "tutorial",
+        toppost: "no",
+        date: "23.08.2018",
+        tags: ["Face Detection","Ojbect Detection","TUTORIAL",],
+        headers: "Lecture for Object Detection Lessons from object detection models Region-based models Single shot object detectors Train Tensorflow Object Detection on own dataset Best strategy to reduce false positives: Google's new Object Detection API on Satellite Imagery What are the best methods for reducing false positives using tensorflow's object detection framework? Answer His finding Object detection : hard negatives. Answer Answer Answer Answer Some notes Revisit Faster R-CNN Abstract Introduction",
+        },
+
+        { title: "CIFAR-10 with Resnet", url: "/blog/tutorial/2018/cifar-10-with-resnet/",
+        category: "tutorial",
+        toppost: "no",
+        date: "22.08.2018",
+        tags: ["Resnet","Cifar10","TUTORIAL",],
+        headers: "Tensorflow Pytorch with several models",
+        },
+
+        { title: "Resnet in Tensorflow and Pytorch", url: "/blog/tutorial/2018/resnet-in-tensorflow-and-pytorch/",
+        category: "tutorial",
+        toppost: "no",
+        date: "22.08.2018",
+        tags: ["Resnet","Tensorflow","Pytorch","TUTORIAL",],
+        headers: "Resnet in different frameworks Resnet Architecture Tensorflow Architecture Prepare the image inputs Create and Restore the Graph None Resnet50 Feature Maps Resnet for SSD",
+        },
+
+        { title: "Working with Pelican", url: "/blog/tutorial/2018/working-with-pelican/",
+        category: "tutorial",
+        toppost: "no",
+        date: "22.08.2018",
+        tags: ["Pelican","TUTORIAL",],
+        headers: "Copying favicon/robots.txt First solution Second solution, using STATIC_PATHS Make Make newpost",
+        },
+
+        { title: "Part III - Deep Learning", url: "/blog/book/2018/part-3-deep-learning/",
+        category: "book",
+        toppost: "no",
+        date: "22.08.2018",
+        tags: ["Deep Learning","BOOK",],
+        headers: "Part III",
+        },
+
+        { title: "Đối nhân xử thế trong Đắc Nhân Tâm", url: "/blog/other/2018/Đối-nhân-xử-thế-trong-Đắc-nhân-tâm/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Đắc Nhân Tâm","OTHER",],
+        headers: "Nguyên tắc 1 : Không chỉ trích oán thán than phiền Nguyên tắc 2 : Thành thật khen ngợi, cảm kích người khác Nguyên tắc 3 : Khơi gợi người khác ý muốn điều bạn đề nghị họ làm Nguyên tắc 4 : Chân thành quan tâm đến người khác Nguyên tắc 5 : Mỉm cười Nguyên tắc 6 :Luôn nhớ rằng tên một người là âm thanh êm đềm, ngọt ngào và quan trọng nhất với họ Nguyên tắc 7 : Lắng nghe người khác khuyến khích người khác nói về họ Nguyên tắc 8 : Nói về điều mà người khác quan tâm Nguyên tắc 9 : Thành thật cho người khác thấy sự quan trọng họ Nguyên tắc 10 : Cách giải quyết tranh cãi tốt nhất là đừng để nó xảy ra Nguyên tắc 11 : Tôn trọng ý kiến của người khác đừng bao giờ nói anh/ chị sai rồi Nguyên tắc 12 : Nếu bạn sai nhanh chóng thẳng thắn thừa nhận lỗi lầm Nguyên tắc 13 : Luôn bắt đầu bằng thái độ thân thiện Nguyên tắc 14 : Hỏi những câu khiến người khác vâng có ngay lập tức Nguyên tắc 15 : Tạo điều kiện để người khác được nói thỏa thích Nguyên tắc 16 :Làm người khác tin rằng chính họ là người đưa ra ý tưởng đầu tiên Nguyên tắc 17 : Thành thật nhìn nhận vấn đề theo quan điểm của người khác Nguyên tắc 18 : ĐỒng cảm với mong muốn chia sẻ của người khác Nguyên tắc 19 :Khơi gợi sự cao thượng của người khác Nguyên tắc 20 : Làm sinh động ý tưởng Nguyên tắc 21 :Thách khơi gợi sự thử thách ở người khác Nguyên tắc 22 :Bắt đầu bằng những lời khen tặng thành thật Nguyên tắc 23 :Góp ý sai lầm của người khác một cách gián tiếp Nguyên tắc 24 : Xem xét nhìn nhận bản thân trước khi góp ý cho người khác Nguyên tắc 25 : Đặt câu hỏi thay vì đưa ra mệnh lệnh Nguyên tắc 26 : GIữ thể diện cho người khác Nguyên tắc 27 : Nhìn nhận sự nỗ lực đóng góp của người khác một cách công bằng cho dù đó là những việc nhỏ nhất . Động viên khuyến khích bằng sự chân thành và hưởng ứng nhiệt tình của bạn Nguyên tắc 28 : Khen ngợi để người khác luôn cố gắng phấn đấu xứng đáng với lợi khen đó Nguyên tắc 29 : Khuyến khích người khác làm cho họ thấy sai lầm không khó để chỉnh sửa",
+        },
+
+        { title: "Summary of Object Detection Papers", url: "/blog/tutorial/2018/summary-of-object-detection-papers/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Object Detection","TUTORIAL",],
+        headers: "Object Detection Papers Deep Neural Networks for Object Detection OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks R-CNN Rich feature hierarchies for accurate object detection and semantic segmentation Fast R-CNN Fast R-CNN A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection Faster R-CNN Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks R-CNN minus R Faster R-CNN in MXNet with distributed implementation and data parallelization Contextual Priming and Feedback for Faster R-CNN An Implementation of Faster RCNN with Study for Region Sampling Interpretable R-CNN Light-Head R-CNN Light-Head R-CNN: In Defense of Two-Stage Object Detector Cascade R-CNN Cascade R-CNN: Delving into High Quality Object Detection MultiBox Scalable Object Detection using Deep Neural Networks Scalable, High-Quality Object Detection SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection Object Detectors Emerge in Deep Scene CNNs segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection Object Detection Networks on Convolutional Feature Maps Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction DeepBox: Learning Objectness with Convolutional Networks MR-CNN Object detection via a multi-region & semantic segmentation-aware CNN model YOLO You Only Look Once: Unified, Real-Time Object Detection Start Training YOLO with Our Own Data YOLO: Core ML versus MPSNNGraph TensorFlow YOLO object detection on Android Computer Vision in iOS – Object Detection YOLOv2 YOLO9000: Better, Faster, Stronger Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2 LightNet: Bringing pjreddie’s DarkNet out of the shadows YOLO v2 Bounding Box Tool YOLOv3 YOLOv3: An Incremental Improvement AttentionNet: Aggregating Weak Directions for Accurate Object Detection DenseBox: Unifying Landmark Localization with End to End Object Detection SSD: Single Shot MultiBox Detector DSSD : Deconvolutional Single Shot Detector Enhancement of SSD by concatenating feature maps for object detection Context-aware Single-Shot Detector Feature-Fused SSD: Fast Detection for Small Objects FSSD: Feature Fusion Single Shot Multibox Detector Weaving Multi-scale Context for Single Shot Detector ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks Adaptive Object Detection Using Adjacency and Zoom Prediction Factors in Finetuning Deep Model for object detection Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution We don’t need no bounding-boxes: Training object class detectors using only human verification HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection A MultiPath Network for Object Detection CRAFT Objects from Images OHEM Training Region-based Object Detectors with Online Hard Example Mining S-OHEM: Stratified Online Hard Example Mining for Object Detection Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers R-FCN: Object Detection via Region-based Fully Convolutional Networks R-FCN-3000 at 30fps: Decoupling Detection and Classification Recycle deep features for better object detection MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection Multi-stage Object Detection with Group Recursive Learning Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection PVANet: Lightweight Deep Neural Networks for Real-time Object Detection Gated Bi-directional CNN for Object Detection Crafting GBD-Net for Object Detection StuffNet: Using ‘Stuff’ to Improve Object Detection Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene Hierarchical Object Detection with Deep Reinforcement Learning Learning to detect and localize many objects from few examples Speed/accuracy trade-offs for modern convolutional object detectors SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving Feature Pyramid Network (FPN) Action-Driven Object Detection with Top-Down Visual Attentions Beyond Skip Connections: Top-Down Modulation for Object Detection Wide-Residual-Inception Networks for Real-time Object Detection Attentional Network for Visual Object Detection Learning Chained Deep Features and Classifiers for Cascade in Object Detection DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries Spatial Memory for Context Reasoning in Object Detection Accurate Single Stage Detector Using Recurrent Rolling Convolution Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems Point Linking Network for Object Detection Perceptual Generative Adversarial Networks for Small Object Detection Few-shot Object Detection Yes-Net: An effective Detector Based on Global Information SMC Faster R-CNN: Toward a scene-specialized multi-object detector Towards lightweight convolutional neural networks for object detection RON: Reverse Connection with Objectness Prior Networks for Object Detection Mimicking Very Efficient Network for Object Detection Residual Features and Unified Prediction Network for Single Stage Detection Deformable Part-based Fully Convolutional Network for Object Detection Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors Recurrent Scale Approximation for Object Detection in CNN DSOD: Learning Deeply Supervised Object Detectors from Scratch Focal Loss for Dense Object Detection Focal Loss Dense Detector for Vehicle Surveillance CoupleNet: Coupling Global Structure with Local Parts for Object Detection Incremental Learning of Object Detectors without Catastrophic Forgetting Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection Dynamic Zoom-in Network for Fast Object Detection in Large Images Zero-Annotation Object Detection with Web Knowledge Transfer MegDet: A Large Mini-Batch Object Detector Single-Shot Refinement Neural Network for Object Detection Receptive Field Block Net for Accurate and Fast Object Detection An Analysis of Scale Invariance in Object Detection - SNIP Feature Selective Networks for Object Detection Learning a Rotation Invariant Detector with Rotatable Bounding Box Scalable Object Detection for Stylized Objects Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids Deep Regionlets for Object Detection Training and Testing Object Detectors with Virtual Images Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video Spot the Difference by Object Detection Localization-Aware Active Learning for Object Detection Object Detection with Mask-based Feature Encoding LSTD: A Low-Shot Transfer Detector for Object Detection Domain Adaptive Faster R-CNN for Object Detection in the Wild Pseudo Mask Augmented Object Detection Revisiting RCNN: On Awakening the Classification Power of Faster RCNN Learning Region Features for Object Detection Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection Object Detection for Comics using Manga109 Annotations Task-Driven Super Resolution: Object Detection in Low-resolution Images Transferring Common-Sense Knowledge for Object Detection Multi-scale Location-aware Kernel Representation for Object Detection Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors DetNet: A Backbone network for Object Detection Robust Physical Adversarial Attack on Faster R-CNN Object Detector AdvDetPatch: Attacking Object Detectors with Adversarial Patches Quantization Mimic: Towards Very Tiny CNN for Object Detection Object detection at 200 Frames Per Second Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression A convnet for non-maximum suppression Improving Object Detection With One Line of Code Soft-NMS – Improving Object Detection With One Line of Code Learning non-maximum suppression Relation Networks for Object Detection Adversarial Examples that Fool Detectors Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection Weakly supervised object detection using pseudo-strong labels Saliency Guided End-to-End Learning for Weakly Supervised Object Detection Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection Video Object Detection Learning Object Class Detectors from Weakly Annotated Video Analysing domain shift factors between videos and images for object detection Video Object Recognition Deep Learning for Saliency Prediction in Natural Video T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos Object Detection from Video Tubelets with Convolutional Neural Networks Object Detection in Videos with Tubelets and Multi-context Cues Context Matters: Refining Object Detection in Video with Recurrent Neural Networks CNN Based Object Detection in Large Video Images Object Detection in Videos with Tubelet Proposal Networks Flow-Guided Feature Aggregation for Video Object Detection Video Object Detection using Faster R-CNN Improving Context Modeling for Video Object Detection and Tracking Temporal Dynamic Graph LSTM for Action-driven Video Object Detection Mobile Video Object Detection with Temporally-Aware Feature Maps Towards High Performance Video Object Detection Impression Network for Video Object Detection Spatial-Temporal Memory Networks for Video Object Detection 3D-DETNet: a Single Stage Video-Based Vehicle Detector Object Detection in Videos by Short and Long Range Object Linking Object Detection in Video with Spatiotemporal Sampling Networks Towards High Performance Video Object Detection for Mobiles Object Detection on Mobile Devices Pelee: A Real-Time Object Detection System on Mobile Devices Object Detection in 3D Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks Complex-YOLO: Real-time 3D Object Detection on Point Clouds Object Detection on RGB-D Learning Rich Features from RGB-D Images for Object Detection and Segmentation Differential Geometry Boosts Convolutional Neural Networks for Object Detection A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation Zero-Shot Object Detection Zero-Shot Object Detection Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts Zero-Shot Object Detection by Hybrid Region Embedding Salient Object Detection Best Deep Saliency Detection Models (CVPR 2016 & 2015) Large-scale optimization of hierarchical features for saliency prediction in natural images Predicting Eye Fixations using Convolutional Neural Networks Saliency Detection by Multi-Context Deep Learning DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection Shallow and Deep Convolutional Networks for Saliency Prediction Recurrent Attentional Networks for Saliency Detection Two-Stream Convolutional Networks for Dynamic Saliency Prediction Unconstrained Salient Object Detection via Proposal Subset Optimization DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL",
+        },
+
+        { title: "Some Computer Vision Challenges", url: "/blog/tutorial/2018/some-computer-vision-challenges/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Challenge","Contest","TUTORIAL",],
+        headers: "Challenge 1: Single-frame Person Pose Estimation Challenge 2: Multi-frame Person Pose Estimation Challenge 3: Multi-Person Pose Tracking",
+        },
+
+        { title: "Freeze some layers in Pytorch", url: "/blog/tutorial/2018/freeze-some-layers-in-pytorch/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Pytorch","TUTORIAL",],
+        headers: "Motivation TLDR: code A toy example",
+        },
+
+        { title: "Infer in_features for the linear layer in Pytorch", url: "/blog/tutorial/2018/infer-in-features-for-the-linear-layer-in-pytorch/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Pytorch","TUTORIAL",],
+        headers: "Motivation Approach 1 Approach 2 Advantages and Disadvantages of 2 above approaches Advantages: Disadvantages:",
+        },
+
+        { title: "Add Parameters in Pytorch", url: "/blog/tutorial/2018/add-parameters-in-pytorch/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Pytorch","TUTORIAL",],
+        headers: "Some important notes about PyTorch 0.4 Variable and Tensor class are merged in PyTorch 0.4 Inputs to functions and modules from torch.nn Parameters of a module None",
+        },
+
+        { title: "Some notes on Object Detection", url: "/blog/tutorial/2018/some-notes-on-object-detection/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Object Detection","Pytorch","TUTORIAL",],
+        headers: "Object Detection Utils Drawing the bounding boxes Pytorch format for image input in preprocessing Mean and std for images Encode the original image to normalized array Decode into the original image None Reading images with different packages Load pretrained weights in Pytorch",
+        },
+
+        { title: "Convolution visualization", url: "/blog/tutorial/2018/convolution-visualization/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["CNN","TUTORIAL",],
+        headers: "Convolution animations Transposed convolution animations Dilated convolution animations",
+        },
+
+        { title: "Working with Git", url: "/blog/tutorial/2018/working-with-git/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["GIT","TUTORIAL",],
+        headers: "Introduction What's a version control system? What’s a distributed version control system? Why Git? What’s a repository? Basic Git commands Explore more Git commands How GitHub fits in How GitHub works The GitHub flow Learn more about the GitHub flow Git Cheat Sheet Install GIT Configure Tooling Create Repositories Make Changes Group Changes Refactor Filenames Suppress tracking Save Fragments Review History Synchronize changes Some frequent templates Example: Contribute to an existing repository Example: Start a new repository and publish it to GitHub Example: contribute to an existing branch on GitHub Models for collaborative development",
+        },
+
+        { title: "Những điểm nhấn và nuối tiếc của cố Tổng Thư ký LHQ Kofi Annan", url: "/blog/other/2018/kofi-annan/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Inspiration","OTHER",],
+        headers: "7 Điều về nhà ngoại giao Kofi Annan Những nuối tiếc của Kofi Annan trong sự nghiệp tại Liên Hợp Quốc",
+        },
+
+        { title: "Giáo sư Nguyễn Xiển - nhà khoa học khí tượng hàng đầu", url: "/blog/other/2018/giao-su-nguyen-xien/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["OTHER",],
+        headers: "Trí thức yêu nước Nhà khoa học về khí tượng hàng đầu ở Việt Nam",
+        },
+
+        { title: "Thiên tài không bằng cấp Michael Faraday", url: "/blog/other/2018/thien-tai-faraday/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Inspiration","OTHER",],
+        headers: "Từ cậu bé đóng sách nghèo ham học Phụ tá phòng thí nghiệm với giáo sư Davy Đến nhà bác học thiên tài không bằng cấp Những năm cuối cuộc đời",
+        },
+
+        { title: "Nhà khoa học nữ gốc Việt trong top ảnh hưởng nhất thế giới", url: "/blog/other/2018/nha-nu-khoa-hoc-goc-viet/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["OTHER",],
+        headers: "Nhọc nhằn nơi xứ người Những vất vả của phụ nữ khi làm khoa học Thích về Việt Nam",
+        },
+
+        { title: "Nigerian immigrant dreams of finding cures for infectious diseases", url: "/blog/other/2018/infectious-disease-american-dream/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Inspiration","OTHER",],
+        headers: "Nigerian-born Chidiebere Akusobi has notched many impressive academic achievements in his short life.",
+        },
+
+        { title: "One immigrant's path from cleaning houses to Stanford professor", url: "/blog/other/2018/chinese-immigrant-professor/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["OTHER",],
+        headers: "What was life like for you as a child? Did you feel like a part of the community in Parsippany? What was your biggest challenge? What helped you to keep it together? What do you hope to leave for your children? Is there something that you do every day that helps you?",
+        },
+
+        { title: "Bí quyết thành công của Michael Phelps", url: "/blog/other/2018/bi-quyet-thanh-cong-cua-michael-phelps/",
+        category: "other",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Inspiration","OTHER",],
+        headers: "Đặt ra mục tiêu rõ ràng Hình dung mọi thứ Chuẩn bị cho mọi tình huống Không được chìm đắm vào thất bại Rút kinh nghiệm từ lỗi lầm của mình Nỗ lực luyện tập",
+        },
+
+        { title: "The evolution of image classification", url: "/blog/paper/2018/the-evolution-of-image-classification/",
+        category: "paper",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Image Classification","CNN","2015","PAPER",],
+        headers: "Introduction Why it matters LeNet Pioneering work AlexNet VGGNet Deeper is better GoogLeNet Time for inception ResNet Connect the layers DenseNet Connect more! Conclusion Global trends Disclaimer",
+        },
+
+        { title: "An example of how to generate your data in parallel with PyTorch", url: "/blog/tutorial/2018/an-example-of-how-to-generate-your-data-in-parallel-with-pytorch/",
+        category: "tutorial",
+        toppost: "no",
+        date: "21.08.2018",
+        tags: ["Data Parallel","Data Loader","Pytorch","TUTORIAL",],
+        headers: "Motivation Tutorial Previous situation Notations Dataset PyTorch script Conclusion Disclaimer",
+        },
+
+        { title: "Cheatsheet in ML and DL", url: "/blog/tutorial/2018/cheatsheet-in-ml-and-dl/",
+        category: "tutorial",
+        toppost: "no",
+        date: "20.08.2018",
+        tags: ["Cheatsheet","TUTORIAL",],
+        headers: "Machine Learning Cheatsheet Deep Learning Cheatsheet Probability Cheatsheet Statistics Cheeatsheet",
+        },
+
+        { title: "Bash Commands", url: "/blog/tutorial/2018/bash-commands/",
+        category: "tutorial",
+        toppost: "no",
+        date: "17.08.2018",
+        tags: ["Bash","TUTORIAL",],
+        headers: "The most common commands Terminal Navigation Commands cd: Change the directory ls: List all the files and folders in the current directory pwd: Print the path of directories && clear: Clear the screen man: The manual command help: Check help for a specific command history: View the command history in terminal File Management Commands find: Search files grep: Search where is the text in files rename mkdir: Create a directory mkdir -p: Create a directory tree mv: Move files mv: Change the file's name cp: Copy files and folders rm: Delete files rmdir: Remove Directory cat: View a file in terminal touch: Create a file in terminal nano: Create and open a file in terminal nvidia-smi: Check GPU's status kill: Kill a process echo: Write Commands with git Shortcuts code chrome Exit Some useful commands ps: List process by username htop: Task manager kill a process on a specific port List all the process running GPUs and kill it. Install pillow-simd for fast augmentation Warning: remote port forwarding failed for listen port 52698 scp: Copy files from remote server to local Exit the ssh session in bash/shell script Fail to load the interpreter of Python for virtual environment zip and unzip files and folders.",
+        },
+
+        { title: "Check Result of Face Detection", url: "/blog/tutorial/2018/check-result-of-face-detection/",
+        category: "tutorial",
+        toppost: "no",
+        date: "17.08.2018",
+        tags: ["TUTORIAL",],
+        headers: "None None None None None",
+        },
+
+        { title: "Maxout ICML 2013", url: "/blog/paper/2018/maxout-icml-2013/",
+        category: "paper",
+        toppost: "yes",
+        date: "15.08.2018",
+        tags: ["Maxout","ICML","Dropout","2013","PAPER",],
+        headers: "Abstract Introduction Review of dropout Description of Maxout Maxout is a universal approximator Experimental Results Model Averaging Notes",
+        },
+
+        { title: "How to use models in slim", url: "/blog/tutorial/2018/how-to-use-models-in-slim/",
+        category: "tutorial",
+        toppost: "no",
+        date: "15.08.2018",
+        tags: ["Tensorflow","Slim","Fine-tuning","TUTORIAL",],
+        headers: "Introduction Setup Clone the slim None Download the models Preprocess the image Define the model and get the prediction Create the graph Load the pretrained weights Make a prediction Decode the name of the labels in 1000 classes Test with an example image All in one program",
+        },
+
+        { title: "Alexnet NIPS 2012", url: "/blog/paper/2018/alexnet-nips-2012/",
+        category: "paper",
+        toppost: "no",
+        date: "15.08.2018",
+        tags: ["Image Recognition","Alexnet","CNN","ImageNet","2012","PAPER",],
+        headers: "Abstract Introduction Specific notes TLDR: Code The Pytorch code of AlexNet. Tensorflow Implementation with slim",
+        },
+
+]
+
+mycategories = ['paper', 'book', 'tutorial', 'other']
+
+function contains(text, filter) {
+    return text.toLowerCase().indexOf(filter.toLowerCase()) > -1
+}
+
+var index = new Vue({
+    el: '#index',
+    data: {
+        filter: '',
+        items: items,
+        mycategories: mycategories
+    },
+    methods: {
+        toogle_nav: function(event) {
+            this.show = !this.show;
+        }
+    },
+    computed: {
+        filteredItems() {
+            return this.items.filter(item => {
+                searches = [item.title].concat(item.tags).concat([item.headers]);
+                query = searches.map(x => contains(x, this.filter));
+                return query.some(x => x == true);
+            })
+        }
+    }
+})
+</script>
+
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

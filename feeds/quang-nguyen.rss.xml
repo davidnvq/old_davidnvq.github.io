@@ -1,0 +1,999 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Quang Nguyen - Quang Nguyen</title><link>/</link><description></description><lastBuildDate>Wed, 28 Nov 2018 22:39:23 +0000</lastBuildDate><item><title>Training Models in Parallel with Keras</title><link>/blog/tutorial/2018/training-models-in-parallel-with-keras/</link><description>&lt;p&gt;If there is some problems with BatchNormalization, please refer to this &lt;a href="https://www.bountysource.com/issues/33177171-does-keras-support-using-multiple-gpus"&gt;Tensorflow pull requests&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="sample-code-to-check-the-speed"&gt;Sample code to check the speed&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;tensorflow&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;tf&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;keras.applications&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ResNet50&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;keras.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;multi_gpu_model&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;
+&lt;span class="n"&gt;height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;224&lt;/span&gt;
+&lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;224&lt;/span&gt;
+&lt;span class="n"&gt;num_classes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;tf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'/cpu:0'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ResNet50&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                    &lt;span class="n"&gt;input_shape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                    &lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;num_classes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;parallel_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;multi_gpu_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;parallel_model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loss&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'categorical_crossentropy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                        &lt;span class="n"&gt;optimizer&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'rmsprop'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;num_classes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;parallel_model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epochs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;batch_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 28 Nov 2018 22:39:23 +0000</pubDate><guid isPermaLink="false">tag:None,2018-11-28:/blog/tutorial/2018/training-models-in-parallel-with-keras/</guid><category>TUTORIAL</category></item><item><title>Something you need to know about Aobayama Dormitory</title><link>/blog/other/2018/something-you-need-to-know-about-aobayama-dormitory/</link><description>&lt;h1 id="residence-registration"&gt;Residence Registration&lt;/h1&gt;
+&lt;h2 id="the-uh-aobayama-office-is-open-for-residence-registration-during-the-following-hours"&gt;The UH Aobayama office is open for residence registration during the following hours.&lt;/h2&gt;
+&lt;p&gt;September 27(Thurs.) ~ 30(Sun.) 9:00~16:00
+From October 1 (Mon.) 9:00~16:00 (excluding holidays and weekends)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Please note that the registration must be made by the prospective resident himself/herself.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;At a residence meeting, new residents need to apply for rental services such as  bedding, plates, bathmat. It is mandatory and cannot be canceled unless you have some special reason.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="please-be-sure-to-bring-your-residence-permit-and-your-id-with-you-when-you-move-in"&gt;Please be sure to bring your residence permit and your ID with you when you move in.&lt;/h2&gt;
+&lt;p&gt;If you can&amp;rsquo;t bring an original residence permit, please show the dorm staff its copy or its PDF version.&lt;/p&gt;
+&lt;h2 id="after-attending-the-registration-meeting-you-can-receive-your-room-key"&gt;After attending the registration meeting, you can receive your room key.&lt;/h2&gt;
+&lt;h1 id="facilities-in-your-residence_1"&gt;Facilities in your Residence&lt;/h1&gt;
+&lt;h2 id="furnishings"&gt;Furnishings:&lt;/h2&gt;
+&lt;p&gt;Study desk, rollaway wagon, chair, bookshelf, bed, closet, air conditioner&lt;/p&gt;
+&lt;h2 id="shared-facilities"&gt;Shared facilities&lt;/h2&gt;
+&lt;p&gt;IH stove, refrigerator, microwave, rice …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 04 Sep 2018 12:20:31 +0000</pubDate><guid isPermaLink="false">tag:None,2018-09-04:/blog/other/2018/something-you-need-to-know-about-aobayama-dormitory/</guid><category>OTHER</category></item><item><title>Automation and Make</title><link>/blog/tutorial/2018/automation-and-make/</link><description>&lt;h1 id="automation-and-make-running-make"&gt;Automation and Make: Running Make&lt;/h1&gt;
+&lt;h2 id="key-points"&gt;Key Points&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Lesson&lt;/th&gt;
+&lt;th&gt;Summary&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="https://swcarpentry.github.io/make-novice/reference.html"&gt;Introduction&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&amp;bull; Make allows us to specify what depends on what and how to update things that are out of date.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[Makefiles][]&lt;/td&gt;
+&lt;td&gt;&amp;bull; Use &lt;code&gt;#&lt;/code&gt; for comments in Makefiles.&lt;br/&gt; &amp;bull; Write rules as &lt;code&gt;target&lt;/code&gt;: &lt;code&gt;dependencies&lt;/code&gt;. &lt;br/&gt; &amp;bull; Specify update actions in a tab-indented block under the rule. &lt;br/&gt; &amp;bull; Use &lt;code&gt;.PHONY&lt;/code&gt; to mark targets that don&amp;rsquo;t correspond to files.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Automatic Variables&lt;/td&gt;
+&lt;td&gt;&amp;bull; Use $@ to refer to the target of the current rule. &lt;br/&gt; &amp;bull; Use $^ to refer to the dependencies of the current rule. &lt;br/&gt; &amp;bull; Use $&amp;lt; to refer to the first dependency of the current rule.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dependencies on Data and Code&lt;/td&gt;
+&lt;td&gt;&amp;bull; Make results depend on processing scripts as well as data files. &lt;br/&gt;  &amp;bull; Dependencies are transitive: if A depends on B and B depends on C, a change to C will indirectly trigger an update&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pattern Rules&lt;/td&gt;
+&lt;td&gt;&amp;bull; Use the wildcard % as a placeholder in targets and dependencies. &lt;br/&gt; &amp;bull; Use the special variable $* to refer …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Mon, 27 Aug 2018 16:15:24 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-27:/blog/tutorial/2018/automation-and-make/</guid><category>Make</category><category>Automation</category><category>TUTORIAL</category></item><item><title>Use Jupyter notebook remotely</title><link>/blog/tutorial/2018/use-jupyter-notebook-remotely/</link><description>&lt;h1 id="motivation"&gt;Motivation&lt;/h1&gt;
+&lt;p&gt;Situation: Your data (may be TB) is in your working cluster. You want to access and interactively play with your datayour home computer. You can use xwin to open your Jupyter notebook on remote host. However, this kind of connection is quite slow.&lt;/p&gt;
+&lt;p&gt;To make the connection faster, you can follow below instructions:&lt;/p&gt;
+&lt;p&gt;First, make sure you install Jupyter notebook in both remote (working station in your offcie) and local (your home computer)&lt;/p&gt;
+&lt;h1 id="in-remote-host"&gt;In remote host&lt;/h1&gt;
+&lt;p&gt;In remote host, open the terminal, change directory to where you have your notebooks and type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;jupyter notebook --no-browser --port&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;8889&lt;/span&gt;
+
+&lt;span class="c1"&gt;# you should leave the this open&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="in-your-local-computer"&gt;In your local computer&lt;/h1&gt;
+&lt;p&gt;In your local computer, open MS-DOS cmd (if using Windows) or Unix terminal, then type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh -i path/to/public-key -N -f -L localhost:8888:localhost:8889 username@your_remote_host_name
+&lt;span class="c1"&gt;# make sure to change `username` to your real username in remote host&lt;/span&gt;
+&lt;span class="c1"&gt;# change …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Fri, 24 Aug 2018 18:38:42 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-24:/blog/tutorial/2018/use-jupyter-notebook-remotely/</guid><category>Jupyter Notebook</category><category>TUTORIAL</category></item><item><title>Result on Face Detection</title><link>/blog/tutorial/2018/result-on-face-detection/</link><description>&lt;h1 id="benchmarks"&gt;Benchmarks&lt;/h1&gt;
+&lt;h2 id="validation"&gt;Validation&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Methods&lt;/th&gt;
+&lt;th&gt;easy&lt;/th&gt;
+&lt;th&gt;medium&lt;/th&gt;
+&lt;th&gt;hard&lt;/th&gt;
+&lt;th&gt;AFW&lt;/th&gt;
+&lt;th&gt;Pascal&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Scale Face Val&lt;/td&gt;
+&lt;td&gt;86.8&lt;/td&gt;
+&lt;td&gt;86.7&lt;/td&gt;
+&lt;td&gt;77.2&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSH (Pyramid) Val&lt;/td&gt;
+&lt;td&gt;93.1&lt;/td&gt;
+&lt;td&gt;92.1&lt;/td&gt;
+&lt;td&gt;84.5&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;98.27&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HR Val&lt;/td&gt;
+&lt;td&gt;91.9&lt;/td&gt;
+&lt;td&gt;90.8&lt;/td&gt;
+&lt;td&gt;82.3&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Face R-CNN Val&lt;/td&gt;
+&lt;td&gt;93.8&lt;/td&gt;
+&lt;td&gt;92.2&lt;/td&gt;
+&lt;td&gt;82.9&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Face R-FCN Val&lt;/td&gt;
+&lt;td&gt;94.7&lt;/td&gt;
+&lt;td&gt;93.5&lt;/td&gt;
+&lt;td&gt;87.4&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;FAN Val&lt;/td&gt;
+&lt;td&gt;95.3&lt;/td&gt;
+&lt;td&gt;94.2&lt;/td&gt;
+&lt;td&gt;88.8&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Seeing Small Faces Val&lt;/td&gt;
+&lt;td&gt;94.9&lt;/td&gt;
+&lt;td&gt;93.3&lt;/td&gt;
+&lt;td&gt;86.1&lt;/td&gt;
+&lt;td&gt;99.85&lt;/td&gt;
+&lt;td&gt;99.23&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SFD Val&lt;/td&gt;
+&lt;td&gt;93.7&lt;/td&gt;
+&lt;td&gt;92.4&lt;/td&gt;
+&lt;td&gt;85.2&lt;/td&gt;
+&lt;td&gt;99.85&lt;/td&gt;
+&lt;td&gt;98.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="test"&gt;Test&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Methods&lt;/th&gt;
+&lt;th&gt;easy&lt;/th&gt;
+&lt;th&gt;medium&lt;/th&gt;
+&lt;th&gt;hard&lt;/th&gt;
+&lt;th&gt;AFW&lt;/th&gt;
+&lt;th&gt;Pascal&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Scale Face Test&lt;/td&gt;
+&lt;td&gt;86.7&lt;/td&gt;
+&lt;td&gt;86.6&lt;/td&gt;
+&lt;td&gt;76.4&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HR Test&lt;/td&gt;
+&lt;td&gt;91.5&lt;/td&gt;
+&lt;td&gt;90.2&lt;/td&gt;
+&lt;td&gt;81.3&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Face R-CNN Test&lt;/td&gt;
+&lt;td&gt;93.2&lt;/td&gt;
+&lt;td&gt;91.6&lt;/td&gt;
+&lt;td&gt;82.7&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSH (Pyramid) Test&lt;/td&gt;
+&lt;td&gt;92.7&lt;/td&gt;
+&lt;td&gt;91.5&lt;/td&gt;
+&lt;td&gt;84.4&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;td&gt;_&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SFD Test …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Fri, 24 Aug 2018 12:29:05 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-24:/blog/tutorial/2018/result-on-face-detection/</guid><category>Face Detection</category><category>TUTORIAL</category></item><item><title>Keras model for Cdiscount Kaggle competition</title><link>/blog/tutorial/2018/keras-model-for-cdiscount-kaggle-competition/</link><description>&lt;h1 id="deepsenseai"&gt;Deepsense.ai&lt;/h1&gt;
+&lt;p&gt;https://github.com/neptune-ml/open-solution-cdiscount-starter&lt;/p&gt;
+&lt;p&gt;https://deepsense.ai/image-classification-sample-solution-kaggle/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Thu, 23 Aug 2018 16:34:17 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-23:/blog/tutorial/2018/keras-model-for-cdiscount-kaggle-competition/</guid><category>Cdiscount</category><category>Kaggle</category><category>TUTORIAL</category></item><item><title>Read the AFW mat file</title><link>/blog/tutorial/2018/read-the-afw-mat-file/</link><description>&lt;p&gt;| This can be applied to read &lt;code&gt;.mat&lt;/code&gt; file of Pascal Face.&lt;/p&gt;
+&lt;style type="text/css"&gt;/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The …&lt;/style&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Thu, 23 Aug 2018 14:33:34 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-23:/blog/tutorial/2018/read-the-afw-mat-file/</guid><category>AFW</category><category>Matlab</category><category>Face Detection</category><category>TUTORIAL</category></item><item><title>AI nào cho Việt Nam</title><link>/blog/other/2018/ai-nao-cho-viet-nam/</link><description>&lt;h1 id="ai-nao-cho-viet-nam"&gt;AI n&amp;agrave;o cho Việt Nam?&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;T&amp;aacute;c giả: Gi&amp;aacute;o sư Hồ T&amp;uacute; Bảo
+Viện John von Neumann, Đại học Quốc gia th&amp;agrave;nh phố Hồ Ch&amp;iacute; Minh
+Viện Nghi&amp;ecirc;n cứu Cao cấp về To&amp;aacute;n.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Sau hơn một năm cả nước đ&amp;atilde; n&amp;oacute;i rất nhiều về c&amp;aacute;ch mạng c&amp;ocirc;ng nghiệp lần thứ tư l&amp;agrave;
+g&amp;igrave;, đ&amp;atilde; đến l&amp;uacute;c ch&amp;uacute;ng ta phải h&amp;agrave;nh động nhiều hơn, trong đ&amp;oacute; c&amp;oacute; việc cần l&amp;agrave;m g&amp;igrave; v&amp;agrave;
+l&amp;agrave;m thế n&amp;agrave;o?&lt;/p&gt;
+&lt;p&gt;Sự cộng hưởng trong những năm vừa qua của c&amp;aacute;c c&amp;ocirc;ng nghệ số c&amp;oacute; nhiều đột ph&amp;aacute;
+(như điện to&amp;aacute;n đ&amp;aacute;m m&amp;acirc;y, internet vạn vật, dữ liệu lớn, tr&amp;iacute; tuệ nh&amp;acirc;n tạo&amp;hellip;) đ&amp;atilde; b&amp;aacute;o
+hiệu những thay đổi lớn lao đang bắt đầu xảy ra, được gọi ở nhiều nơi l&amp;agrave; cuộc c&amp;aacute;ch
+mạng c&amp;ocirc;ng nghiệp lần thứ tư với đặc trưng cơ bản l&amp;agrave; sản xuất th&amp;ocirc;ng minh. Việc sản
+xuất th&amp;ocirc;ng minh n&amp;agrave;y được xem …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Thu, 23 Aug 2018 08:26:00 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-23:/blog/other/2018/ai-nao-cho-viet-nam/</guid><category>OTHER</category></item><item><title>Face Detector Report</title><link>/blog/paper/2018/face-detector-report/</link><description>&lt;h1 id="dataset"&gt;Dataset&lt;/h1&gt;
+&lt;p&gt;http://www.face-rec.org/databases/&lt;/p&gt;
+&lt;h1 id="timer-and-speed"&gt;Timer and speed&lt;/h1&gt;
+&lt;p&gt;https://github.com/ShuangXieIrene/ssds.pytorch/blob/master/lib/utils/timer.py
+https://github.com/ShuangXieIrene/ssds.pytorch/blob/master/lib/ssds.py&lt;/p&gt;
+&lt;h1 id="write-clean-code-like"&gt;Write clean code like&lt;/h1&gt;
+&lt;p&gt;https://github.com/DavexPro/pytorch-pose-estimation/blob/master/pose_estimation.py&lt;/p&gt;
+&lt;h1 id="the-incredible-pytorch"&gt;The incredible pytorch&lt;/h1&gt;
+&lt;p&gt;https://www.ritchieng.com/the-incredible-pytorch/
+Face problems
+https://www.adrianbulat.com/
+FERA 2017 - Addressing Head Pose in the Third Facial Expression
+Recognition and Analysis Challenge - 2017 Dataset
+https://arxiv.org/pdf/1702.04174.pdf&lt;/p&gt;
+&lt;p&gt;consecutively &lt;/p&gt;
+&lt;p&gt;competitive results over the compared baseline methods.&lt;/p&gt;
+&lt;p&gt;earlier works/ efforts
+the subsequent layer
+these models usually heavily relied on
+laborious feature engineering&lt;/p&gt;
+&lt;p&gt;Recent advances in deep neural networks and
+representation learning have substantially improved
+the performance of text classification tasks.
+The dominant approaches are recurrent neural net&lt;/p&gt;
+&lt;h1 id="how-to-train"&gt;How to train&lt;/h1&gt;
+&lt;p&gt;https://www.youtube.com/watch?v=Rgpfk6eYxJA&lt;/p&gt;
+&lt;h2 id="combined-result"&gt;Combined Result&lt;/h2&gt;
+&lt;h3 id="methods"&gt;Methods&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;SSH&lt;/strong&gt;: Like HR, a four level image …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Thu, 23 Aug 2018 08:26:00 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-23:/blog/paper/2018/face-detector-report/</guid><category>Face Detection</category><category>2018</category><category>PAPER</category></item><item><title>Reduce false positive rate of Object Detector</title><link>/blog/tutorial/2018/reduce-false-positive-rate-of-object-detector/</link><description>&lt;h1 id="lecture-for-object-detection"&gt;Lecture for Object Detection&lt;/h1&gt;
+&lt;p&gt;https://zsc.github.io/megvii-pku-dl-course/slides/Lecture6(Object%20Detection).pdf&lt;/p&gt;
+&lt;h1 id="lessons-from-object-detection-models"&gt;Lessons from object detection models&lt;/h1&gt;
+&lt;h2 id="region-based-models"&gt;Region-based models&lt;/h2&gt;
+&lt;p&gt;https://medium.com/@jonathan_hui/what-do-we-learn-from-region-based-object-detectors-faster-r-cnn-r-fcn-fpn-7e354377a7c9&lt;/p&gt;
+&lt;h2 id="single-shot-object-detectors"&gt;Single shot object detectors&lt;/h2&gt;
+&lt;p&gt;https://medium.com/@jonathan_hui/what-do-we-learn-from-single-shot-object-detectors-ssd-yolo-fpn-focal-loss-3888677c5f4d&lt;/p&gt;
+&lt;p&gt;Learn a lot from this guy:
+https://jhui.github.io/&lt;/p&gt;
+&lt;h1 id="train-tensorflow-object-detection-on-own-dataset_1"&gt;Train Tensorflow Object Detection on own dataset&lt;/h1&gt;
+&lt;p&gt;After spending a couple days trying to achieve this task, I would like to share my experience of how I went about answering the question:&lt;/p&gt;
+&lt;p&gt;How do I use TS Object Detection to train using my own dataset?
+https://stackoverflow.com/questions/44973184/train-tensorflow-object-detection-on-own-dataset&lt;/p&gt;
+&lt;h1 id="best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-satellite-imagery"&gt;Best strategy to reduce false positives: Google's new Object Detection API on Satellite Imagery&lt;/h1&gt;
+&lt;p&gt;https://stackoverflow.com/questions/45666499/best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-sa&lt;/p&gt;
+&lt;p&gt;# FPN 
+https://medium.com/@jonathan_hui/understanding-feature-pyramid-networks-for-object-detection-fpn-45b227b9106c&lt;/p&gt;
+&lt;h1 id="what-are-the-best-methods-for-reducing-false-positives-using-tensorflows-object-detection-framework"&gt;What are the best methods for reducing false positives using tensorflow's object detection framework?&lt;/h1&gt;
+&lt;p&gt;I am training a single object detector with mask rcnn and I have tried …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Thu, 23 Aug 2018 00:52:57 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-23:/blog/tutorial/2018/reduce-false-positive-rate-of-object-detector/</guid><category>Face Detection</category><category>Ojbect Detection</category><category>TUTORIAL</category></item><item><title>CIFAR-10 with Resnet</title><link>/blog/tutorial/2018/cifar-10-with-resnet/</link><description>&lt;h1 id="tensorflow"&gt;Tensorflow&lt;/h1&gt;
+&lt;p&gt;The &lt;a href="https://github.com/tensorflow/models/tree/master/official/resnet"&gt;official tensorflow resnet cifar-10&lt;/a&gt;, with --resnet_size=110, hits 93.96%, (beating the reference value of 93.39%).&lt;/p&gt;
+&lt;p&gt;Resnet for cifar10 and imagenet look a little different. You can see here that the convolution stride kernel is smaller. Maybe this is what you are doing wrong. Scaling CIFAR images to 224x224 is worse than using smaller kernel in conv1 with 32x32 images.&lt;/p&gt;
+&lt;h1 id="pytorch-with-several-models"&gt;Pytorch with several models&lt;/h1&gt;
+&lt;p&gt;P.S. I have trained models using &lt;a href="https://github.com/kuangliu/pytorch-cifar"&gt;this repo&lt;/a&gt; and got similar or better accuracy than written in the README with 95.16% on CIFAR10 with PyTorch.&lt;/p&gt;
+&lt;p&gt;I tried that repo, running &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python3 main.py
+&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 main.py --lr &lt;span class="m"&gt;0&lt;/span&gt;.01 --resume
+&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 main.py --lr &lt;span class="m"&gt;0&lt;/span&gt;.001 --resume
+&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 main.py --lr &lt;span class="m"&gt;0&lt;/span&gt;.0001 --resume 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and got only 94.680% rather than 95.16%. And frankly this script is overfitting on the test set, because it just picks whatever works best on …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 22 Aug 2018 16:38:10 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-22:/blog/tutorial/2018/cifar-10-with-resnet/</guid><category>Resnet</category><category>Cifar10</category><category>TUTORIAL</category></item><item><title>Resnet in Tensorflow and Pytorch</title><link>/blog/tutorial/2018/resnet-in-tensorflow-and-pytorch/</link><description>&lt;p&gt;The Resnet paper can be found at &lt;a href="https://arxiv.org/pdf/1512.03385.pdf"&gt;arxiv&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id="resnet-in-different-frameworks"&gt;Resnet in different frameworks&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Framework&lt;/th&gt;
+&lt;th&gt;Pytorch&lt;/th&gt;
+&lt;th&gt;Pytorch Stride&lt;/th&gt;
+&lt;th&gt;Tensorflow&lt;/th&gt;
+&lt;th&gt;Tensorflow Stride&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Input shape&lt;/td&gt;
+&lt;td&gt;[batch, channels, height_in, width_in]&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;[batch, height_in, width_in, channels]&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Input&lt;/td&gt;
+&lt;td&gt;(1, 3, 640, 640)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;(1, 640, 640, 3)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 1&lt;/td&gt;
+&lt;td&gt;(1, 256, 160, 160)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;(1, 80, 80, 256)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 2&lt;/td&gt;
+&lt;td&gt;(1, 512, 80, 80)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;(1, 40, 40, 512)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 3&lt;/td&gt;
+&lt;td&gt;(1, 1024, 40, 40)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;(1, 20, 20, 1024)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 4&lt;/td&gt;
+&lt;td&gt;(1, 2048, 20, 20)&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;(1, 20, 20, 2048)&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id="resnet-architecture"&gt;Resnet Architecture&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Block&lt;/th&gt;
+&lt;th&gt;Base depth&lt;/th&gt;
+&lt;th&gt;Resnet50&lt;/th&gt;
+&lt;th&gt;Resnet101&lt;/th&gt;
+&lt;th&gt;Output Depth&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 1&lt;/td&gt;
+&lt;td&gt;64&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;256&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 2&lt;/td&gt;
+&lt;td&gt;128&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;512&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 3&lt;/td&gt;
+&lt;td&gt;256&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;td&gt;1024&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Block 4&lt;/td&gt;
+&lt;td&gt;512&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;2048&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id="tensorflow-architecture"&gt;Tensorflow Architecture&lt;/h1&gt;
+&lt;h2 id="prepare-the-image-inputs"&gt;Prepare the image inputs&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os.path&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;osp&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;PIL&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;tensorflow&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;tf&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;resnet&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;resnet_v1&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;tensorflow.contrib&lt;/span&gt; &lt;span class="kn"&gt;import …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 22 Aug 2018 15:47:37 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-22:/blog/tutorial/2018/resnet-in-tensorflow-and-pytorch/</guid><category>Resnet</category><category>Tensorflow</category><category>Pytorch</category><category>TUTORIAL</category></item><item><title>Working with Pelican</title><link>/blog/tutorial/2018/working-with-pelican/</link><description>&lt;h1 id="copying-faviconrobotstxt"&gt;Copying favicon/robots.txt&lt;/h1&gt;
+&lt;h2 id="first-solution"&gt;First solution&lt;/h2&gt;
+&lt;p&gt;If you used the pelican-quickstart command to create a Makefile and want certain files copied to your web root &amp;mdash; such as favicon.ico, robots.txt, or other files &amp;mdash; create a folder called extra next to your Makefile and edit your Makefile to look like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;OUTPUTDIR&lt;span class="k"&gt;)&lt;/span&gt;/%.html:
+    &lt;span class="k"&gt;$(&lt;/span&gt;PELICAN&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;INPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="k"&gt;$(&lt;/span&gt;OUTPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -s &lt;span class="k"&gt;$(&lt;/span&gt;CONFFILE&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PELICANOPTS&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="cp"&gt;    if test -d $(BASEDIR)/extra; then cp $(BASEDIR)/extra/* $(OUTPUTDIR)/; fi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;publish&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;$(&lt;/span&gt;PELICAN&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;INPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="k"&gt;$(&lt;/span&gt;OUTPUTDIR&lt;span class="k"&gt;)&lt;/span&gt; -s &lt;span class="k"&gt;$(&lt;/span&gt;PUBLISHCONF&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PELICANOPTS&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="cp"&gt;    if test -d $(BASEDIR)/extra; then cp $(BASEDIR)/extra/* $(OUTPUTDIR)/; fi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="second-solution-using-static_paths_1"&gt;Second solution, using STATIC_PATHS&lt;/h1&gt;
+&lt;p&gt;Add &lt;code&gt;favicon.ico&lt;/code&gt; and &lt;code&gt;robots.txt&lt;/code&gt; to the content/extra folder and add the following to &lt;code&gt;pelicanconf.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;STATIC_PATHS = ['images', 'extra/robots.txt', 'extra/favicon.ico']
+EXTRA_PATH_METADATA = {
+    'extra/robots.txt': {'path': 'robots.txt'},
+    'extra/favicon.ico': {'path': 'favicon.ico'}
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="make"&gt;Make&lt;/h1&gt;
+&lt;p&gt;Make is available on almost any Unix-derived system but is old and can be clunky for …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 22 Aug 2018 14:57:38 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-22:/blog/tutorial/2018/working-with-pelican/</guid><category>Pelican</category><category>TUTORIAL</category></item><item><title>Part III - Deep Learning</title><link>/blog/book/2018/part-3-deep-learning/</link><description>&lt;h1 id="part-iii"&gt;Part III&lt;/h1&gt;
+&lt;p&gt;This part of the book describes the more ambitious and advanced approaches to deep learning, currently pursued by the research community. &lt;/p&gt;
+&lt;p&gt;In the previous parts of the book, we have shown how to solve supervised learning problems - how to map one vector to another given enough examples of the mapping. &lt;/p&gt;
+&lt;p&gt;Not all problems we might want to solve fall into this category. We may wish to generate new examples, or determine how likely some point is, or handle missing values and take advantage of a large set of unlabeled examples or examples from related tasks. A shortcoming of the current state of the art for industrial applications is that our learning algorithms require large amounts of supervised data to achieve good accuracy. In this part of the book, we discuss some of the speculative approaches to reducing the amount of labeled data necessary for existing models to work …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 22 Aug 2018 11:11:42 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-22:/blog/book/2018/part-3-deep-learning/</guid><category>Deep Learning</category><category>BOOK</category></item><item><title>Đối nhân xử thế trong Đắc Nhân Tâm</title><link>/blog/other/2018/%C4%90%E1%BB%91i-nh%C3%A2n-x%E1%BB%AD-th%E1%BA%BF-trong-%C4%90%E1%BA%AFc-nh%C3%A2n-t%C3%A2m/</link><description>&lt;p&gt;Cuộc sống l&amp;agrave; vậy dẫu x&amp;ocirc; bồ v&amp;agrave;o v&amp;ograve;ng mưu sinh - l&amp;agrave;m gi&amp;agrave;u - khẳng định m&amp;igrave;nh - ước mơ th&amp;igrave; bạn cũng h&amp;atilde;y nh&amp;igrave;n lại v&amp;agrave; giữ cho m&amp;igrave;nh những gi&amp;aacute; trị sống tốt đẹp v&amp;agrave; cao cả - giữ lương t&amp;acirc;m s&amp;aacute;ng suốt để tiến xa hơn nữa.&lt;/p&gt;
+&lt;h1 id="nguyen-tac-1-khong-chi-trich-oan-than-than-phien"&gt;Nguy&amp;ecirc;n tắc 1 : Kh&amp;ocirc;ng chỉ tr&amp;iacute;ch o&amp;aacute;n th&amp;aacute;n than phiền&lt;/h1&gt;
+&lt;p&gt;Những người bạn gặp tr&amp;ecirc;n đường đời sẽ ảnh hưởng đến cuộc sống của bạn. D&amp;ugrave; tốt hay xấu, họ cũng tặng bạn những kinh nghiệm sống hết sức tuyệt vời. Ch&amp;iacute;nh v&amp;igrave; thế, đừng n&amp;ecirc;n l&amp;ecirc;n &amp;aacute;n, chỉ tr&amp;iacute;ch hay than phiền ai cả. Thậm ch&amp;iacute;, nếu c&amp;oacute; ai đ&amp;oacute; l&amp;agrave;m tổn thương bạn, phản bội bạn hay lợi dụng l&amp;ograve;ng tốt của bạn th&amp;igrave; xin h&amp;atilde;y cứ tha thứ cho họ. Bởi v&amp;igrave; c&amp;oacute; thể, ch&amp;iacute;nh nhờ họ m&amp;agrave; bạn học được c&amp;aacute;ch khoan dung. Chỉ tr&amp;iacute;ch một người l&amp;agrave; việc …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 22:29:12 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/Đối-nhân-xử-thế-trong-Đắc-nhân-tâm/</guid><category>Đắc Nhân Tâm</category><category>OTHER</category></item><item><title>Summary of Object Detection Papers</title><link>/blog/tutorial/2018/summary-of-object-detection-papers/</link><description>&lt;h1 id="object-detection-papers"&gt;Object Detection Papers&lt;/h1&gt;
+&lt;p&gt;There are a list of papers in Computer Vision in general which provides some short summary of each paper. The link on github can be found &lt;a href="https://github.com/sunshineatnoon/Paper-Collection/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="deep-neural-networks-for-object-detection"&gt;Deep Neural Networks for Object Detection&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;paper: http://papers.nips.cc/paper/5207-deep-neural-networks-for-object-detection.pdf&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="overfeat-integrated-recognition-localization-and-detection-using-convolutional-networks"&gt;OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;arxiv: http://arxiv.org/abs/1312.6229&lt;/li&gt;
+&lt;li&gt;github: https://github.com/sermanet/OverFeat&lt;/li&gt;
+&lt;li&gt;code: http://cilvr.nyu.edu/doku.php?id=software:overfeat:start&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="r-cnn_1"&gt;R-CNN&lt;/h1&gt;
+&lt;h2 id="rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation"&gt;Rich feature hierarchies for accurate object detection and semantic segmentation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;intro: R-CNN&lt;/li&gt;
+&lt;li&gt;arxiv: http://arxiv.org/abs/1311.2524&lt;/li&gt;
+&lt;li&gt;supp: http://people.eecs.berkeley.edu/~rbg/papers/r-cnn-cvpr-supp.pdf&lt;/li&gt;
+&lt;li&gt;slides: http://www.image-net.org/challenges/LSVRC/2013/slides/r-cnn-ilsvrc2013-workshop.pdf&lt;/li&gt;
+&lt;li&gt;slides: http://www.cs.berkeley.edu/~rbg/slides/rcnn-cvpr14-slides.pdf&lt;/li&gt;
+&lt;li&gt;github: https://github.com/rbgirshick/rcnn&lt;/li&gt;
+&lt;li&gt;notes: http://zhangliliang.com/2014/07/23/paper-note-rcnn/&lt;/li&gt;
+&lt;li&gt;caffe-pr(&amp;ldquo;Make R-CNN the Caffe detection example&amp;rdquo;): https …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 21:13:24 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/summary-of-object-detection-papers/</guid><category>Object Detection</category><category>TUTORIAL</category></item><item><title>Some Computer Vision Challenges</title><link>/blog/tutorial/2018/some-computer-vision-challenges/</link><description>&lt;p&gt;The contest can be found at the &lt;a href="https://posetrack.net/leaderboard.php"&gt;link&lt;/a&gt; with 3 challenges.&lt;/p&gt;
+&lt;h1 id="challenge-1-single-frame-person-pose-estimation"&gt;Challenge 1: Single-frame Person Pose Estimation&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;The best baseline. https://arxiv.org/pdf/1804.06208.pdf
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="challenge-2-multi-frame-person-pose-estimation"&gt;Challenge 2: Multi-frame Person Pose Estimation&lt;/h1&gt;
+&lt;h1 id="challenge-3-multi-person-pose-tracking"&gt;Challenge 3: Multi-Person Pose Tracking&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 21:10:14 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/some-computer-vision-challenges/</guid><category>Challenge</category><category>Contest</category><category>TUTORIAL</category></item><item><title>Freeze some layers in Pytorch</title><link>/blog/tutorial/2018/freeze-some-layers-in-pytorch/</link><description>&lt;h1 id="motivation"&gt;Motivation&lt;/h1&gt;
+&lt;p&gt;I faced this just a few days ago, so I&amp;rsquo;m sure this code should be up to date. Here&amp;rsquo;s my answer for &lt;code&gt;Resnet&lt;/code&gt;, but this answer can be used for literally any model.&lt;/p&gt;
+&lt;p&gt;The basic idea is that all models have a function &lt;code&gt;model.children()&lt;/code&gt; which returns it&amp;rsquo;s layers. Within each layer, there are parameters (or weights), which can be obtained using &lt;code&gt;.parameters()&lt;/code&gt; on any child (i.e. layer). Now, every parameter has an attribute called &lt;code&gt;requires_grad&lt;/code&gt; which is by default &lt;code&gt;True&lt;/code&gt;. True means it will be backpropagrated and hence to freeze a layer you need to set &lt;code&gt;requires_grad&lt;/code&gt; to &lt;code&gt;False&lt;/code&gt; for all parameters of a layer. This can be done like this:&lt;/p&gt;
+&lt;h1 id="tldr-code"&gt;TLDR: code&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;model_ft&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resnet50&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pretrained&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ct&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;child&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;model_ft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;children&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;span class="n"&gt;ct&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;ct&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;child&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+        &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;requires_grad&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This freezes layers 1-6 in the …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 20:53:37 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/freeze-some-layers-in-pytorch/</guid><category>Pytorch</category><category>TUTORIAL</category></item><item><title>Infer in_features for the linear layer in Pytorch</title><link>/blog/tutorial/2018/infer-in-features-for-the-linear-layer-in-pytorch/</link><description>&lt;h1 id="motivation"&gt;Motivation&lt;/h1&gt;
+&lt;p&gt;We may wonder how it is possible to infer the &lt;code&gt;in_features&lt;/code&gt; for &lt;code&gt;self.fc1&lt;/code&gt; when there is a transition from a &lt;code&gt;conv&lt;/code&gt; layer to &lt;code&gt;linear&lt;/code&gt; layer. How to obtain the value of &lt;code&gt;320&lt;/code&gt; as the code of the network definition below?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;torch&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;torch.nn&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;nn&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;torch.nn.functional&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;F&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;torch.autograd&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Variable&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Net&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Module&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;super&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Net&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Conv2d&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kernel_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Conv2d&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kernel_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv2_drop&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dropout2d&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fc1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Linear&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;320&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 320&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fc2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Linear&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;relu&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max_pool2d&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;relu&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max_pool2d&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv2_drop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conv2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;relu&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fc1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dropout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;F …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 20:32:34 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/infer-in-features-for-the-linear-layer-in-pytorch/</guid><category>Pytorch</category><category>TUTORIAL</category></item><item><title>Add Parameters in Pytorch</title><link>/blog/tutorial/2018/add-parameters-in-pytorch/</link><description>&lt;p&gt;In this post, we will discuss about add &lt;code&gt;Paramter&lt;/code&gt; to &lt;code&gt;Module&lt;/code&gt; as the attributes which are listed in &lt;code&gt;Module.parameters&lt;/code&gt; for further optimization steps.&lt;/p&gt;
+&lt;h1 id="some-important-notes-about-pytorch-04"&gt;Some important notes about PyTorch 0.4&lt;/h1&gt;
+&lt;h2 id="variable-and-tensor-class-are-merged-in-pytorch-04"&gt;Variable and Tensor class are merged in PyTorch 0.4&lt;/h2&gt;
+&lt;p&gt;In previous version of PyTorch, Module&amp;rsquo;s inputs and outputs must be &lt;code&gt;Variables&lt;/code&gt;. Data &lt;code&gt;Tensor&lt;/code&gt;s should be wrapped before forwarding them into a &lt;code&gt;Module&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;But now, &lt;code&gt;Variable&lt;/code&gt; class and &lt;code&gt;Tensor&lt;/code&gt; class are merge into one. Therefore, we don&amp;rsquo;t need to wrap Tensor anymore in PyTorch version 0.4.&lt;/p&gt;
+&lt;h2 id="inputs-to-functions-and-modules-from-torchnn"&gt;Inputs to functions and modules from torch.nn&lt;/h2&gt;
+&lt;p&gt;Functions and modules from &lt;code&gt;torch.nn&lt;/code&gt; process only batches of inputs stored in a tensor with an additional first dimension to index them, and produce a corresponding tensor with an additional dimension.&lt;/p&gt;
+&lt;p&gt;E.g. a fully connected layer &lt;span class="math"&gt;\(R^C -&amp;gt; R^D\)&lt;/span&gt; expects as input a tensor of size N &amp;times; C …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 20:10:40 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/add-parameters-in-pytorch/</guid><category>Pytorch</category><category>TUTORIAL</category></item><item><title>Some notes on Object Detection</title><link>/blog/tutorial/2018/some-notes-on-object-detection/</link><description>&lt;p&gt;In this post, I&amp;rsquo;m going to note what I have learnt about Object Detection. I hope that it will be useful for my later reference as well as to some people who have the same interest.&lt;/p&gt;
+&lt;h1 id="object-detection-utils"&gt;Object Detection Utils&lt;/h1&gt;
+&lt;h2 id="drawing-the-bounding-boxes"&gt;Drawing the bounding boxes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Using PIL package:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;PIL&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ImageDraw&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw_bboxes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bboxes&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;'''&lt;/span&gt;
+&lt;span class="sd"&gt;    img - shape [h, w, channels] with values of `0-255` range.&lt;/span&gt;
+&lt;span class="sd"&gt;    bboxes - shape [N, 4] with the order of [N, [xmin, ymin, xmax, ymax]]&lt;/span&gt;
+&lt;span class="sd"&gt;    '''&lt;/span&gt;
+    &lt;span class="c1"&gt;# convert `numpy array` format `img` into `PIL` format `img`&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fromarray&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# draw the image with its bounding boxes&lt;/span&gt;
+    &lt;span class="n"&gt;draw&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ImageDraw&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;bboxes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rectangle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;outline&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'red'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Using matplotlib package:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw_bboxes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bboxes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;labels&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;scores&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;'''&lt;/span&gt;
+&lt;span class="sd"&gt;    img - shape [h, w, channels] with values of `0-255` range.&lt;/span&gt;
+&lt;span class="sd"&gt;    bboxes - shape [N, 4] with the order of [N …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 17:17:38 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/some-notes-on-object-detection/</guid><category>Object Detection</category><category>Pytorch</category><category>TUTORIAL</category></item><item><title>Convolution visualization</title><link>/blog/tutorial/2018/convolution-visualization/</link><description>&lt;div class="article-style" itemprop="articleBody"&gt;
+&lt;p&gt;This post attributes to Vincent Dumoulin, Francesco Visin - A guide to convolution arithmetic for deep learning(&lt;a href="https://gist.github.com/fvisin/165ca9935392fa9600a6c94664a01214" target="_blank"&gt;BibTeX&lt;/a&gt;) for the nice visualization.
+  &lt;/p&gt;
+&lt;h2 id="convolution-animations"&gt;Convolution animations&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;N.B.: Blue maps are inputs, and cyan maps are outputs.&lt;/em&gt;&lt;/p&gt;
+&lt;table style="width:100%; table-layout:fixed;"&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/no_padding_no_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/arbitrary_padding_no_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/same_padding_no_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/full_padding_no_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;No padding, no strides&lt;/td&gt;
+&lt;td&gt;Arbitrary padding, no strides&lt;/td&gt;
+&lt;td&gt;Half padding, no strides&lt;/td&gt;
+&lt;td&gt;Full padding, no strides&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/no_padding_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/padding_strides.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/padding_strides_odd.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;No padding, strides&lt;/td&gt;
+&lt;td&gt;Padding, strides&lt;/td&gt;
+&lt;td&gt;Padding, strides (odd)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;h2 id="transposed-convolution-animations"&gt;Transposed convolution animations&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;N.B.: Blue maps are inputs, and cyan maps are outputs.&lt;/em&gt;&lt;/p&gt;
+&lt;table style="width:100%; table-layout:fixed;"&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/no_padding_no_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/arbitrary_padding_no_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/same_padding_no_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/full_padding_no_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;No padding, no strides, transposed&lt;/td&gt;
+&lt;td&gt;Arbitrary padding, no strides, transposed&lt;/td&gt;
+&lt;td&gt;Half padding, no strides, transposed&lt;/td&gt;
+&lt;td&gt;Full padding, no strides, transposed&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/no_padding_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/padding_strides_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/padding_strides_odd_transposed.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;No padding, strides, transposed&lt;/td&gt;
+&lt;td&gt;Padding, strides, transposed&lt;/td&gt;
+&lt;td&gt;Padding, strides, transposed (odd)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;h2 id="dilated-convolution-animations"&gt;Dilated convolution animations&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;N.B.: Blue maps are inputs, and cyan maps are outputs.&lt;/em&gt;&lt;/p&gt;
+&lt;table ;="" style="width:25%" table-layout:fixed;=""&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="https://raw.githubusercontent.com/vdumoulin/conv_arithmetic/master/gif/dilation.gif" width="150px"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;No padding, no stride, dilation&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 16:53:40 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/convolution-visualization/</guid><category>CNN</category><category>TUTORIAL</category></item><item><title>Working with Git</title><link>/blog/tutorial/2018/working-with-git/</link><description>&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
+&lt;h2 id="whats-a-version-control-system"&gt;What's a version control system?&lt;/h2&gt;
+&lt;p&gt;A version control system, or VCS, tracks the history of changes as people and teams collaborate on projects together. As the project evolves, teams can run tests, fix bugs, and contribute new code with the confidence that any version can be recovered at any time. Developers can review project history to find out:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Which changes were made?
+Who made the changes?
+When were the changes made?
+Why were changes needed?
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="whats-a-distributed-version-control-system"&gt;What&amp;rsquo;s a distributed version control system?&lt;/h2&gt;
+&lt;p&gt;Git is an example of a distributed version control system (DVCS) commonly used for open source and commercial software development. DVCSs allow full access to every file, branch, and iteration of a project, and allows every user access to a full and self-contained history of all changes. Unlike once popular centralized version control systems, DVCSs like Git don&amp;rsquo;t need a constant connection to a central repository …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 16:31:44 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/tutorial/2018/working-with-git/</guid><category>GIT</category><category>TUTORIAL</category></item><item><title>Những điểm nhấn và nuối tiếc của cố Tổng Thư ký LHQ Kofi Annan</title><link>/blog/other/2018/kofi-annan/</link><description>&lt;blockquote&gt;
+&lt;p&gt;Một trong những nh&amp;agrave; ngoại giao lừng danh v&amp;agrave; l&amp;agrave; biểu tượng của Li&amp;ecirc;n hợp quốc (LHQ) &amp;ndash; cựu Tổng Thư k&amp;yacute; Kofi Annan đ&amp;atilde; ra đi m&amp;atilde;i m&amp;atilde;i. Cống hiện tận tụy của Tổng Thư k&amp;yacute; LHQ người da m&amp;agrave;u đầu ti&amp;ecirc;n v&amp;igrave; h&amp;ograve;a b&amp;igrave;nh thế giới l&amp;agrave; kh&amp;ocirc;ng thể đong đếm.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Ng&amp;agrave;y 18/8, truyền th&amp;ocirc;ng quốc tế đồng loạt đưa tin về sự ra đi của cựu Tổng thư k&amp;yacute; LHQ Kofi Annan. &amp;Ocirc;ng Kofi Annan giữ vai tr&amp;ograve; Tổng Thư k&amp;yacute; LHQ từ năm 1997-2006. Năm 2001, c&amp;ocirc;ng d&amp;acirc;n Ghana Kofi Annan c&amp;ugrave;ng LHQ đ&amp;atilde; được vinh danh nhận Giải Nobel H&amp;ograve;a B&amp;igrave;nh.&lt;/p&gt;
+&lt;h1 id="7-dieu-ve-nha-ngoai-giao-kofi-annan"&gt;7 Điều về nh&amp;agrave; ngoại giao Kofi Annan&lt;/h1&gt;
+&lt;p&gt;Dưới đ&amp;acirc;y l&amp;agrave; 7 điểm thực tế về huyền thoại ngoại giao Kofi Annan c&amp;ocirc;ng ch&amp;uacute;ng c&amp;oacute; thể chưa biết đến, được tạp ch&amp;iacute; Newsweek (Mỹ) đăng tải.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Cố Tổng Thư k&amp;yacute; LHQ Kofi Annan. Ảnh: CNN" src="https://media.baotintuc.vn/Upload/yTwlGtgJTRZkeJAfcpWR4g/files/2018/08/8A/kofi.jpg"/&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;Ocirc;ng Annan sinh ng&amp;agrave;y 8/4/1938 tại …&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 16:05:42 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/kofi-annan/</guid><category>Inspiration</category><category>OTHER</category></item><item><title>Giáo sư Nguyễn Xiển - nhà khoa học khí tượng hàng đầu</title><link>/blog/other/2018/giao-su-nguyen-xien/</link><description>&lt;p&gt;&lt;strong&gt;Gi&amp;aacute;o sư Nguyễn Xiển, nh&amp;agrave; khoa học kh&amp;iacute; tượng h&amp;agrave;ng đầu ở Việt Nam, kiến tr&amp;uacute;c sư của ng&amp;agrave;nh kh&amp;iacute; tượng c&amp;aacute;ch mạng Việt Nam, đ&amp;atilde; để lại cho ng&amp;agrave;nh kh&amp;iacute; tượng thủy văn nhiều c&amp;ocirc;ng tr&amp;igrave;nh khoa học gi&amp;aacute; trị. &amp;Ocirc;ng l&amp;agrave; gương s&amp;aacute;ng của một người l&amp;atilde;nh đạo s&amp;acirc;u s&amp;aacute;t, gương mẫu, một nh&amp;agrave; khoa học nghi&amp;ecirc;m t&amp;uacute;c, s&amp;aacute;ng tạo lu&amp;ocirc;n hướng khoa học phục vụ sản xuất v&amp;agrave; đời sống.&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id="tri-thuc-yeu-nuoc"&gt;Tr&amp;iacute; thức y&amp;ecirc;u nước&lt;/h1&gt;
+&lt;p&gt;Gi&amp;aacute;o sư Nguyễn Xiển sinh ng&amp;agrave;y 27/7/1907, tại th&amp;agrave;nh phố Vinh, Nghệ An trong một gia đ&amp;igrave;nh Nho học l&amp;acirc;u đời, c&amp;oacute; tiếng của xứ Nghệ.&lt;/p&gt;
+&lt;p&gt;Cuộc đời v&amp;agrave; sự nghiệp của Gi&amp;aacute;o sư Nguyễn Xiển l&amp;agrave; sự kết tinh từ hai nền văn h&amp;oacute;a Đ&amp;ocirc;ng-T&amp;acirc;y, l&amp;agrave; h&amp;igrave;nh ảnh ti&amp;ecirc;u biểu của một bậc sĩ phu Bắc H&amp;agrave; thời hiện đại ở thế kỷ XX. Từ một tr&amp;iacute; thức T&amp;acirc;y học …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 13:18:30 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/giao-su-nguyen-xien/</guid><category>OTHER</category></item><item><title>Thiên tài không bằng cấp Michael Faraday</title><link>/blog/other/2018/thien-tai-faraday/</link><description>&lt;blockquote&gt;
+&lt;p&gt;Michael Faraday l&amp;agrave; nh&amp;agrave; b&amp;aacute;c học được cả thế giới biết đến bởi &amp;ocirc;ng ch&amp;iacute;nh l&amp;agrave; người c&amp;oacute; c&amp;ocirc;ng lớn nhất trong việc biến từ th&amp;agrave;nh điện - nguồn năng lượng sạch v&amp;agrave; phổ biến nhất ng&amp;agrave;y nay.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id="tu-cau-be-dong-sach-ngheo-ham-hoc"&gt;Từ cậu b&amp;eacute; đ&amp;oacute;ng s&amp;aacute;ch ngh&amp;egrave;o ham học&lt;/h1&gt;
+&lt;p&gt;Michael Faraday sinh ng&amp;agrave;y 22/9/1791 ở Newington Butts, ngoại &amp;ocirc; Lu&amp;acirc;n Đ&amp;ocirc;n, trong một gia đ&amp;igrave;nh ngh&amp;egrave;o c&amp;oacute; bố l&amp;agrave;m nghề thợ r&amp;egrave;n. Từ nhỏ, Faraday đ&amp;atilde; tỏ ra th&amp;ocirc;ng minh v&amp;agrave; hiếu học, nhưng phải sớm nghỉ học để phụ gi&amp;uacute;p gia đ&amp;igrave;nh.&lt;/p&gt;
+&lt;p&gt;Khi đời sống của gia đ&amp;igrave;nh c&amp;agrave;ng kh&amp;oacute; khăn, năm 1804, khi mới 13 tuổi, Faraday đến xin việc tại &amp;ldquo;Hiệu b&amp;aacute;n s&amp;aacute;ch v&amp;agrave; đ&amp;oacute;ng s&amp;aacute;ch Rit&amp;ocirc;&amp;rdquo; ở Lu&amp;acirc;n Đ&amp;ocirc;n. Faraday vừa học nghề đ&amp;oacute;ng s&amp;aacute;ch, vừa tự học qua việc đọc s&amp;aacute;ch. &amp;Ocirc;ng đặc biệt ch&amp;uacute; &amp;yacute; đến c&amp;aacute;c quyển s&amp;aacute;ch về khoa học v&amp;agrave; c&amp;ograve;n tự l&amp;agrave;m …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 13:09:50 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/thien-tai-faraday/</guid><category>Inspiration</category><category>OTHER</category></item><item><title>Nhà khoa học nữ gốc Việt trong top ảnh hưởng nhất thế giới</title><link>/blog/other/2018/nha-nu-khoa-hoc-goc-viet/</link><description>&lt;p&gt;Tuổi thơ theo mẹ đi khắp nơi để kiếm sống, sang Mỹ th&amp;igrave; bị bạn b&amp;egrave; ch&amp;ecirc; cười v&amp;igrave; kh&amp;ocirc;ng biết tiếng Anh, nhưng Nguyễn Thục Quy&amp;ecirc;n đ&amp;atilde; vượt qua tất cả v&amp;agrave; trở th&amp;agrave;nh một trong những nh&amp;agrave; khoa học ảnh hưởng nhất thế giới. 
+Nh&amp;agrave; khoa học trong tốp 'ảnh hưởng nhất thế giới' kh&amp;ocirc;ng đủ can đảm cưới vợ&lt;/p&gt;
+&lt;p&gt;Gi&amp;aacute;o sư Nguyễn Thục Quy&amp;ecirc;n sinh ra ở Bu&amp;ocirc;n Ma Thuật (Đắk Lắk) trong một gia đ&amp;igrave;nh thượng lưu gồm 5 anh chị em. Sau năm 1975, cha đi cải tạo, mẹ chị - một c&amp;ocirc; gi&amp;aacute;o dạy to&amp;aacute;n cấp 2, dẫn dắt đ&amp;agrave;n con đến c&amp;aacute;c v&amp;ugrave;ng kinh tế mới như Phước L&amp;acirc;m, Long Điền, Đất Đỏ, Phước Tỉnh v&amp;agrave; Vũng T&amp;agrave;u để sinh nhai. &lt;/p&gt;
+&lt;p&gt;L&amp;uacute;c 5-6 tuổi, c&amp;ocirc; b&amp;eacute; Quy&amp;ecirc;n phải phụ gi&amp;uacute;p mẹ dọn dẹp nh&amp;agrave; cửa, kiếm củi nấu cơm, đ&amp;agrave;o khoai, c&amp;acirc;u c&amp;aacute;, g&amp;aacute;nh …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 12:33:54 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/nha-nu-khoa-hoc-goc-viet/</guid><category>OTHER</category></item><item><title>Nigerian immigrant dreams of finding cures for infectious diseases</title><link>/blog/other/2018/infectious-disease-american-dream/</link><description>&lt;h1 id="nigerian-born-chidiebere-akusobi-has-notched-many-impressive-academic-achievements-in-his-short-life"&gt;Nigerian-born Chidiebere Akusobi has notched many impressive academic achievements in his short life.&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;The 25-year old studied ecology and evolutionary biology as an undergraduate at Yale, then earned his master's in biochemistry from the University of Cambridge. Now he's three years into a joint PhD/MD program researching cures for infectious diseases at Harvard and MIT.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;But if you ask him, he'll tell you that the biggest academic hurdle he ever had to overcome was in the fifth grade.&lt;/p&gt;
+&lt;p&gt;That's when Akusobi, who had moved from Nigeria to the impoverished New York City neighborhood of the South Bronx when he was two years old, was accepted into the rigorous New York City Prep for Prep program.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Chidi his mother, father and sister Ijeoma outside their South Bronx apartment building in 1994" src="https://i2.cdn.turner.com/money/dam/assets/160524133705-chidiebere-akusobi-1-780x439.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;The program is an educational boot camp that selects roughly 225 promising students a year from the poorest New York City neighborhoods and grooms them for scholarships to attend the city's top private schools …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 12:10:13 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/infectious-disease-american-dream/</guid><category>Inspiration</category><category>OTHER</category></item><item><title>One immigrant's path from cleaning houses to Stanford professor</title><link>/blog/other/2018/chinese-immigrant-professor/</link><description>&lt;p&gt;&lt;strong&gt; House cleaning. Working the cash register at a Chinese restaurant. Walking dogs. Running a dry cleaner.
+Fei-Fei Li arrived in the U.S. from China at age 16 with many big dreams. And it took many odd jobs to help her achieve them. &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Luckily, she was smart -- and extremely driven. And today, she's the director of Stanford University's artificial intelligence lab.&lt;/p&gt;
+&lt;p&gt;"As one of the leaders in the world for A.I., I feel tremendous excitement and responsibility to create the most awesome and benevolent technology for society and to educate the most awesome and benevolent technologists -- that's my calling," Li said.&lt;/p&gt;
+&lt;p&gt;She is also a staunch advocate for diversity in the tech industry.&lt;/p&gt;
+&lt;p&gt;"I see extremely talented Stanford PhD students struggling with their visas and I find it unthinkable that we create so many hurdles for the talents of the world," Li said.&lt;/p&gt;
+&lt;p&gt;fei fei li american success
+Fei …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 11:53:45 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/chinese-immigrant-professor/</guid><category>OTHER</category></item><item><title>Bí quyết thành công của Michael Phelps</title><link>/blog/other/2018/bi-quyet-thanh-cong-cua-michael-phelps/</link><description>&lt;p&gt;&lt;strong&gt;Vận động vi&amp;ecirc;n nhiều huy chương nhất mọi thời đại vừa th&amp;ecirc;m v&amp;agrave;o bộ sưu tập khổng lồ của m&amp;igrave;nh chiếc huy chương v&amp;agrave;ng thứ 21 tại nội dung 4x200m tự do tiếp sức ( 3 chiếc trong 3 ng&amp;agrave;y tại Rio). Một kỉ lục c&amp;oacute; lẽ sẽ đứng vững trong bảng th&amp;agrave;nh t&amp;iacute;ch lịch sử.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Sinh ra với nền tảng thể chất ho&amp;agrave;n hảo nhất cho bơi lội, nhưng những th&amp;agrave;nh c&amp;ocirc;ng của anh c&amp;oacute; được lại nhờ phần lớn v&amp;agrave;o c&amp;aacute;c yếu tố kh&amp;aacute;c, c&amp;aacute;ch anh đặt ra những mục ti&amp;ecirc;u ngắn hạn d&amp;agrave;i hạn cũng như chuẩn bị cho mọi ho&amp;agrave;n cảnh c&amp;oacute; thể xảy ra...&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="https://cafebiz.cafebizcdn.vn/thumb_w/600/2016/photo-4-1470820025283-crop-1470820394575.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;Dưới đ&amp;acirc;y l&amp;agrave; 6 th&amp;oacute;i quen đ&amp;atilde; gi&amp;uacute;p Phelps trở th&amp;agrave;nh vận động vi&amp;ecirc;n vĩ đại nhất, m&amp;agrave; bạn ho&amp;agrave;n to&amp;agrave;n c&amp;oacute; thể học hỏi v&amp;agrave; &amp;aacute;p dụng ch&amp;uacute;ng trong cuộc sống v&amp;agrave; c&amp;ocirc;ng việc của m&amp;igrave;nh.&lt;/p&gt;
+&lt;h1 id="dat-ra-muc-tieu-ro-rang"&gt;Đặt ra mục ti&amp;ecirc;u r&amp;otilde; …&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 11:34:51 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/other/2018/bi-quyet-thanh-cong-cua-michael-phelps/</guid><category>Inspiration</category><category>OTHER</category></item><item><title>The evolution of image classification</title><link>/blog/paper/2018/the-evolution-of-image-classification/</link><description>&lt;p&gt;In this blog post, we will talk about the evolution of image classification from a high-level perspective. The goal here is to try to understand the key changes that were brought along the years, and why they succeeded in solving our problems.&lt;/p&gt;
+&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
+&lt;h2 id="why-it-matters"&gt;Why it matters&lt;/h2&gt;
+&lt;p&gt;Recent research in deep learning has been largely inspired by the way our brain works. When you think of it, it is fascinating to know that with a given input, our brain processes features that say let us know of the world that surrounds us.&lt;/p&gt;
+&lt;p&gt;As a result, architectures are crucial for us, not only because many challenges rely on the tasks we can perform with them. In fact, the design of the networks themselves points us out to the representation that researchers were looking for, in order to better learn from the data.&lt;/p&gt;
+&lt;h1 id="lenet_1"&gt;LeNet&lt;/h1&gt;
+&lt;h2 id="pioneering-work"&gt;Pioneering work&lt;/h2&gt;
+&lt;p&gt;Before starting, let's note that we would …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Tue, 21 Aug 2018 11:14:24 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-21:/blog/paper/2018/the-evolution-of-image-classification/</guid><category>Image Classification</category><category>CNN</category><category>2015</category><category>PAPER</category></item><item><title>Cheatsheet in ML and DL</title><link>/blog/tutorial/2018/cheatsheet-in-ml-and-dl/</link><description>&lt;h2 id="machine-learning-cheatsheet"&gt;Machine Learning Cheatsheet&lt;/h2&gt;
+&lt;p&gt;https://ml-cheatsheet.readthedocs.io/&lt;/p&gt;
+&lt;h2 id="deep-learning-cheatsheet"&gt;Deep Learning Cheatsheet&lt;/h2&gt;
+&lt;h2 id="probability-cheatsheet"&gt;Probability Cheatsheet&lt;/h2&gt;
+&lt;p&gt;https://stanford.edu/~shervine/teaching/cme-106/cheatsheet-probability.html&lt;/p&gt;
+&lt;h2 id="statistics-cheeatsheet"&gt;Statistics Cheeatsheet&lt;/h2&gt;
+&lt;p&gt;https://stanford.edu/~shervine/teaching/cme-106/cheatsheet-statistics.html&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Mon, 20 Aug 2018 23:31:44 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-20:/blog/tutorial/2018/cheatsheet-in-ml-and-dl/</guid><category>Cheatsheet</category><category>TUTORIAL</category></item><item><title>Bash Commands</title><link>/blog/tutorial/2018/bash-commands/</link><description>&lt;h1 id="the-most-common-commands"&gt;The most common commands&lt;/h1&gt;
+&lt;p&gt;Below are some most popular commands in Linux Command Line (CLI).&lt;/p&gt;
+&lt;h1 id="terminal-navigation-commands"&gt;Terminal Navigation Commands&lt;/h1&gt;
+&lt;h2 id="cd-change-the-directory"&gt;cd: Change the directory&lt;/h2&gt;
+&lt;p&gt;Change/move the directory to current path:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; path/to/directory
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="ls-list-all-the-files-and-folders-in-the-current-directory"&gt;ls: List all the files and folders in the current directory&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ls
+
+&lt;span class="c1"&gt;# list all in long description&lt;/span&gt;
+ls -l
+
+&lt;span class="c1"&gt;# list all including the hidden files&lt;/span&gt;
+ls -h
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="pwd-print-the-path-of-directories"&gt;pwd: Print the path of directories&lt;/h2&gt;
+&lt;p&gt;Print the path to current directory&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="_1"&gt;&amp;amp;&amp;amp;&lt;/h2&gt;
+&lt;p&gt;This one is so basic that it&amp;rsquo;s not even technically a command. If you ever want to run multiple commands in sequential order, just stick this in between each one. For example, [command1] &amp;amp;&amp;amp; [command2] will first run [command1] then immediately follow it with [command2]. You can chain as many commands as you want.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;comand1&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;command2&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="clear-clear-the-screen"&gt;clear: Clear the screen&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;clear
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="man-the-manual-command"&gt;man: The manual command&lt;/h2&gt;
+&lt;p&gt;The man command is used to show the manual of the inputted …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Fri, 17 Aug 2018 12:22:35 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-17:/blog/tutorial/2018/bash-commands/</guid><category>Bash</category><category>TUTORIAL</category></item><item><title>Check Result of Face Detection</title><link>/blog/tutorial/2018/check-result-of-face-detection/</link><description>&lt;style type="text/css"&gt;/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future …&lt;/style&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Fri, 17 Aug 2018 11:54:56 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-17:/blog/tutorial/2018/check-result-of-face-detection/</guid><category>TUTORIAL</category></item><item><title>Maxout ICML 2013</title><link>/blog/paper/2018/maxout-icml-2013/</link><description>&lt;h2 id="abstract"&gt;Abstract&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Link to paper, which appears on ICML 2013.&lt;/li&gt;
+&lt;li&gt;Maxout network (maxout - its output is the max of a set of inputs)&lt;/li&gt;
+&lt;li&gt;Design to both facilitate optimization by dropout and improve the accuracy.&lt;/li&gt;
+&lt;li&gt;The SOTA results on MNIST, CIFAR-10, CIFAR-100, SVHN.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Dropout - an inexpensive and simple means for:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;training a large ensemble of models that share params.&lt;/li&gt;
+&lt;li&gt;approximately averaging together these models&amp;rsquo; predictions.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Dropout is applied in MLP, CNN and get the SOTA.&lt;/p&gt;
+&lt;p&gt;This paper argues that: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The best  performance may be obtained by directly designing a model that enhances dropout&amp;rsquo;s abilities as a model averaging technique.&lt;/li&gt;
+&lt;li&gt;They introduce &lt;code&gt;maxout&lt;/code&gt; layer with that purpose.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="review-of-dropout"&gt;Review of dropout&lt;/h2&gt;
+&lt;p&gt;Dropout is a technique applied in deterministic feedforward networks: predict output &lt;code&gt;y&lt;/code&gt; given vector &lt;code&gt;x&lt;/code&gt; with a series of hidden layers &lt;span class="math"&gt;\(\textbf{h} = \{h^{(1)},...,h^{(L)}\}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Dropout trains an ensemble of models consisting of the set of all models that …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 15 Aug 2018 22:48:34 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-15:/blog/paper/2018/maxout-icml-2013/</guid><category>Maxout</category><category>ICML</category><category>Dropout</category><category>2013</category><category>PAPER</category></item><item><title>How to use models in slim</title><link>/blog/tutorial/2018/how-to-use-models-in-slim/</link><description>&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This guide to use &lt;code&gt;slim&lt;/code&gt; for Image Classification and Image Annotation and Segmentation. Find this tutorial here.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;slim&lt;/code&gt; library was released with a set of standard models like ResNet-v1, VGG, Inception-Resnet-v2, Resnet-v2, Inception and so on.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The pretrained models are supported by Google &amp;rarr; much better. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;slim&lt;/code&gt; is very clean and lightweight wrapper around Tensorflow. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="setup"&gt;Setup&lt;/h1&gt;
+&lt;h2 id="clone-the-slim"&gt;Clone the slim&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/tensorflow/models
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="add-the-path-to-the-slim-library-in-order-to-use-datasets-or-some-modules"&gt;Add the path to the slim library in order to use &lt;code&gt;datasets&lt;/code&gt; or some modules.&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os.path&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;osp&lt;/span&gt;
+&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'path/to/models/research/slim/'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="download-the-models_1"&gt;Download the models&lt;/h1&gt;
+&lt;p&gt;Download the pretrained models from here. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;tensorflow&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;tf&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datasets&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;dataset_utils&lt;/span&gt;
+&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz"&lt;/span&gt;
+
+&lt;span class="n"&gt;checkpoints_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'/content/pretrained_models/'&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;osp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;checkpoints_dir&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;makedirs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;checkpoint_dir&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;dataset_utils&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;download_and_uncompress_tarball&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;checkpoints_dir&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;h1 id="preprocess-the-image"&gt;Preprocess the image&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Subtract image by mean&lt;/li&gt;
+&lt;li&gt;expand 1 image into a batch …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 15 Aug 2018 22:13:53 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-15:/blog/tutorial/2018/how-to-use-models-in-slim/</guid><category>Tensorflow</category><category>Slim</category><category>Fine-tuning</category><category>TUTORIAL</category></item><item><title>Alexnet NIPS 2012</title><link>/blog/paper/2018/alexnet-nips-2012/</link><description>&lt;h1 id="abstract"&gt;Abstract&lt;/h1&gt;
+&lt;hr/&gt;
+&lt;ul&gt;
+&lt;li&gt;Published on NIPS 2012. &lt;/li&gt;
+&lt;li&gt;Pdf version can be found in dropbox here. &lt;/li&gt;
+&lt;li&gt;SOTA in ImageNet 2012 with top-5 error rate 15.3%.&lt;/li&gt;
+&lt;li&gt;Use &lt;code&gt;dropout&lt;/code&gt;, &lt;code&gt;relu&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
+&lt;hr/&gt;
+&lt;ol&gt;
+&lt;li&gt;CNN: &lt;code&gt;conv&lt;/code&gt; layers have much fewer connections &amp;amp; params, and so easier to train.&lt;/li&gt;
+&lt;li&gt;Dataset: Imagenet contains enough labeled examples &amp;rarr; can train without severe overfitting.&lt;/li&gt;
+&lt;li&gt;Train Alexnet takes 5-6 days with 2 GPUs 3GB. 
+Dataset&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr/&gt;
+&lt;ul&gt;
+&lt;li&gt;ImageNet 1.2 million high-resolution images with 1000 classes.&lt;/li&gt;
+&lt;li&gt;Two error rates:&lt;/li&gt;
+&lt;li&gt;Top-5 error rate&lt;/li&gt;
+&lt;li&gt;Top-1 error rate&lt;/li&gt;
+&lt;li&gt;The size of the images to be trained: smaller size &amp;rarr; 256, then crop the center patch: 256x256.
+Architecture&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr/&gt;
+&lt;ul&gt;
+&lt;li&gt;60 million params with 650,000 neurons.&lt;/li&gt;
+&lt;li&gt;5 &lt;code&gt;conv&lt;/code&gt; layers, 3 &lt;code&gt;fc&lt;/code&gt; layers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="Error rate w.r.t epochs on CIFAR10. The dash line is of tanh while the solid line is of relu." src="https://d2mxuefqeaa7sj.cloudfront.net/s_6EF601BE07E17A98BF97AB239E543B35D29C3B4B9D1871E11707DB6D0C2C3533_1533070511862_image.png"/&gt;&lt;/p&gt;
+&lt;p&gt;Relu&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;non-saturating nonlinearity &amp;rarr; converge faster&lt;/li&gt;
+&lt;li&gt;easy to train - no exponential computations.&lt;/li&gt;
+&lt;li&gt;one of the best choice of activation function.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Local Reponse Normalization&lt;/p&gt;
+&lt;h1 id="specific-notes"&gt;Specific notes&lt;/h1&gt;
+&lt;hr/&gt;
+&lt;h1 id="tldr-code"&gt;TLDR: Code&lt;/h1&gt;
+&lt;p&gt;Below are two version implemented in Pytorch and Tensorflow.&lt;/p&gt;
+&lt;h2 id="the-pytorch-code-of-alexnet"&gt;The Pytorch code of AlexNet …&lt;/h2&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Quang Nguyen</dc:creator><pubDate>Wed, 15 Aug 2018 18:06:40 +0000</pubDate><guid isPermaLink="false">tag:None,2018-08-15:/blog/paper/2018/alexnet-nips-2012/</guid><category>Image Recognition</category><category>Alexnet</category><category>CNN</category><category>ImageNet</category><category>2012</category><category>PAPER</category></item></channel></rss>

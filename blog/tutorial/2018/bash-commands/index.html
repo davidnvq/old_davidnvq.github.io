@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Bash Commands | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Bash Commands</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#the-most-common-commands" style="border-bottom: 0px" title="The most common commands">The most common commands</a></li><li><a class="toc-href" href="#terminal-navigation-commands" style="border-bottom: 0px" title="Terminal Navigation Commands">Terminal Navigation Commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#cd-change-the-directory" style="border-bottom: 0px" title="cd: Change the directory">cd: Change the directory</a></li><li><a class="toc-href" href="#ls-list-all-the-files-and-folders-in-the-current-directory" style="border-bottom: 0px" title="ls: List all the files and folders in the current directory">ls: List all the files and folders in the current directory</a></li><li><a class="toc-href" href="#pwd-print-the-path-of-directories" style="border-bottom: 0px" title="pwd: Print the path of directories">pwd: Print the path of directories</a></li><li><a class="toc-href" href="#_1" style="border-bottom: 0px" title="&amp;&amp;">&amp;&amp;</a></li><li><a class="toc-href" href="#clear-clear-the-screen" style="border-bottom: 0px" title="clear: Clear the screen">clear: Clear the screen</a></li><li><a class="toc-href" href="#man-the-manual-command" style="border-bottom: 0px" title="man: The manual command">man: The manual command</a></li><li><a class="toc-href" href="#help-check-help-for-a-specific-command" style="border-bottom: 0px" title="help: Check help for a specific command">help: Check help for a specific command</a></li><li><a class="toc-href" href="#history-view-the-command-history-in-terminal" style="border-bottom: 0px" title="history: View the command history in terminal">history: View the command history in terminal</a></li></ol></li><li><a class="toc-href" href="#file-management-commands_1" style="border-bottom: 0px" title="File Management Commands">File Management Commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#find-search-files" style="border-bottom: 0px" title="find: Search files">find: Search files</a></li><li><a class="toc-href" href="#grep-search-where-is-the-text-in-files" style="border-bottom: 0px" title="grep: Search where is the text in files">grep: Search where is the text in files</a></li><li><a class="toc-href" href="#rename" style="border-bottom: 0px" title="rename">rename</a></li><li><a class="toc-href" href="#mkdir-create-a-directory" style="border-bottom: 0px" title="mkdir: Create a directory">mkdir: Create a directory</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#mkdir-p-create-a-directory-tree" style="border-bottom: 0px" title="mkdir -p: Create a directory tree">mkdir -p: Create a directory tree</a></li></ol></li><li><a class="toc-href" href="#mv-move-files_1" style="border-bottom: 0px" title="mv: Move files">mv: Move files</a></li><li><a class="toc-href" href="#mv-change-the-files-name" name'="" s="" style="border-bottom: 0px" title="mv: Change the file">mv: Change the file's name</a></li><li><a class="toc-href" href="#cp-copy-files-and-folders" style="border-bottom: 0px" title="cp: Copy files and folders">cp: Copy files and folders</a></li><li><a class="toc-href" href="#rm-delete-files" style="border-bottom: 0px" title="rm: Delete files">rm: Delete files</a></li><li><a class="toc-href" href="#rmdir-remove-directory" style="border-bottom: 0px" title="rmdir: Remove Directory">rmdir: Remove Directory</a></li><li><a class="toc-href" href="#cat-view-a-file-in-terminal" style="border-bottom: 0px" title="cat: View a file in terminal">cat: View a file in terminal</a></li><li><a class="toc-href" href="#touch-create-a-file-in-terminal" style="border-bottom: 0px" title="touch: Create a file in terminal">touch: Create a file in terminal</a></li><li><a class="toc-href" href="#nano-create-and-open-a-file-in-terminal" style="border-bottom: 0px" title="nano: Create and open a file in terminal">nano: Create and open a file in terminal</a></li><li><a class="toc-href" href="#nvidia-smi-check-gpus-status" s="" status'="" style="border-bottom: 0px" title="nvidia-smi: Check GPU">nvidia-smi: Check GPU's status</a></li><li><a class="toc-href" href="#kill-kill-a-process" style="border-bottom: 0px" title="kill: Kill a process">kill: Kill a process</a></li><li><a class="toc-href" href="#echo-write" style="border-bottom: 0px" title="echo: Write">echo: Write</a></li></ol></li><li><a class="toc-href" href="#commands-with-git_1" style="border-bottom: 0px" title="Commands with git">Commands with git</a></li><li><a class="toc-href" href="#shortcuts" style="border-bottom: 0px" title="Shortcuts">Shortcuts</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#code" style="border-bottom: 0px" title="code">code</a></li><li><a class="toc-href" href="#chrome" style="border-bottom: 0px" title="chrome">chrome</a></li><li><a class="toc-href" href="#exit" style="border-bottom: 0px" title="Exit">Exit</a></li></ol></li><li><a class="toc-href" href="#some-useful-commands_1" style="border-bottom: 0px" title="Some useful commands">Some useful commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#ps-list-process-by-username" style="border-bottom: 0px" title="ps: List process by username">ps: List process by username</a></li><li><a class="toc-href" href="#htop-task-manager" style="border-bottom: 0px" title="htop: Task manager">htop: Task manager</a></li><li><a class="toc-href" href="#kill-a-process-on-a-specific-port" style="border-bottom: 0px" title="kill a process on a specific port">kill a process on a specific port</a></li><li><a class="toc-href" href="#list-all-the-process-running-gpus-and-kill-it" style="border-bottom: 0px" title="List all the process running GPUs and kill it.">List all the process running GPUs and kill it.</a></li><li><a class="toc-href" href="#install-pillow-simd-for-fast-augmentation" style="border-bottom: 0px" title="Install pillow-simd for fast augmentation">Install pillow-simd for fast augmentation</a></li><li><a class="toc-href" href="#warning-remote-port-forwarding-failed-for-listen-port-52698" style="border-bottom: 0px" title="Warning: remote port forwarding failed for listen port 52698">Warning: remote port forwarding failed for listen port 52698</a></li><li><a class="toc-href" href="#scp-copy-files-from-remote-server-to-local" style="border-bottom: 0px" title="scp: Copy files from remote server to local">scp: Copy files from remote server to local</a></li><li><a class="toc-href" href="#exit-the-ssh-session-in-bashshell-script" style="border-bottom: 0px" title="Exit the ssh session in bash/shell script">Exit the ssh session in bash/shell script</a></li><li><a class="toc-href" href="#fail-to-load-the-interpreter-of-python-for-virtual-environment" style="border-bottom: 0px" title="Fail to load the interpreter of Python for virtual environment">Fail to load the interpreter of Python for virtual environment</a></li><li><a class="toc-href" href="#zip-and-unzip-files-and-folders" style="border-bottom: 0px" title="zip and unzip files and folders.">zip and unzip files and folders.</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Bash Commands</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 17, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#the-most-common-commands" style="border-bottom: 0px" title="The most common commands">The most common commands</a></li><li><a class="toc-href" href="#terminal-navigation-commands" style="border-bottom: 0px" title="Terminal Navigation Commands">Terminal Navigation Commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#cd-change-the-directory" style="border-bottom: 0px" title="cd: Change the directory">cd: Change the directory</a></li><li><a class="toc-href" href="#ls-list-all-the-files-and-folders-in-the-current-directory" style="border-bottom: 0px" title="ls: List all the files and folders in the current directory">ls: List all the files and folders in the current directory</a></li><li><a class="toc-href" href="#pwd-print-the-path-of-directories" style="border-bottom: 0px" title="pwd: Print the path of directories">pwd: Print the path of directories</a></li><li><a class="toc-href" href="#_1" style="border-bottom: 0px" title="&amp;&amp;">&amp;&amp;</a></li><li><a class="toc-href" href="#clear-clear-the-screen" style="border-bottom: 0px" title="clear: Clear the screen">clear: Clear the screen</a></li><li><a class="toc-href" href="#man-the-manual-command" style="border-bottom: 0px" title="man: The manual command">man: The manual command</a></li><li><a class="toc-href" href="#help-check-help-for-a-specific-command" style="border-bottom: 0px" title="help: Check help for a specific command">help: Check help for a specific command</a></li><li><a class="toc-href" href="#history-view-the-command-history-in-terminal" style="border-bottom: 0px" title="history: View the command history in terminal">history: View the command history in terminal</a></li></ol></li><li><a class="toc-href" href="#file-management-commands_1" style="border-bottom: 0px" title="File Management Commands">File Management Commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#find-search-files" style="border-bottom: 0px" title="find: Search files">find: Search files</a></li><li><a class="toc-href" href="#grep-search-where-is-the-text-in-files" style="border-bottom: 0px" title="grep: Search where is the text in files">grep: Search where is the text in files</a></li><li><a class="toc-href" href="#rename" style="border-bottom: 0px" title="rename">rename</a></li><li><a class="toc-href" href="#mkdir-create-a-directory" style="border-bottom: 0px" title="mkdir: Create a directory">mkdir: Create a directory</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#mkdir-p-create-a-directory-tree" style="border-bottom: 0px" title="mkdir -p: Create a directory tree">mkdir -p: Create a directory tree</a></li></ol></li><li><a class="toc-href" href="#mv-move-files_1" style="border-bottom: 0px" title="mv: Move files">mv: Move files</a></li><li><a class="toc-href" href="#mv-change-the-files-name" name'="" s="" style="border-bottom: 0px" title="mv: Change the file">mv: Change the file's name</a></li><li><a class="toc-href" href="#cp-copy-files-and-folders" style="border-bottom: 0px" title="cp: Copy files and folders">cp: Copy files and folders</a></li><li><a class="toc-href" href="#rm-delete-files" style="border-bottom: 0px" title="rm: Delete files">rm: Delete files</a></li><li><a class="toc-href" href="#rmdir-remove-directory" style="border-bottom: 0px" title="rmdir: Remove Directory">rmdir: Remove Directory</a></li><li><a class="toc-href" href="#cat-view-a-file-in-terminal" style="border-bottom: 0px" title="cat: View a file in terminal">cat: View a file in terminal</a></li><li><a class="toc-href" href="#touch-create-a-file-in-terminal" style="border-bottom: 0px" title="touch: Create a file in terminal">touch: Create a file in terminal</a></li><li><a class="toc-href" href="#nano-create-and-open-a-file-in-terminal" style="border-bottom: 0px" title="nano: Create and open a file in terminal">nano: Create and open a file in terminal</a></li><li><a class="toc-href" href="#nvidia-smi-check-gpus-status" s="" status'="" style="border-bottom: 0px" title="nvidia-smi: Check GPU">nvidia-smi: Check GPU's status</a></li><li><a class="toc-href" href="#kill-kill-a-process" style="border-bottom: 0px" title="kill: Kill a process">kill: Kill a process</a></li><li><a class="toc-href" href="#echo-write" style="border-bottom: 0px" title="echo: Write">echo: Write</a></li></ol></li><li><a class="toc-href" href="#commands-with-git_1" style="border-bottom: 0px" title="Commands with git">Commands with git</a></li><li><a class="toc-href" href="#shortcuts" style="border-bottom: 0px" title="Shortcuts">Shortcuts</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#code" style="border-bottom: 0px" title="code">code</a></li><li><a class="toc-href" href="#chrome" style="border-bottom: 0px" title="chrome">chrome</a></li><li><a class="toc-href" href="#exit" style="border-bottom: 0px" title="Exit">Exit</a></li></ol></li><li><a class="toc-href" href="#some-useful-commands_1" style="border-bottom: 0px" title="Some useful commands">Some useful commands</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#ps-list-process-by-username" style="border-bottom: 0px" title="ps: List process by username">ps: List process by username</a></li><li><a class="toc-href" href="#htop-task-manager" style="border-bottom: 0px" title="htop: Task manager">htop: Task manager</a></li><li><a class="toc-href" href="#kill-a-process-on-a-specific-port" style="border-bottom: 0px" title="kill a process on a specific port">kill a process on a specific port</a></li><li><a class="toc-href" href="#list-all-the-process-running-gpus-and-kill-it" style="border-bottom: 0px" title="List all the process running GPUs and kill it.">List all the process running GPUs and kill it.</a></li><li><a class="toc-href" href="#install-pillow-simd-for-fast-augmentation" style="border-bottom: 0px" title="Install pillow-simd for fast augmentation">Install pillow-simd for fast augmentation</a></li><li><a class="toc-href" href="#warning-remote-port-forwarding-failed-for-listen-port-52698" style="border-bottom: 0px" title="Warning: remote port forwarding failed for listen port 52698">Warning: remote port forwarding failed for listen port 52698</a></li><li><a class="toc-href" href="#scp-copy-files-from-remote-server-to-local" style="border-bottom: 0px" title="scp: Copy files from remote server to local">scp: Copy files from remote server to local</a></li><li><a class="toc-href" href="#exit-the-ssh-session-in-bashshell-script" style="border-bottom: 0px" title="Exit the ssh session in bash/shell script">Exit the ssh session in bash/shell script</a></li><li><a class="toc-href" href="#fail-to-load-the-interpreter-of-python-for-virtual-environment" style="border-bottom: 0px" title="Fail to load the interpreter of Python for virtual environment">Fail to load the interpreter of Python for virtual environment</a></li><li><a class="toc-href" href="#zip-and-unzip-files-and-folders" style="border-bottom: 0px" title="zip and unzip files and folders.">zip and unzip files and folders.</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="the-most-common-commands">The most common commands</h1>
+<p>Below are some most popular commands in Linux Command Line (CLI).</p>
+<h1 id="terminal-navigation-commands">Terminal Navigation Commands</h1>
+<h2 id="cd-change-the-directory">cd: Change the directory</h2>
+<p>Change/move the directory to current path:</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> path/to/directory
+</pre></div>
+<h2 id="ls-list-all-the-files-and-folders-in-the-current-directory">ls: List all the files and folders in the current directory</h2>
+<div class="highlight"><pre><span></span>ls
+
+<span class="c1"># list all in long description</span>
+ls -l
+
+<span class="c1"># list all including the hidden files</span>
+ls -h
+</pre></div>
+<h2 id="pwd-print-the-path-of-directories">pwd: Print the path of directories</h2>
+<p>Print the path to current directory</p>
+<div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+<h2 id="_1">&amp;&amp;</h2>
+<p>This one is so basic that it&rsquo;s not even technically a command. If you ever want to run multiple commands in sequential order, just stick this in between each one. For example, [command1] &amp;&amp; [command2] will first run [command1] then immediately follow it with [command2]. You can chain as many commands as you want.</p>
+<div class="highlight"><pre><span></span><span class="o">[</span>comand1<span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span>command2<span class="o">]</span>
+</pre></div>
+<h2 id="clear-clear-the-screen">clear: Clear the screen</h2>
+<div class="highlight"><pre><span></span>clear
+</pre></div>
+<h2 id="man-the-manual-command">man: The manual command</h2>
+<p>The man command is used to show the manual of the inputted command.
+Example:</p>
+<div class="highlight"><pre><span></span>man <span class="nb">cd</span>
+</pre></div>
+<h2 id="help-check-help-for-a-specific-command">help: Check help for a specific command</h2>
+<div class="highlight"><pre><span></span><span class="nb">help</span> <span class="nb">command</span>
+</pre></div>
+<h2 id="history-view-the-command-history-in-terminal">history: View the command history in terminal</h2>
+<div class="highlight"><pre><span></span><span class="nb">history</span>
+<span class="c1"># View with more lines in history</span>
+<span class="c1"># Replace N with a number</span>
+<span class="nb">history</span> N
+</pre></div>
+<h1 id="file-management-commands_1">File Management Commands</h1>
+<h2 id="find-search-files">find: Search files</h2>
+<p>Search a specific directory to find files that match given set of criteria including filename, filetype, filesize, permissions, owners, date created, date modified, etc.</p>
+<div class="highlight"><pre><span></span>find file_name
+</pre></div>
+<h2 id="grep-search-where-is-the-text-in-files">grep: Search where is the text in files</h2>
+<p>Searches a specific file or set of files to see if a given string of text exists, and if it does, tells you where the text exists in those files. This command is extremely flexible (e.g. use wildcards to search all files of a given type) and particularly useful for programmers (to find specific lines of code).</p>
+<div class="highlight"><pre><span></span>grep 
+</pre></div>
+<h2 id="rename">rename</h2>
+<p>https://ss64.com/bash/rename.html</p>
+<h2 id="mkdir-create-a-directory">mkdir: Create a directory</h2>
+<p>The <code>mkdir</code> - make directory - command allows the user to make a new directory:</p>
+<div class="highlight"><pre><span></span>mkdir dir_name
+</pre></div>
+<h3 id="mkdir-p-create-a-directory-tree">mkdir -p: Create a directory tree</h3>
+<div class="highlight"><pre><span></span>mkdir -p dir0/dir1/dir2/dirk
+</pre></div>
+<h2 id="mv-move-files_1">mv: Move files</h2>
+<p>The mv command - move - allows a user to move a file to another folder or directory.</p>
+<div class="highlight"><pre><span></span>mv file.txt /path/new/dir/
+</pre></div>
+<h2 id="mv-change-the-files-name">mv: Change the file's name</h2>
+<div class="highlight"><pre><span></span>mv old_file_name new_file_name
+</pre></div>
+<h2 id="cp-copy-files-and-folders">cp: Copy files and folders</h2>
+<div class="highlight"><pre><span></span>cp
+</pre></div>
+<h2 id="rm-delete-files">rm: Delete files</h2>
+<p>The <code>rm</code> command - remove - like the <code>rmdir</code> command is meant to remove files from your Linux OS. Whereas the <code>rmdir</code> command will remove directories and files held within, the <code>rm</code> command will delete created files. An example of the <code>rm</code> command:</p>
+<div class="highlight"><pre><span></span>rm file.txt
+</pre></div>
+<p>Please be careful with the below command if somebody tells you.</p>
+<div class="highlight"><pre><span></span>rm -rf/
+</pre></div>
+<p>Do not do it. The <code>rm -rf/</code> command means remove (<code>rm</code>) - recursive (<code>r</code>) force (<code>f</code>) home (<code>/</code>). Spelled out logically, the rm -rf/ command will delete every folder, file and directory within your Linux OS. It is the equivalent of wiping your entire hard drive clean. Use the <code>rm-rf/</code>command at your own peril. </p>
+<h2 id="rmdir-remove-directory">rmdir: Remove Directory</h2>
+<p>The <code>rmdir</code> - remove directory - command allows the user to remove an existing command using the Linux CLI. An example of the <code>rmdir</code> command:</p>
+<div class="highlight"><pre><span></span>rmdir dir_name
+</pre></div>
+<h2 id="cat-view-a-file-in-terminal">cat: View a file in terminal</h2>
+<div class="highlight"><pre><span></span>cat file
+</pre></div>
+<h2 id="touch-create-a-file-in-terminal">touch: Create a file in terminal</h2>
+<p>Create a file with <code>touch</code>. The touch command - a.k.a. the make file command - allows users to make files using the Linux CLI. Just as the mkdir command makes directories, the touch command makes files. Just as you would make a .doc or a .txt using a PC desktop, the touch command makes empty files. An example of the touch command:</p>
+<div class="highlight"><pre><span></span>touch file
+</pre></div>
+<h2 id="nano-create-and-open-a-file-in-terminal">nano: Create and open a file in terminal</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Create or open a file</span>
+nano file
+</pre></div>
+<h2 id="nvidia-smi-check-gpus-status">nvidia-smi: Check GPU's status</h2>
+<p>We use <code>watch -1</code> to track the GPU's status every second. </p>
+<div class="highlight"><pre><span></span>watch -1 nvidia-smi
+</pre></div>
+<h2 id="kill-kill-a-process">kill: Kill a process</h2>
+<div class="highlight"><pre><span></span><span class="nb">kill</span> pid
+</pre></div>
+<h2 id="echo-write">echo: Write</h2>
+<h1 id="commands-with-git_1">Commands with git</h1>
+<p>If the current directory or files are under <code>git</code> repository, it is useful to use <code>mv</code> and <code>rm</code> with <code>git</code> command for further tracking:</p>
+<div class="highlight"><pre><span></span>git mv old_file_name new_file_name
+<span class="c1"># Change the name of a file or dir</span>
+
+git rm file
+<span class="c1"># Remove a file</span>
+</pre></div>
+<h1 id="shortcuts">Shortcuts</h1>
+<h2 id="code">code</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Open the current folder</span>
+code .
+<span class="c1"># Open or create the file</span>
+code file
+</pre></div>
+<h2 id="chrome">chrome</h2>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<h2 id="exit">Exit</h2>
+<p>We can press <code>Ctrl + C</code> or sometimes <code>Ctrl + D</code> to exit the current program in terminal.</p>
+<div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+<h1 id="some-useful-commands_1">Some useful commands</h1>
+<h2 id="ps-list-process-by-username">ps: List process by username</h2>
+<div class="highlight"><pre><span></span>ps -u ubuntu
+</pre></div>
+<h2 id="htop-task-manager">htop: Task manager</h2>
+<div class="highlight"><pre><span></span>htop
+</pre></div>
+<h2 id="kill-a-process-on-a-specific-port">kill a process on a specific port</h2>
+<div class="highlight"><pre><span></span><span class="c1"># find the pid running on the port </span>
+lsof -i :port_number
+<span class="c1"># kill the process with this port</span>
+<span class="nb">kill</span> pid
+</pre></div>
+<h2 id="list-all-the-process-running-gpus-and-kill-it">List all the process running GPUs and kill it.</h2>
+<p>Apart from nvidia-smi, on Linux you can check which processes might be using the GPU using the command</p>
+<div class="highlight"><pre><span></span>sudo fuser -v /dev/nvidia*
+kill pid
+</pre></div>
+<h2 id="install-pillow-simd-for-fast-augmentation">Install pillow-simd for fast augmentation</h2>
+<div class="highlight"><pre><span></span>pip uninstall pillow
+pip install pillow-simd
+</pre></div>
+<h2 id="warning-remote-port-forwarding-failed-for-listen-port-52698">Warning: remote port forwarding failed for listen port 52698</h2>
+<p>This bug happens when rmate from server can&rsquo;t forward to Visual Code in client machine. The reason is some sshd sessions aren&rsquo;t dettached correctly.</p>
+<p>Solution</p>
+<div class="highlight"><pre><span></span>$ ps -u username
+$ <span class="nb">kill</span> <span class="sb">`</span>PID_of_sshd<span class="sb">`</span>
+</pre></div>
+<p>Or we can do it as below: First, we need to install killall from psmisc package</p>
+<div class="highlight"><pre><span></span>$ sudo apt-get install psmisc
+</pre></div>
+<p>And then, start killing all sshd connection.</p>
+<div class="highlight"><pre><span></span>$ sudo killall -u YOURUSER -r sshd
+$ sudo killall -u ubuntu -r sshd
+</pre></div>
+<h2 id="scp-copy-files-from-remote-server-to-local">scp: Copy files from remote server to local</h2>
+<div class="highlight"><pre><span></span>scp -i /path/to/private_key/ username@ip:/path/to/file/on/server /path/to/location/on/local
+
+<span class="c1"># Example</span>
+scp -i ~/.ssh/.quang ubuntu@ip:/home/ubuntu/ .
+</pre></div>
+<h2 id="exit-the-ssh-session-in-bashshell-script">Exit the ssh session in bash/shell script</h2>
+<p>Normally, we can use exit statement in terminal prompt to terminate the ssh session. However, this way doesn&rsquo;t work properly when we perform exit in bash script file.sh.</p>
+<p>Solution</p>
+<p>In order to execute the bash script file.sh and terminate the ssh session later: Just put exit outside the script file.</p>
+<div class="highlight"><pre><span></span>$ bash <span class="sb">`</span>file.sh<span class="sb">`</span><span class="p">;</span> <span class="nb">exit</span>
+</pre></div>
+<h2 id="fail-to-load-the-interpreter-of-python-for-virtual-environment">Fail to load the interpreter of Python for virtual environment</h2>
+<p>Instead of running python from virtual environment, it calls python of base environment. We can check which version of python is running by using:</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">source</span> activate VIRTUAL_ENV
+$ which python
+</pre></div>
+<p>Solution</p>
+<p>Don&rsquo;t need to run source activate <code>VIRTUAL_ENV</code>, call directly <code>python</code> from that <code>VIRTUAL_ENV</code></p>
+<div class="highlight"><pre><span></span>$ /path/to/anaconda/envs/VIRTUAL_ENV/bin/python filename.py
+</pre></div>
+<h2 id="zip-and-unzip-files-and-folders">zip and unzip files and folders.</h2>
+<div class="highlight"><pre><span></span>zip -r myfiles.zip mydir
+</pre></div>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/bash.html" class="tag">Bash</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

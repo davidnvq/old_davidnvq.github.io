@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>How to use models in slim | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>How to use models in slim</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#setup" style="border-bottom: 0px" title="Setup">Setup</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#clone-the-slim" style="border-bottom: 0px" title="Clone the slim">Clone the slim</a></li><li><a class="toc-href" href="#add-the-path-to-the-slim-library-in-order-to-use-datasets-or-some-modules" style="border-bottom: 0px" title="Add the path to the slim library in order to use datasets or some modules.">Add the path to the slim library in order to use datasets or some modules.</a></li></ol></li><li><a class="toc-href" href="#download-the-models_1" style="border-bottom: 0px" title="Download the models">Download the models</a></li><li><a class="toc-href" href="#preprocess-the-image" style="border-bottom: 0px" title="Preprocess the image">Preprocess the image</a></li><li><a class="toc-href" href="#define-the-model-and-get-the-prediction" style="border-bottom: 0px" title="Define the model and get the prediction">Define the model and get the prediction</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#create-the-graph" style="border-bottom: 0px" title="Create the graph">Create the graph</a></li><li><a class="toc-href" href="#load-the-pretrained-weights" style="border-bottom: 0px" title="Load the pretrained weights">Load the pretrained weights</a></li><li><a class="toc-href" href="#make-a-prediction" style="border-bottom: 0px" title="Make a prediction">Make a prediction</a></li><li><a class="toc-href" href="#decode-the-name-of-the-labels-in-1000-classes" style="border-bottom: 0px" title="Decode the name of the labels in 1000 classes">Decode the name of the labels in 1000 classes</a></li></ol></li><li><a class="toc-href" href="#test-with-an-example-image_1" style="border-bottom: 0px" title="Test with an example image">Test with an example image</a></li><li><a class="toc-href" href="#all-in-one-program" style="border-bottom: 0px" title="All in one program">All in one program</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">How to use models in slim</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 15, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#setup" style="border-bottom: 0px" title="Setup">Setup</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#clone-the-slim" style="border-bottom: 0px" title="Clone the slim">Clone the slim</a></li><li><a class="toc-href" href="#add-the-path-to-the-slim-library-in-order-to-use-datasets-or-some-modules" style="border-bottom: 0px" title="Add the path to the slim library in order to use datasets or some modules.">Add the path to the slim library in order to use datasets or some modules.</a></li></ol></li><li><a class="toc-href" href="#download-the-models_1" style="border-bottom: 0px" title="Download the models">Download the models</a></li><li><a class="toc-href" href="#preprocess-the-image" style="border-bottom: 0px" title="Preprocess the image">Preprocess the image</a></li><li><a class="toc-href" href="#define-the-model-and-get-the-prediction" style="border-bottom: 0px" title="Define the model and get the prediction">Define the model and get the prediction</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#create-the-graph" style="border-bottom: 0px" title="Create the graph">Create the graph</a></li><li><a class="toc-href" href="#load-the-pretrained-weights" style="border-bottom: 0px" title="Load the pretrained weights">Load the pretrained weights</a></li><li><a class="toc-href" href="#make-a-prediction" style="border-bottom: 0px" title="Make a prediction">Make a prediction</a></li><li><a class="toc-href" href="#decode-the-name-of-the-labels-in-1000-classes" style="border-bottom: 0px" title="Decode the name of the labels in 1000 classes">Decode the name of the labels in 1000 classes</a></li></ol></li><li><a class="toc-href" href="#test-with-an-example-image_1" style="border-bottom: 0px" title="Test with an example image">Test with an example image</a></li><li><a class="toc-href" href="#all-in-one-program" style="border-bottom: 0px" title="All in one program">All in one program</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="introduction">Introduction</h1>
+<p>This guide to use <code>slim</code> for Image Classification and Image Annotation and Segmentation. Find this tutorial here.</p>
+<ul>
+<li>
+<p><code>slim</code> library was released with a set of standard models like ResNet-v1, VGG, Inception-Resnet-v2, Resnet-v2, Inception and so on.</p>
+</li>
+<li>
+<p>The pretrained models are supported by Google &rarr; much better. </p>
+</li>
+<li><code>slim</code> is very clean and lightweight wrapper around Tensorflow. </li>
+</ul>
+<h1 id="setup">Setup</h1>
+<h2 id="clone-the-slim">Clone the slim</h2>
+<div class="highlight"><pre><span></span>git clone https://github.com/tensorflow/models
+</pre></div>
+<h2 id="add-the-path-to-the-slim-library-in-order-to-use-datasets-or-some-modules">Add the path to the slim library in order to use <code>datasets</code> or some modules.</h2>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os.path</span> <span class="kn">as</span> <span class="nn">osp</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'path/to/models/research/slim/'</span><span class="p">)</span>
+</pre></div>
+<h1 id="download-the-models_1">Download the models</h1>
+<p>Download the pretrained models from here. </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">dataset_utils</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz"</span>
+
+<span class="n">checkpoints_dir</span> <span class="o">=</span> <span class="s1">'/content/pretrained_models/'</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">osp</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">checkpoints_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">)</span>
+
+<span class="n">dataset_utils</span><span class="o">.</span><span class="n">download_and_uncompress_tarball</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">checkpoints_dir</span><span class="p">)</span>
+</pre></div>
+<h1 id="preprocess-the-image">Preprocess the image</h1>
+<ul>
+<li>Subtract image by mean</li>
+<li>expand 1 image into a batch of 1.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">image_path</span> <span class="o">=</span> <span class="s1">'url/image.jpg'</span>
+
+<span class="k">def</span> <span class="nf">get_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">img_raw</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">raw</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_raw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_R_MEAN</span><span class="p">,</span> <span class="n">_G_MEAN</span><span class="p">,</span> <span class="n">_B_MEAN</span><span class="p">])</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+</pre></div>
+<h1 id="define-the-model-and-get-the-prediction">Define the model and get the prediction</h1>
+<h2 id="create-the-graph">Create the graph</h2>
+<div class="highlight"><pre><span></span><span class="n">HOME_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">"~/"</span><span class="p">)</span>
+<span class="n">IMG_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HOME_PATH</span><span class="p">,</span> <span class="s1">'Pictures/Hien.jpg'</span><span class="p">)</span>
+<span class="n">RESNET_50_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HOME_PATH</span><span class="p">,</span> <span class="s1">'Result/pretrained-Resnet-Tensorflow/resnet_v1_50.ckpt'</span><span class="p">)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">(</span><span class="n">resnet_v1</span><span class="o">.</span><span class="n">resnet_arg_scope</span><span class="p">()):</span>
+    <span class="n">logits</span><span class="p">,</span> <span class="n">end_points</span> <span class="o">=</span> <span class="n">resnet_v1</span><span class="o">.</span><span class="n">resnet_v1_50</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                        <span class="n">global_pool</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                        <span class="n">is_training</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">probabilities</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+</pre></div>
+<h2 id="load-the-pretrained-weights">Load the pretrained weights</h2>
+<div class="highlight"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
+<span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">RESNET_50_PATH</span><span class="p">)</span>
+</pre></div>
+<h2 id="make-a-prediction">Make a prediction</h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="p">{</span><span class="s1">'Placeholder:0'</span><span class="p">:</span> <span class="n">img</span><span class="p">})</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:]</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="o">-</span><span class="n">prob</span><span class="p">),</span>
+                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+    <span class="k">return</span> <span class="n">prob</span><span class="p">,</span> <span class="n">sorted_indices</span>
+</pre></div>
+<h2 id="decode-the-name-of-the-labels-in-1000-classes">Decode the name of the labels in 1000 classes</h2>
+<div class="highlight"><pre><span></span><span class="c1"># Decode the labels name</span>
+<span class="k">def</span> <span class="nf">decode_result</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">sorted_idx</span><span class="p">):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">imagenet</span><span class="o">.</span><span class="n">create_readable_names_for_imagenet_labels</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">sorted_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'Probability </span><span class="si">%0.2f</span><span class="s1"> =&gt; [</span><span class="si">%s</span><span class="s1">]'</span> <span class="o">%</span> <span class="p">(</span><span class="n">probabilities</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+<h1 id="test-with-an-example-image_1">Test with an example image</h1>
+<div class="highlight"><pre><span></span><span class="n">img_path</span> <span class="o">=</span> <span class="s1">'/Users/quanguet/Pictures/cat.jpg'</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">get_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="s1">'True'</span><span class="p">)</span>
+<span class="n">prob</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+<span class="n">decode_result</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+</pre></div>
+<h1 id="all-in-one-program">All in one program</h1>
+<p>The full code is below.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os.path</span> <span class="kn">as</span> <span class="nn">osp</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'path/to/models/research/slim/'</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">dataset_utils</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz"</span>
+
+<span class="c1"># Download the model</span>
+<span class="n">checkpoints_dir</span> <span class="o">=</span> <span class="s1">'/content/pretrained_models/'</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">osp</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">checkpoints_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">)</span>
+
+<span class="n">dataset_utils</span><span class="o">.</span><span class="n">download_and_uncompress_tarball</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">checkpoints_dir</span><span class="p">)</span>
+
+<span class="c1"># Preprocess the images</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">image_path</span> <span class="o">=</span> <span class="s1">'url/image.jpg'</span>
+
+<span class="k">def</span> <span class="nf">get_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">img_raw</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">raw</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_raw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_R_MEAN</span><span class="p">,</span> <span class="n">_G_MEAN</span><span class="p">,</span> <span class="n">_B_MEAN</span><span class="p">])</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+<span class="c1"># Create the graph</span>
+<span class="n">HOME_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">"~/"</span><span class="p">)</span>
+<span class="n">IMG_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HOME_PATH</span><span class="p">,</span> <span class="s1">'Pictures/Hien.jpg'</span><span class="p">)</span>
+<span class="n">RESNET_50_PATH</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HOME_PATH</span><span class="p">,</span> <span class="s1">'Result/pretrained-Resnet-Tensorflow/resnet_v1_50.ckpt'</span><span class="p">)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">(</span><span class="n">resnet_v1</span><span class="o">.</span><span class="n">resnet_arg_scope</span><span class="p">()):</span>
+    <span class="n">logits</span><span class="p">,</span> <span class="n">end_points</span> <span class="o">=</span> <span class="n">resnet_v1</span><span class="o">.</span><span class="n">resnet_v1_50</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                        <span class="n">global_pool</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                        <span class="n">is_training</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">probabilities</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+
+<span class="c1"># Load the pretrained weights</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
+<span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">RESNET_50_PATH</span><span class="p">)</span>
+
+<span class="c1"># Make a prediction</span>
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="p">{</span><span class="s1">'Placeholder:0'</span><span class="p">:</span> <span class="n">img</span><span class="p">})</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:]</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="o">-</span><span class="n">prob</span><span class="p">),</span>
+                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+    <span class="k">return</span> <span class="n">prob</span><span class="p">,</span> <span class="n">sorted_indices</span>
+
+
+<span class="c1"># Decode the labels name</span>
+<span class="k">def</span> <span class="nf">decode_result</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">sorted_idx</span><span class="p">):</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">imagenet</span><span class="o">.</span><span class="n">create_readable_names_for_imagenet_labels</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">sorted_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'Probability </span><span class="si">%0.2f</span><span class="s1"> =&gt; [</span><span class="si">%s</span><span class="s1">]'</span> <span class="o">%</span> <span class="p">(</span><span class="n">probabilities</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/tensorflow.html" class="tag">Tensorflow</a>
+                    <a href="../../../../tag/slim.html" class="tag">Slim</a>
+                    <a href="../../../../tag/fine-tuning.html" class="tag">Fine-tuning</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

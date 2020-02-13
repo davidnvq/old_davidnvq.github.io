@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Reduce false positive rate of Object Detector | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Reduce false positive rate of Object Detector</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#lecture-for-object-detection" style="border-bottom: 0px" title="Lecture for Object Detection">Lecture for Object Detection</a></li><li><a class="toc-href" href="#lessons-from-object-detection-models" style="border-bottom: 0px" title="Lessons from object detection models">Lessons from object detection models</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#region-based-models" style="border-bottom: 0px" title="Region-based models">Region-based models</a></li><li><a class="toc-href" href="#single-shot-object-detectors" style="border-bottom: 0px" title="Single shot object detectors">Single shot object detectors</a></li></ol></li><li><a class="toc-href" href="#train-tensorflow-object-detection-on-own-dataset_1" style="border-bottom: 0px" title="Train Tensorflow Object Detection on own dataset">Train Tensorflow Object Detection on own dataset</a></li><li><a api="" class="toc-href" detection="" href="#best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-satellite-imagery" imagery'="" new="" object="" on="" s="" satellite="" style="border-bottom: 0px" title="Best strategy to reduce false positives: Google">Best strategy to reduce false positives: Google's new Object Detection API on Satellite Imagery</a></li><li><a class="toc-href" detection="" framework?'="" href="#what-are-the-best-methods-for-reducing-false-positives-using-tensorflows-object-detection-framework" object="" s="" style="border-bottom: 0px" title="What are the best methods for reducing false positives using tensorflow">What are the best methods for reducing false positives using tensorflow's object detection framework?</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#answer" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#his-finding" style="border-bottom: 0px" title="His finding">His finding</a></li></ol></li><li><a class="toc-href" href="#object-detection-hard-negatives_1" style="border-bottom: 0px" title="Object detection : hard negatives.">Object detection : hard negatives.</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#answer_1" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_2" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_3" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_4" style="border-bottom: 0px" title="Answer">Answer</a></li></ol></li><li><a class="toc-href" href="#some-notes_1" style="border-bottom: 0px" title="Some notes">Some notes</a></li><li><a class="toc-href" href="#revisit-faster-r-cnn" style="border-bottom: 0px" title="Revisit Faster R-CNN">Revisit Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Reduce false positive rate of Object Detector</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 23, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#lecture-for-object-detection" style="border-bottom: 0px" title="Lecture for Object Detection">Lecture for Object Detection</a></li><li><a class="toc-href" href="#lessons-from-object-detection-models" style="border-bottom: 0px" title="Lessons from object detection models">Lessons from object detection models</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#region-based-models" style="border-bottom: 0px" title="Region-based models">Region-based models</a></li><li><a class="toc-href" href="#single-shot-object-detectors" style="border-bottom: 0px" title="Single shot object detectors">Single shot object detectors</a></li></ol></li><li><a class="toc-href" href="#train-tensorflow-object-detection-on-own-dataset_1" style="border-bottom: 0px" title="Train Tensorflow Object Detection on own dataset">Train Tensorflow Object Detection on own dataset</a></li><li><a api="" class="toc-href" detection="" href="#best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-satellite-imagery" imagery'="" new="" object="" on="" s="" satellite="" style="border-bottom: 0px" title="Best strategy to reduce false positives: Google">Best strategy to reduce false positives: Google's new Object Detection API on Satellite Imagery</a></li><li><a class="toc-href" detection="" framework?'="" href="#what-are-the-best-methods-for-reducing-false-positives-using-tensorflows-object-detection-framework" object="" s="" style="border-bottom: 0px" title="What are the best methods for reducing false positives using tensorflow">What are the best methods for reducing false positives using tensorflow's object detection framework?</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#answer" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#his-finding" style="border-bottom: 0px" title="His finding">His finding</a></li></ol></li><li><a class="toc-href" href="#object-detection-hard-negatives_1" style="border-bottom: 0px" title="Object detection : hard negatives.">Object detection : hard negatives.</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#answer_1" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_2" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_3" style="border-bottom: 0px" title="Answer">Answer</a></li><li><a class="toc-href" href="#answer_4" style="border-bottom: 0px" title="Answer">Answer</a></li></ol></li><li><a class="toc-href" href="#some-notes_1" style="border-bottom: 0px" title="Some notes">Some notes</a></li><li><a class="toc-href" href="#revisit-faster-r-cnn" style="border-bottom: 0px" title="Revisit Faster R-CNN">Revisit Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="lecture-for-object-detection">Lecture for Object Detection</h1>
+<p>https://zsc.github.io/megvii-pku-dl-course/slides/Lecture6(Object%20Detection).pdf</p>
+<h1 id="lessons-from-object-detection-models">Lessons from object detection models</h1>
+<h2 id="region-based-models">Region-based models</h2>
+<p>https://medium.com/@jonathan_hui/what-do-we-learn-from-region-based-object-detectors-faster-r-cnn-r-fcn-fpn-7e354377a7c9</p>
+<h2 id="single-shot-object-detectors">Single shot object detectors</h2>
+<p>https://medium.com/@jonathan_hui/what-do-we-learn-from-single-shot-object-detectors-ssd-yolo-fpn-focal-loss-3888677c5f4d</p>
+<p>Learn a lot from this guy:
+https://jhui.github.io/</p>
+<h1 id="train-tensorflow-object-detection-on-own-dataset_1">Train Tensorflow Object Detection on own dataset</h1>
+<p>After spending a couple days trying to achieve this task, I would like to share my experience of how I went about answering the question:</p>
+<p>How do I use TS Object Detection to train using my own dataset?
+https://stackoverflow.com/questions/44973184/train-tensorflow-object-detection-on-own-dataset</p>
+<h1 id="best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-satellite-imagery">Best strategy to reduce false positives: Google's new Object Detection API on Satellite Imagery</h1>
+<p>https://stackoverflow.com/questions/45666499/best-strategy-to-reduce-false-positives-googles-new-object-detection-api-on-sa</p>
+<p># FPN 
+https://medium.com/@jonathan_hui/understanding-feature-pyramid-networks-for-object-detection-fpn-45b227b9106c</p>
+<h1 id="what-are-the-best-methods-for-reducing-false-positives-using-tensorflows-object-detection-framework">What are the best methods for reducing false positives using tensorflow's object detection framework?</h1>
+<p>I am training a single object detector with mask rcnn and I have tried several methods for reducing false positives. I started with a few thousand examples of images of the object with bounding boxes and trained that, got decent results, but when running on images that don't contain that object, would often get false matches with high confidence (sometimes .99).</p>
+<p>The first thing I tried was adding the hard example miner in the config file. I believe I did this correctly because I added a print statement to ensure the object gets created. However none of the configs for faster rcnn have hard example mining in them. So I am suspicious that the miner only works correctly for ssd. I would expect a noticeable improvement with a hard example miner but I did not see it</p>
+<p>The second thing I tried was to add "background" images. I set the minimum number of negatives to a non-zero value in the hard example miner config and added tons of background images that previously got false detections as part of the training. I even added these images into the tfrecords file so that it would be balanced evenly with images that do have the object. This approach actually made things worse - and gave me more false detections</p>
+<p>The last thing I tried was creating another category, called "object-background" and took all the false matches and assigned them to this new category. This approach worked pretty well, but I view it as a hack.</p>
+<p>I guess to summarize my main question is - what is the best method for reducing false positives within the current tensorflow object detection framework? Would SSD be a better approach since that seems to have a hard example miner built into it by default in the configs?</p>
+<p>thanks</p>
+<h2 id="answer">Answer</h2>
+<p>in the tensorflow github, they advise to ask questions on stackoverflow. There are well known methods for reducing false positives (such as the mentioned hard example mining - ohem) but there doesn't seem to be a lot of documentation on using it</p>
+<h2 id="his-finding">His finding</h2>
+<p>After some more investigation I actually was able to get the hard example miner with faster rcnn working. I had a bug where I wasn't actually inserting background images into the tf records file.</p>
+<p>I think when training a single object detector (category with one model) it's most crucial to add background images if you want to have good precision/recall. If you just have a few thousand examples of the object, that won't be nearly enough images for the model to learn all the various background noise you will be sending when actually using the model for your application</p>
+<h1 id="object-detection-hard-negatives_1">Object detection : hard negatives.</h1>
+<p>https://github.com/tensorflow/models/issues/2544</p>
+<p>I am currently using object detection on my own dataset, for some of my classes, i have a lot of false positives with high scores (&gt;0.99, so having a higher score threshold won't help).</p>
+<p>I know there is already some hard negative mining implemented ,but would it be possible to have a feature where one could add hard negatives examples to the training ?</p>
+<p>Let's say we want to detect object A, and we know that object A look a lot like object B, but we are not interested in detecting, object B , in that case we could add images of object B to training (without any bounding boxes) in order for the network to distinguish between A and B.</p>
+<h2 id="answer_1">Answer</h2>
+<p>Depends on what network you are using, I guess.</p>
+<p>For example, Faster R-CNN considers as negative boxes those which have IoU under a certain threshold (0.3 by default, I think). And then it takes as many negative examples as positive ones (this is configurable, I think).
+So basically, if you have your object B in images with A as well, and it is not labeled, it is some chance that it will be considered as a negative.</p>
+<p>To be more certain, I guess you could use object classification (detecting both A and B) and then only keep the objects A.
+This should work a bit better, because it tries to regress the class difference to be as big as possible.</p>
+<h2 id="answer_2">Answer</h2>
+<p>Hello, I guess I have a similar/same problem. Using the InceptionV2-SSD model, and the model gives me great precision and recall on test set that contains at least one of the classes that I am interested in. But as soon as I add some images which do not contain any of my classes, I start getting false positives. Tried training with these images and provided an empty array in place of the truth data boxes. This did not seem to help.</p>
+<p>It would be nice to get answers to two questions (1) Is this an existing problem in the code, or am I doing something wrong here. (2) Is there a recommended solution other than adding another classifier? Would something like modifying the loss functions to take these examples into account work?</p>
+<p>Thanks!</p>
+<h2 id="answer_3">Answer</h2>
+<p>@niyazpk Sorry, I should have been more specific. You need to set min_negatives_per_image to a non zero number in the config for the model to sample boxes from purely negative images: https://github.com/tensorflow/models/blob/master/research/object_detection/samples/configs/ssd_inception_v2_coco.config#L118 . Few 10s might be a good number to choose.</p>
+<p>@OverFlow7 , You can have purely negative images and faster_rcnn models will sample from anchors from them. We use sampling in both stages with a certain ratio of positives to negatives. If the sampler can't achieve that ratio ( in purely negative images), it fills the batch with negatives. See https://github.com/tensorflow/models/blob/master/research/object_detection/core/balanced_positive_negative_sampler.py#L18</p>
+<h2 id="answer_4">Answer</h2>
+<p>I feel this discussion might benefit others if do it on stackoverflow. Can you please move the discussion there if my response does not sufficiently answer your question alreadt. I will close this issue for now.</p>
+<p>But how do you create tfrecords with purely negative images? what do you put in the .xml?</p>
+<h1 id="some-notes_1">Some notes</h1>
+<p>Hi !
+For the scaling, the idea is try to scale such that all error terms (classification + position + size) have roughly the same scaling. Otherwise, the training would tend to over-optimise one component and not the others.</p>
+<p>Exactly, the negative values are used to mark the anchors with no annotations. The idea comes from the KITTI dataset where some part of the dataset images are signaled as being not labelled : there may be a car/person/... in these parts, but it has not been segmented. If you don't keep track of these parts, you may end up with the SSD model detecting objects not annotated, and the loss function thinking it is False positive, and pushing for not detecting it. Which is not really what we want !
+So basically, I set up a mask such that the loss function ignores the anchors which overlap too much with parts of images no-annotated.
+Hope it is a bit more clear! I guess I should add a bit of documentation about that!</p>
+<h1 id="revisit-faster-r-cnn">Revisit Faster R-CNN</h1>
+<p>https://arxiv.org/pdf/1803.06799.pdf</p>
+<h2 id="abstract">Abstract</h2>
+<p>In this paper, we analyze failure cases of state-ofthe-art detectors and observe that <code>most hard false positives</code> result from <code>classification</code> instead of localization.</p>
+<p><strong>3 problems</strong> :</p>
+<ol>
+<li>
+<p>Shared feature representation is not optimal due to the mismatched goals of feature learning for classification and localization.</p>
+</li>
+<li>
+<p>Multi-task learning helps, yet optimization of the multi-task loss may result in sub-optimal for individual tasks.</p>
+</li>
+<li>
+<p>Large receptive field for different scales leads to redundant context information for small objects.  </p>
+</li>
+</ol>
+<p><strong>Solution</strong>: We demonstrate the potential of detector classification power by a simple, effective, and widely-applicable Decoupled Classification Refinement (DCR) network. DCR samples hard false positives from the base classifier in Faster RCNN and trains a RCNN-styled strong classifier.</p>
+<h2 id="introduction">Introduction</h2>
+<p><img alt="" src="{attach}fig1.png"/>
+<em>Fig.1 (a) Comparison of the number of false positives in different ranges. (b) Comparison of the mAP gains by progressively removing false positives; from right to left, the detector is performing better as false positives are removed according to their confidence scores.</em></p>
+<p>To answer this question, in this paper, we begin with investigating the key
+factors affecting the performance of Faster RCNN. </p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/face-detection.html" class="tag">Face Detection</a>
+                    <a href="../../../../tag/ojbect-detection.html" class="tag">Ojbect Detection</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

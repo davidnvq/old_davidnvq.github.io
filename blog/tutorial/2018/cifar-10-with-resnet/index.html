@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>CIFAR-10 with Resnet | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>CIFAR-10 with Resnet</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#tensorflow" style="border-bottom: 0px" title="Tensorflow">Tensorflow</a></li><li><a class="toc-href" href="#pytorch-with-several-models" style="border-bottom: 0px" title="Pytorch with several models">Pytorch with several models</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">CIFAR-10 with Resnet</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 22, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#tensorflow" style="border-bottom: 0px" title="Tensorflow">Tensorflow</a></li><li><a class="toc-href" href="#pytorch-with-several-models" style="border-bottom: 0px" title="Pytorch with several models">Pytorch with several models</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="tensorflow">Tensorflow</h1>
+<p>The <a href="https://github.com/tensorflow/models/tree/master/official/resnet">official tensorflow resnet cifar-10</a>, with --resnet_size=110, hits 93.96%, (beating the reference value of 93.39%).</p>
+<p>Resnet for cifar10 and imagenet look a little different. You can see here that the convolution stride kernel is smaller. Maybe this is what you are doing wrong. Scaling CIFAR images to 224x224 is worse than using smaller kernel in conv1 with 32x32 images.</p>
+<h1 id="pytorch-with-several-models">Pytorch with several models</h1>
+<p>P.S. I have trained models using <a href="https://github.com/kuangliu/pytorch-cifar">this repo</a> and got similar or better accuracy than written in the README with 95.16% on CIFAR10 with PyTorch.</p>
+<p>I tried that repo, running </p>
+<div class="highlight"><pre><span></span>python3 main.py
+<span class="o">&amp;&amp;</span> python3 main.py --lr <span class="m">0</span>.01 --resume
+<span class="o">&amp;&amp;</span> python3 main.py --lr <span class="m">0</span>.001 --resume
+<span class="o">&amp;&amp;</span> python3 main.py --lr <span class="m">0</span>.0001 --resume 
+</pre></div>
+<p>and got only 94.680% rather than 95.16%. And frankly this script is overfitting on the test set, because it just picks whatever works best on the test set, rather than validation.</p>
+<p>Also, my main point was the difference in the conv1 layer for cifar and imagenet. Do check that.</p>
+<p>Some discussion about the implementation at <a href="https://www.reddit.com/r/MachineLearning/comments/7dtrfl/d_how_do_you_get_high_performance_with_resnet/">reddit</a>.</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/resnet.html" class="tag">Resnet</a>
+                    <a href="../../../../tag/cifar10.html" class="tag">Cifar10</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

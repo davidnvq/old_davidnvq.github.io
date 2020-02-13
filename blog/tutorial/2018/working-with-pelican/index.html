@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Working with Pelican | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Working with Pelican</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#copying-faviconrobotstxt" style="border-bottom: 0px" title="Copying favicon/robots.txt">Copying favicon/robots.txt</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#first-solution" style="border-bottom: 0px" title="First solution">First solution</a></li></ol></li><li><a class="toc-href" href="#second-solution-using-static_paths_1" style="border-bottom: 0px" title="Second solution, using STATIC_PATHS">Second solution, using STATIC_PATHS</a></li><li><a class="toc-href" href="#make" style="border-bottom: 0px" title="Make">Make</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#make-newpost" style="border-bottom: 0px" title="Make newpost">Make newpost</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Working with Pelican</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 22, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#copying-faviconrobotstxt" style="border-bottom: 0px" title="Copying favicon/robots.txt">Copying favicon/robots.txt</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#first-solution" style="border-bottom: 0px" title="First solution">First solution</a></li></ol></li><li><a class="toc-href" href="#second-solution-using-static_paths_1" style="border-bottom: 0px" title="Second solution, using STATIC_PATHS">Second solution, using STATIC_PATHS</a></li><li><a class="toc-href" href="#make" style="border-bottom: 0px" title="Make">Make</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#make-newpost" style="border-bottom: 0px" title="Make newpost">Make newpost</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="copying-faviconrobotstxt">Copying favicon/robots.txt</h1>
+<h2 id="first-solution">First solution</h2>
+<p>If you used the pelican-quickstart command to create a Makefile and want certain files copied to your web root &mdash; such as favicon.ico, robots.txt, or other files &mdash; create a folder called extra next to your Makefile and edit your Makefile to look like this:</p>
+<div class="highlight"><pre><span></span> <span class="k">$(</span>OUTPUTDIR<span class="k">)</span>/%.html:
+    <span class="k">$(</span>PELICAN<span class="k">)</span> <span class="k">$(</span>INPUTDIR<span class="k">)</span> -o <span class="k">$(</span>OUTPUTDIR<span class="k">)</span> -s <span class="k">$(</span>CONFFILE<span class="k">)</span> <span class="k">$(</span>PELICANOPTS<span class="k">)</span>
+<span class="cp">    if test -d $(BASEDIR)/extra; then cp $(BASEDIR)/extra/* $(OUTPUTDIR)/; fi</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="nf">publish</span><span class="o">:</span>
+    <span class="k">$(</span>PELICAN<span class="k">)</span> <span class="k">$(</span>INPUTDIR<span class="k">)</span> -o <span class="k">$(</span>OUTPUTDIR<span class="k">)</span> -s <span class="k">$(</span>PUBLISHCONF<span class="k">)</span> <span class="k">$(</span>PELICANOPTS<span class="k">)</span>
+<span class="cp">    if test -d $(BASEDIR)/extra; then cp $(BASEDIR)/extra/* $(OUTPUTDIR)/; fi</span>
+</pre></div>
+<h1 id="second-solution-using-static_paths_1">Second solution, using STATIC_PATHS</h1>
+<p>Add <code>favicon.ico</code> and <code>robots.txt</code> to the content/extra folder and add the following to <code>pelicanconf.py</code>:</p>
+<div class="highlight"><pre><span></span>STATIC_PATHS = ['images', 'extra/robots.txt', 'extra/favicon.ico']
+EXTRA_PATH_METADATA = {
+    'extra/robots.txt': {'path': 'robots.txt'},
+    'extra/favicon.ico': {'path': 'favicon.ico'}
+}
+</pre></div>
+<h1 id="make">Make</h1>
+<p>Make is available on almost any Unix-derived system but is old and can be clunky for building anything other than code. Many people prefer to use Rake (ruby make) or Fabric (a Pythonic tool for remote execution and deployment). Please post your examples and tips below for awesome development, testing, and deployment.</p>
+<h2 id="make-newpost">Make newpost</h2>
+<p>You can edit your Makefile to give you a handful of new commands that might make it slightly easier to get writing. Just add the following lines to your Makefile:</p>
+<div class="highlight"><pre><span></span><span class="nv">PAGESDIR</span><span class="o">=</span><span class="k">$(</span>INPUTDIR<span class="k">)</span>/pages
+DATE :<span class="o">=</span> <span class="k">$(</span>shell date +<span class="s1">'%Y-%m-%d %H:%M:%S'</span><span class="k">)</span>
+SLUG :<span class="o">=</span> <span class="k">$(</span>shell <span class="nb">echo</span> <span class="s1">'${NAME}'</span> <span class="p">|</span> sed -e <span class="s1">'s/[^[:alnum:]]/-/g'</span> <span class="p">|</span> tr -s <span class="s1">'-'</span> <span class="p">|</span> tr A-Z a-z<span class="k">)</span>
+EXT ?<span class="o">=</span> md
+
+newpost:
+ifdef NAME
+        <span class="nb">echo</span> <span class="s2">"Title: </span><span class="k">$(</span>NAME<span class="k">)</span><span class="s2">"</span> &gt;  <span class="k">$(</span>INPUTDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">"Slug: </span><span class="k">$(</span>SLUG<span class="k">)</span><span class="s2">"</span> &gt;&gt; <span class="k">$(</span>INPUTDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">"Date: </span><span class="k">$(</span>DATE<span class="k">)</span><span class="s2">"</span> &gt;&gt; <span class="k">$(</span>INPUTDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">""</span>              &gt;&gt; <span class="k">$(</span>INPUTDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">""</span>              &gt;&gt; <span class="k">$(</span>INPUTDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="si">${</span><span class="nv">EDITOR</span><span class="si">}</span> <span class="si">${</span><span class="nv">INPUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">SLUG</span><span class="si">}</span>.<span class="si">${</span><span class="nv">EXT</span><span class="si">}</span> <span class="p">&amp;</span>
+<span class="k">else</span>
+        @echo <span class="s1">'Variable NAME is not defined.'</span>
+        @echo <span class="s1">'Do make newpost NAME='</span><span class="s2">"'"</span><span class="s1">'Post Name'</span><span class="s2">"'"</span>
+endif
+
+editpost:
+ifdef NAME
+        <span class="si">${</span><span class="nv">EDITOR</span><span class="si">}</span> <span class="si">${</span><span class="nv">INPUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">SLUG</span><span class="si">}</span>.<span class="si">${</span><span class="nv">EXT</span><span class="si">}</span> <span class="p">&amp;</span>
+<span class="k">else</span>
+        @echo <span class="s1">'Variable NAME is not defined.'</span>
+        @echo <span class="s1">'Do make editpost NAME='</span><span class="s2">"'"</span><span class="s1">'Post Name'</span><span class="s2">"'"</span>
+endif
+
+newpage:
+ifdef NAME
+        <span class="nb">echo</span> <span class="s2">"Title: </span><span class="k">$(</span>NAME<span class="k">)</span><span class="s2">"</span> &gt;  <span class="k">$(</span>PAGESDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">"Slug: </span><span class="k">$(</span>SLUG<span class="k">)</span><span class="s2">"</span> &gt;&gt; <span class="k">$(</span>PAGESDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">""</span>              &gt;&gt; <span class="k">$(</span>PAGESDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="nb">echo</span> <span class="s2">""</span>              &gt;&gt; <span class="k">$(</span>PAGESDIR<span class="k">)</span>/<span class="k">$(</span>SLUG<span class="k">)</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+        <span class="si">${</span><span class="nv">EDITOR</span><span class="si">}</span> <span class="si">${</span><span class="nv">PAGESDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">SLUG</span><span class="si">}</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+<span class="k">else</span>
+        @echo <span class="s1">'Variable NAME is not defined.'</span>
+        @echo <span class="s1">'Do make newpage NAME='</span><span class="s2">"'"</span><span class="s1">'Page Name'</span><span class="s2">"'"</span>
+endif
+
+editpage:
+ifdef NAME
+        <span class="si">${</span><span class="nv">EDITOR</span><span class="si">}</span> <span class="si">${</span><span class="nv">PAGESDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">SLUG</span><span class="si">}</span>.<span class="k">$(</span>EXT<span class="k">)</span>
+<span class="k">else</span>
+        @echo <span class="s1">'Variable NAME is not defined.'</span>
+        @echo <span class="s1">'Do make editpage NAME='</span><span class="s2">"'"</span><span class="s1">'Page Name'</span><span class="s2">"'"</span>
+endif
+</pre></div>
+<p>To use this, make sure you've set the EDITOR environment variable to the name of your favourite editor, (or set it again within the Makefile), and then do</p>
+<div class="highlight"><pre><span></span>$ make newpost <span class="nv">NAME</span><span class="o">=</span><span class="s1">'Your Exciting Post Name Here'</span>
+</pre></div>
+<p>Your editor will appear with the beginnings of a new post. You can set 'EXT' to whatever extension you use most often, and then overwrite it by passing "EXT='newext'" to make. Equally, this change assumes that all your pages are stored in content/pages, which may not be true for you. This sample should work well enough for you to base any modifications off, though.</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/pelican.html" class="tag">Pelican</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

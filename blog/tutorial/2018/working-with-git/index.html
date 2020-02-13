@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Working with Git | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Working with Git</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a><ol style="font-size:16px" type="1"><li><a a="" class="toc-href" control="" href="#whats-a-version-control-system" s="" style="border-bottom: 0px" system?'="" title="What" version="">What's a version control system?</a></li><li><a class="toc-href" href="#whats-a-distributed-version-control-system" style="border-bottom: 0px" title="What&rsquo;s a distributed version control system?">What&rsquo;s a distributed version control system?</a></li><li><a class="toc-href" href="#why-git" style="border-bottom: 0px" title="Why Git?">Why Git?</a></li><li><a class="toc-href" href="#whats-a-repository" style="border-bottom: 0px" title="What&rsquo;s a repository?">What&rsquo;s a repository?</a></li><li><a class="toc-href" href="#basic-git-commands" style="border-bottom: 0px" title="Basic Git commands">Basic Git commands</a></li><li><a class="toc-href" href="#explore-more-git-commands" style="border-bottom: 0px" title="Explore more Git commands">Explore more Git commands</a></li><li><a class="toc-href" href="#how-github-fits-in" style="border-bottom: 0px" title="How GitHub fits in">How GitHub fits in</a></li><li><a class="toc-href" href="#how-github-works" style="border-bottom: 0px" title="How GitHub works">How GitHub works</a></li><li><a class="toc-href" href="#the-github-flow" style="border-bottom: 0px" title="The GitHub flow">The GitHub flow</a></li><li><a class="toc-href" href="#learn-more-about-the-github-flow" style="border-bottom: 0px" title="Learn more about the GitHub flow">Learn more about the GitHub flow</a></li></ol></li><li><a class="toc-href" href="#git-cheat-sheet_1" style="border-bottom: 0px" title="Git Cheat Sheet">Git Cheat Sheet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#install-git" style="border-bottom: 0px" title="Install GIT">Install GIT</a></li><li><a class="toc-href" href="#configure-tooling" style="border-bottom: 0px" title="Configure Tooling">Configure Tooling</a></li><li><a class="toc-href" href="#create-repositories" style="border-bottom: 0px" title="Create Repositories">Create Repositories</a></li><li><a class="toc-href" href="#make-changes" style="border-bottom: 0px" title="Make Changes">Make Changes</a></li><li><a class="toc-href" href="#group-changes" style="border-bottom: 0px" title="Group Changes">Group Changes</a></li><li><a class="toc-href" href="#refactor-filenames" style="border-bottom: 0px" title="Refactor Filenames">Refactor Filenames</a></li><li><a class="toc-href" href="#suppress-tracking" style="border-bottom: 0px" title="Suppress tracking">Suppress tracking</a></li><li><a class="toc-href" href="#save-fragments" style="border-bottom: 0px" title="Save Fragments">Save Fragments</a></li><li><a class="toc-href" href="#review-history" style="border-bottom: 0px" title="Review History">Review History</a></li><li><a class="toc-href" href="#synchronize-changes" style="border-bottom: 0px" title="Synchronize changes">Synchronize changes</a></li></ol></li><li><a class="toc-href" href="#some-frequent-templates_1" style="border-bottom: 0px" title="Some frequent templates">Some frequent templates</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#example-contribute-to-an-existing-repository" style="border-bottom: 0px" title="Example: Contribute to an existing repository">Example: Contribute to an existing repository</a></li><li><a class="toc-href" href="#example-start-a-new-repository-and-publish-it-to-github" style="border-bottom: 0px" title="Example: Start a new repository and publish it to GitHub">Example: Start a new repository and publish it to GitHub</a></li><li><a class="toc-href" href="#example-contribute-to-an-existing-branch-on-github" style="border-bottom: 0px" title="Example: contribute to an existing branch on GitHub">Example: contribute to an existing branch on GitHub</a></li></ol></li><li><a class="toc-href" href="#models-for-collaborative-development_1" style="border-bottom: 0px" title="Models for collaborative development">Models for collaborative development</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Working with Git</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 21, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a><ol style="font-size:16px" type="1"><li><a a="" class="toc-href" control="" href="#whats-a-version-control-system" s="" style="border-bottom: 0px" system?'="" title="What" version="">What's a version control system?</a></li><li><a class="toc-href" href="#whats-a-distributed-version-control-system" style="border-bottom: 0px" title="What&rsquo;s a distributed version control system?">What&rsquo;s a distributed version control system?</a></li><li><a class="toc-href" href="#why-git" style="border-bottom: 0px" title="Why Git?">Why Git?</a></li><li><a class="toc-href" href="#whats-a-repository" style="border-bottom: 0px" title="What&rsquo;s a repository?">What&rsquo;s a repository?</a></li><li><a class="toc-href" href="#basic-git-commands" style="border-bottom: 0px" title="Basic Git commands">Basic Git commands</a></li><li><a class="toc-href" href="#explore-more-git-commands" style="border-bottom: 0px" title="Explore more Git commands">Explore more Git commands</a></li><li><a class="toc-href" href="#how-github-fits-in" style="border-bottom: 0px" title="How GitHub fits in">How GitHub fits in</a></li><li><a class="toc-href" href="#how-github-works" style="border-bottom: 0px" title="How GitHub works">How GitHub works</a></li><li><a class="toc-href" href="#the-github-flow" style="border-bottom: 0px" title="The GitHub flow">The GitHub flow</a></li><li><a class="toc-href" href="#learn-more-about-the-github-flow" style="border-bottom: 0px" title="Learn more about the GitHub flow">Learn more about the GitHub flow</a></li></ol></li><li><a class="toc-href" href="#git-cheat-sheet_1" style="border-bottom: 0px" title="Git Cheat Sheet">Git Cheat Sheet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#install-git" style="border-bottom: 0px" title="Install GIT">Install GIT</a></li><li><a class="toc-href" href="#configure-tooling" style="border-bottom: 0px" title="Configure Tooling">Configure Tooling</a></li><li><a class="toc-href" href="#create-repositories" style="border-bottom: 0px" title="Create Repositories">Create Repositories</a></li><li><a class="toc-href" href="#make-changes" style="border-bottom: 0px" title="Make Changes">Make Changes</a></li><li><a class="toc-href" href="#group-changes" style="border-bottom: 0px" title="Group Changes">Group Changes</a></li><li><a class="toc-href" href="#refactor-filenames" style="border-bottom: 0px" title="Refactor Filenames">Refactor Filenames</a></li><li><a class="toc-href" href="#suppress-tracking" style="border-bottom: 0px" title="Suppress tracking">Suppress tracking</a></li><li><a class="toc-href" href="#save-fragments" style="border-bottom: 0px" title="Save Fragments">Save Fragments</a></li><li><a class="toc-href" href="#review-history" style="border-bottom: 0px" title="Review History">Review History</a></li><li><a class="toc-href" href="#synchronize-changes" style="border-bottom: 0px" title="Synchronize changes">Synchronize changes</a></li></ol></li><li><a class="toc-href" href="#some-frequent-templates_1" style="border-bottom: 0px" title="Some frequent templates">Some frequent templates</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#example-contribute-to-an-existing-repository" style="border-bottom: 0px" title="Example: Contribute to an existing repository">Example: Contribute to an existing repository</a></li><li><a class="toc-href" href="#example-start-a-new-repository-and-publish-it-to-github" style="border-bottom: 0px" title="Example: Start a new repository and publish it to GitHub">Example: Start a new repository and publish it to GitHub</a></li><li><a class="toc-href" href="#example-contribute-to-an-existing-branch-on-github" style="border-bottom: 0px" title="Example: contribute to an existing branch on GitHub">Example: contribute to an existing branch on GitHub</a></li></ol></li><li><a class="toc-href" href="#models-for-collaborative-development_1" style="border-bottom: 0px" title="Models for collaborative development">Models for collaborative development</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="introduction">Introduction</h1>
+<h2 id="whats-a-version-control-system">What's a version control system?</h2>
+<p>A version control system, or VCS, tracks the history of changes as people and teams collaborate on projects together. As the project evolves, teams can run tests, fix bugs, and contribute new code with the confidence that any version can be recovered at any time. Developers can review project history to find out:</p>
+<div class="highlight"><pre><span></span>Which changes were made?
+Who made the changes?
+When were the changes made?
+Why were changes needed?
+</pre></div>
+<h2 id="whats-a-distributed-version-control-system">What&rsquo;s a distributed version control system?</h2>
+<p>Git is an example of a distributed version control system (DVCS) commonly used for open source and commercial software development. DVCSs allow full access to every file, branch, and iteration of a project, and allows every user access to a full and self-contained history of all changes. Unlike once popular centralized version control systems, DVCSs like Git don&rsquo;t need a constant connection to a central repository. Developers can work anywhere and collaborate asynchronously from any time zone.</p>
+<p>Without version control, team members are subject to redundant tasks, slower timelines, and multiple copies of a single project. To eliminate unnecessary work, Git and other VCSs give each contributor a unified and consistent view of a project, surfacing work that&rsquo;s already in progress. Seeing a transparent history of changes, who made them, and how they contribute to the development of a project helps team members stay aligned while working independently.</p>
+<h2 id="why-git">Why Git?</h2>
+<p>According to the latest Stack Overflow developer survey, more than 70 percent of developers use Git, making it the most-used VCS in the world. Git is commonly used for both open source and commercial software development, with significant benefits for individuals, teams and businesses.</p>
+<ul>
+<li>
+<p>Git lets developers see the entire timeline of their changes, decisions, and progression of any project in one place. From the moment they access the history of a project, the developer has all the context they need to understand it and start contributing.</p>
+</li>
+<li>
+<p>Developers work in every time zone. With a DVCS like Git, collaboration can happen any time while maintaining source code integrity. Using branches, developers can safely propose changes to production code.</p>
+</li>
+<li>
+<p>Businesses using Git can break down communication barriers between teams and keep them focused on doing their best work. Plus, Git makes it possible to align experts across a business to collaborate on major projects.</p>
+</li>
+</ul>
+<h2 id="whats-a-repository">What&rsquo;s a repository?</h2>
+<p>A repository, or Git project, encompasses the entire collection of files and folders associated with a project, along with each file&rsquo;s revision history. The file history appears as snapshots in time called commits, and the commits exist as a linked-list relationship, and can be organized into multiple lines of development called branches. Because Git is a DVCS, repositories are self-contained units and anyone who owns a copy of the repository can access the entire codebase and its history. Using the command line or other ease-of-use interfaces, a git repository also allows for: interaction with the history, cloning, creating branches, committing, merging, comparing changes across versions of code, and more.</p>
+<p>Working in repositories keeps development projects organized and protected. Developers are encouraged to fix bugs, or create fresh features, without fear of derailing mainline development efforts. Git facilitates this through the use of topic branches: lightweight pointers to commits in history that can be easily created and deprecated when no longer needed.</p>
+<p>Through platforms like GitHub, Git also provides more opportunities for project transparency and collaboration. Public repositories help teams work together to build the best possible final product.</p>
+<h2 id="basic-git-commands">Basic Git commands</h2>
+<p>To use Git, developers use specific commands to copy, create, change, and combine code. These commands can be executed directly from the command line or by using an application like GitHub Desktop or Git Kraken. Here are some common commands for using Git:</p>
+<ul>
+<li>
+<p><code>git init</code> initializes a brand new Git repository and begins tracking an existing directory. It adds a hidden subfolder within the existing directory that houses the internal data structure required for version control.</p>
+</li>
+<li>
+<p><code>git clone</code> creates a local copy of a project that already exists remotely. The clone includes all the project&rsquo;s files, history, and branches.</p>
+</li>
+<li>
+<p><code>git add</code> stages a change. Git tracks changes to a developer&rsquo;s codebase, but it&rsquo;s necessary to stage and take a snapshot of the changes to include them in the project&rsquo;s history. This command performs staging, the first part of that two-step process. Any changes that are staged will become a part of the next snapshot and a part of the project&rsquo;s history. Staging and committing separately gives developers complete control over the history of their project without changing how they code and work.</p>
+</li>
+<li>
+<p><code>git commit</code> saves the snapshot to the project history and completes the change-tracking process. In short, a commit functions like taking a photo. Anything that&rsquo;s been staged with git add will become a part of the snapshot with git commit.</p>
+</li>
+<li>
+<p><code>git status</code> shows the status of changes as untracked, modified, or staged.</p>
+</li>
+<li>
+<p><code>git branch</code> shows the branches being worked on locally.</p>
+</li>
+<li>
+<p><code>git merge</code> merges lines of development together. This command is typically used to combine changes made on two distinct branches. For example, a developer would merge when they want to combine changes from a feature branch into the master branch for deployment.</p>
+</li>
+<li>
+<p><code>git pull</code> updates the local line of development with updates from its remote counterpart. Developers use this command if a teammate has made commits to a branch on a remote, and they would like to reflect those changes in their local environment.</p>
+</li>
+<li>
+<p><code>git push</code> updates the remote repository with any commits made locally to a branch.</p>
+</li>
+</ul>
+<p>Learn more from a full reference guide to Git commands.</p>
+<h2 id="explore-more-git-commands">Explore more Git commands</h2>
+<p>For a detailed look at Git practices, the <a href="https://guides.github.com/introduction/git-handbook/">videos</a> below show how to get the most out of some Git commands.</p>
+<ul>
+<li>Working locally</li>
+<li><code>git status</code></li>
+<li>Two-step commits</li>
+<li><code>git pull</code> and <code>git push</code></li>
+</ul>
+<h2 id="how-github-fits-in">How GitHub fits in</h2>
+<p>GitHub is a Git hosting repository that provides developers with tools to ship better code through command line features, issues (threaded discussions), pull requests, code review, or the use of a collection of free and for-purchase apps in the GitHub Marketplace. With collaboration layers like the GitHub flow, a community of 15 million developers, and an ecosystm with hundreds of integrations, GitHub changes the way software is built.</p>
+<h2 id="how-github-works">How GitHub works</h2>
+<p>GitHub builds collaboration directly into the developement process. Work is organized into repositories, where developers can outline requirements or direction and set expectations for team members. Then, using the GitHub flow, developers simply create a branch to work on updates, commit changes to save them, open a pull request to propose and discuss changes, and merge pull requests once everyone is on the same page.</p>
+<h2 id="the-github-flow">The GitHub flow</h2>
+<p>The GitHub flow is a lightweight, branch-based workflow built around core Git commands used by teams around the globe&mdash;including ours.</p>
+<p>The GitHub flow has six steps, each with distinct benefits when implemented:</p>
+<ol>
+<li>
+<p>Create a branch: Topic branches created from the canonical deployment branch (usually master) allow teams to contribute to many parallel efforts. Short-lived topic branches, in particular, keep teams focused and results in quick ships.</p>
+</li>
+<li>
+<p>Add commits: Snapshots of development efforts within a branch create safe, revertible points in the project&rsquo;s history.</p>
+</li>
+<li>
+<p>Open a pull request: Pull requests publicize a project&rsquo;s ongoing efforts and set the tone for a transparent development process.</p>
+</li>
+<li>
+<p>Discuss and review code: Teams participate in code reviews by commenting, testing, and reviewing open pull requests. Code review is at the core of an open and participatory culture.</p>
+</li>
+<li>
+<p>Merge: Upon clicking merge, GitHub automatically performs the equivalent of a local &lsquo;git merge&rsquo; operation. GitHub also keeps the entire branch development history on the merged pull request.</p>
+</li>
+<li>
+<p>Deploy: Teams can choose the best release cycles or incorporate continuous integration tools and operate with the assurance that code on the deployment branch has gone through a robust workflow.</p>
+</li>
+</ol>
+<h2 id="learn-more-about-the-github-flow">Learn more about the GitHub flow</h2>
+<p>Developers can find more information about the GitHub flow in the resources provided below.</p>
+<h1 id="git-cheat-sheet_1">Git Cheat Sheet</h1>
+<p>Git is the open source distributed version control system that facilitates GitHub activities on your laptop or desktop. This cheat sheet summarizes commonly used Git command line instructions for quick reference.</p>
+<h2 id="install-git">Install GIT</h2>
+<p>GitHub provides desktop clients that include a graphical user
+interface for the most common repository actions and an automatically
+updating command line edition of Git for advanced scenarios.</p>
+<ul>
+<li>
+<p>GitHub for Windows
+    htps://windows.github.com</p>
+</li>
+<li>
+<p>GitHub for Mac
+    htps://mac.github.com</p>
+</li>
+</ul>
+<p>Git distributions for Linux and POSIX systems are available on the
+official Git SCM web site.</p>
+<ul>
+<li>Git for All Platforms
+    htp://git-scm.com</li>
+</ul>
+<h2 id="configure-tooling">Configure Tooling</h2>
+<p>Configure user information for all local repositories</p>
+<div class="highlight"><pre><span></span>$ git config --global user.name <span class="s2">"[name]"</span>
+<span class="c1"># Sets the name you want atached to your commit transactions</span>
+
+$ git config --global user.email <span class="s2">"[email address]"</span>
+<span class="c1"># Sets the email you want atached to your commit transactions</span>
+
+$ git config --global color.ui auto
+<span class="c1"># Enables helpful colorization of command line output</span>
+</pre></div>
+<h2 id="create-repositories">Create Repositories</h2>
+<p>Start a new repository or obtain one from an existing URL</p>
+<div class="highlight"><pre><span></span>$ git init <span class="o">[</span>project-name<span class="o">]</span>
+<span class="c1"># Creates a new local repository with the specified name</span>
+
+$ git clone <span class="o">[</span>url<span class="o">]</span>
+<span class="c1"># Downloads a project and its entire version history</span>
+</pre></div>
+<h2 id="make-changes">Make Changes</h2>
+<p>Review edits and craf a commit transaction</p>
+<div class="highlight"><pre><span></span>$ git status
+<span class="c1"># Lists all new or modified files to be commited</span>
+
+$ git add <span class="o">[</span>file<span class="o">]</span>
+<span class="c1"># Snapshots the file in preparation for versioning</span>
+
+$ git reset <span class="o">[</span>file<span class="o">]</span>
+<span class="c1"># Unstages the file, but preserve its contents</span>
+
+$ git diff
+<span class="c1"># Shows file differences not yet staged</span>
+
+$ git diff --staged
+<span class="c1"># Shows file differences between staging and the last file version</span>
+
+$ git commit -m <span class="s2">"[descriptive message]"</span>
+<span class="c1"># Records file snapshots permanently in version history</span>
+</pre></div>
+<h2 id="group-changes">Group Changes</h2>
+<p>Name a series of commits and combine completed efforts</p>
+<div class="highlight"><pre><span></span>$ git branch
+<span class="c1"># Lists all local branches in the current repository</span>
+
+$ git branch <span class="o">[</span>branch-name<span class="o">]</span>
+<span class="c1"># Creates a new branch</span>
+
+$ git checkout <span class="o">[</span>branch-name<span class="o">]</span>
+<span class="c1"># Switches to the specified branch and updates the working directory</span>
+
+$ git merge <span class="o">[</span>branch<span class="o">]</span>
+<span class="c1"># Combines the specified branch&rsquo;s history into the current branch</span>
+
+$ git branch -d <span class="o">[</span>branch-name<span class="o">]</span>
+<span class="c1"># Deletes the specified branch</span>
+</pre></div>
+<h2 id="refactor-filenames">Refactor Filenames</h2>
+<p>Relocate and remove versioned files</p>
+<div class="highlight"><pre><span></span>$ git rm <span class="o">[</span>file<span class="o">]</span>
+<span class="c1"># Deletes the file from the working directory and stages the deletion</span>
+
+$ git rm --cached <span class="o">[</span>file<span class="o">]</span>
+<span class="c1"># Removes the file from version control but preserves the file locally</span>
+
+$ git mv <span class="o">[</span>file-original<span class="o">]</span> <span class="o">[</span>file-renamed<span class="o">]</span>
+<span class="c1"># Changes the file name and prepares it for commit</span>
+</pre></div>
+<h2 id="suppress-tracking">Suppress tracking</h2>
+<p>Exclude temporary files and paths</p>
+<div class="highlight"><pre><span></span>*.log
+build/
+temp-*
+<span class="c1">#A text file named .gitignore suppresses accidental versioning of files and paths matching the specified paterns</span>
+</pre></div>
+<div class="highlight"><pre><span></span>$ git ls-files --other --ignored --exclude-standard
+<span class="c1"># Lists all ignored files in this project</span>
+</pre></div>
+<h2 id="save-fragments">Save Fragments</h2>
+<p>Shelve and restore incomplete changes</p>
+<div class="highlight"><pre><span></span>$ git stash
+<span class="c1"># Temporarily stores all modified tracked files</span>
+
+$ git stash list
+<span class="c1"># Lists all stashed changesets</span>
+
+$ git stash pop
+<span class="c1"># Restores the most recently stashed files</span>
+
+$ git stash drop
+<span class="c1"># Discards the most recently stashed changeset</span>
+</pre></div>
+<h2 id="review-history">Review History</h2>
+<p>Browse and inspect the evolution of project files</p>
+<div class="highlight"><pre><span></span>$ git log
+<span class="c1"># Lists version history for the current branch</span>
+
+$ git log --follow <span class="o">[</span>file<span class="o">]</span>
+<span class="c1"># Lists version history for a file, including renames</span>
+
+$ git diff <span class="o">[</span>first-branch<span class="o">]</span>...<span class="o">[</span>second-branch<span class="o">]</span>
+<span class="c1"># Shows content differences between two branches</span>
+
+$ git show <span class="o">[</span>commit<span class="o">]</span>
+<span class="c1"># Outputs metadata and content changes of the specified commit</span>
+</pre></div>
+<p>Redo commits 
+Erase mistakes and craf replacement history</p>
+<div class="highlight"><pre><span></span>$ git reset <span class="o">[</span>commit<span class="o">]</span>
+<span class="c1"># Undoes all commits afer [commit], preserving changes locally</span>
+
+$ git reset --hard <span class="o">[</span>commit<span class="o">]</span>
+<span class="c1"># Discards all history and changes back to the specified commit</span>
+</pre></div>
+<h2 id="synchronize-changes">Synchronize changes</h2>
+<p>Register a repository bookmark and exchange version history</p>
+<div class="highlight"><pre><span></span>$ git fetch <span class="o">[</span>bookmark<span class="o">]</span>
+<span class="c1"># Downloads all history from the repository bookmark</span>
+
+$ git merge <span class="o">[</span>bookmark<span class="o">]</span>/<span class="o">[</span>branch<span class="o">]</span>
+<span class="c1"># Combines bookmark&rsquo;s branch into current local branch</span>
+
+$ git push <span class="o">[</span>alias<span class="o">]</span> <span class="o">[</span>branch<span class="o">]</span>
+<span class="c1"># Uploads all local branch commits to GitHub</span>
+
+$ git pull
+<span class="c1">#Downloads bookmark history and incorporates changes</span>
+</pre></div>
+<h1 id="some-frequent-templates_1">Some frequent templates</h1>
+<h2 id="example-contribute-to-an-existing-repository">Example: Contribute to an existing repository</h2>
+<div class="highlight"><pre><span></span><span class="c1"># download a repository on GitHub.com to our machine</span>
+git clone https://github.com/me/repo.git
+
+<span class="c1"># change into the `repo` directory</span>
+<span class="nb">cd</span> repo
+
+<span class="c1"># create a new branch to store any new changes</span>
+git branch my-branch
+
+<span class="c1"># switch to that branch (line of development)</span>
+git checkout my-branch
+
+<span class="c1"># make changes, for example, edit `file1.md` and `file2.md` using the text editor</span>
+
+<span class="c1"># stage the changed files</span>
+git add file1.md file2.md
+
+<span class="c1"># take a snapshot of the staging area (anything that's been added)</span>
+git commit -m <span class="s2">"my snapshot"</span>
+
+<span class="c1"># push changes to github</span>
+git push --set-upstream origin my-branch
+</pre></div>
+<h2 id="example-start-a-new-repository-and-publish-it-to-github">Example: Start a new repository and publish it to GitHub</h2>
+<p>First, you will need to create a new repository on GitHub. You can learn how to create a new repository in our Hello World guide. Do not initialize the repository with a README, .gitignore or License. This empty repository will await your code.</p>
+<div class="highlight"><pre><span></span><span class="c1"># create a new directory, and initialize it with git-specific functions</span>
+git init my-repo
+
+<span class="c1"># change into the `my-repo` directory</span>
+<span class="nb">cd</span> my-repo
+
+<span class="c1"># create the first file in the project</span>
+touch README.md
+
+<span class="c1"># git isn't aware of the file, stage it</span>
+git add README.md
+
+<span class="c1"># take a snapshot of the staging area</span>
+git commit -m <span class="s2">"add README to initial commit"</span>
+
+<span class="c1"># provide the path for the repository you created on github</span>
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+
+<span class="c1"># push changes to github</span>
+git push --set-upstream origin master
+</pre></div>
+<h2 id="example-contribute-to-an-existing-branch-on-github">Example: contribute to an existing branch on GitHub</h2>
+<div class="highlight"><pre><span></span><span class="c1"># assumption: a project called `repo` already exists on the machine, and a new branch has been pushed to GitHub.com since the last time changes were made locally</span>
+
+<span class="c1"># change into the `repo` directory</span>
+<span class="nb">cd</span> repo
+
+<span class="c1"># update all remote tracking branches, and the currently checked out branch</span>
+git pull
+
+<span class="c1"># change into the existing branch called `feature-a`</span>
+git checkout feature-a
+
+<span class="c1"># make changes, for example, edit `file1.md` using the text editor</span>
+
+<span class="c1"># stage the changed file</span>
+git add file1.md
+
+<span class="c1"># take a snapshot of the staging area</span>
+git commit -m <span class="s2">"edit file1"</span>
+
+<span class="c1"># push changes to github</span>
+git push
+</pre></div>
+<p>Source: <a href="https://guides.github.com/introduction/git-handbook/">git-handbook</a>.</p>
+<h1 id="models-for-collaborative-development_1">Models for collaborative development</h1>
+<p>There are two primary ways people collaborate on GitHub:</p>
+<ol>
+<li>Shared repository</li>
+<li>Fork and pull</li>
+</ol>
+<p>With a shared repository, individuals and teams are explicitly designated as contributors with read, write, or administrator access. This simple permission structure, combined with features like protected branches and Marketplace, helps teams progress quickly when they adopt GitHub.</p>
+<p>For an open source project, or for projects to which anyone can contribute, managing individual permissions can be challenging, but a fork and pull model allows anyone who can view the project to contribute. A fork is a copy of a project under an developer&rsquo;s personal account. Every developer has full control of their fork and is free to implement a fix or new feature. Work completed in forks is either kept separate, or is surfaced back to the original project via a pull request. There, maintainers can review the suggested changes before they&rsquo;re merged. See the <a href="https://guides.github.com/activities/forking/">Forking Projects Guide</a> for more information.</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/git.html" class="tag">GIT</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

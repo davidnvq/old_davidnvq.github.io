@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Alexnet NIPS 2012 | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Alexnet NIPS 2012</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#specific-notes" style="border-bottom: 0px" title="Specific notes">Specific notes</a></li><li><a class="toc-href" href="#tldr-code" style="border-bottom: 0px" title="TLDR: Code">TLDR: Code</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#the-pytorch-code-of-alexnet" style="border-bottom: 0px" title="The Pytorch code of AlexNet.">The Pytorch code of AlexNet.</a></li><li><a class="toc-href" href="#tensorflow-implementation-with-slim" style="border-bottom: 0px" title="Tensorflow Implementation with slim">Tensorflow Implementation with slim</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Alexnet NIPS 2012</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 15, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/paper.html">paper</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#specific-notes" style="border-bottom: 0px" title="Specific notes">Specific notes</a></li><li><a class="toc-href" href="#tldr-code" style="border-bottom: 0px" title="TLDR: Code">TLDR: Code</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#the-pytorch-code-of-alexnet" style="border-bottom: 0px" title="The Pytorch code of AlexNet.">The Pytorch code of AlexNet.</a></li><li><a class="toc-href" href="#tensorflow-implementation-with-slim" style="border-bottom: 0px" title="Tensorflow Implementation with slim">Tensorflow Implementation with slim</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="abstract">Abstract</h1>
+<hr/>
+<ul>
+<li>Published on NIPS 2012. </li>
+<li>Pdf version can be found in dropbox here. </li>
+<li>SOTA in ImageNet 2012 with top-5 error rate 15.3%.</li>
+<li>Use <code>dropout</code>, <code>relu</code>.</li>
+</ul>
+<h1 id="introduction">Introduction</h1>
+<hr/>
+<ol>
+<li>CNN: <code>conv</code> layers have much fewer connections &amp; params, and so easier to train.</li>
+<li>Dataset: Imagenet contains enough labeled examples &rarr; can train without severe overfitting.</li>
+<li>Train Alexnet takes 5-6 days with 2 GPUs 3GB. 
+Dataset</li>
+</ol>
+<hr/>
+<ul>
+<li>ImageNet 1.2 million high-resolution images with 1000 classes.</li>
+<li>Two error rates:</li>
+<li>Top-5 error rate</li>
+<li>Top-1 error rate</li>
+<li>The size of the images to be trained: smaller size &rarr; 256, then crop the center patch: 256x256.
+Architecture</li>
+</ul>
+<hr/>
+<ul>
+<li>60 million params with 650,000 neurons.</li>
+<li>5 <code>conv</code> layers, 3 <code>fc</code> layers.</li>
+</ul>
+<p><img alt="Error rate w.r.t epochs on CIFAR10. The dash line is of tanh while the solid line is of relu." src="https://d2mxuefqeaa7sj.cloudfront.net/s_6EF601BE07E17A98BF97AB239E543B35D29C3B4B9D1871E11707DB6D0C2C3533_1533070511862_image.png"/></p>
+<p>Relu</p>
+<ul>
+<li>non-saturating nonlinearity &rarr; converge faster</li>
+<li>easy to train - no exponential computations.</li>
+<li>one of the best choice of activation function.</li>
+</ul>
+<p>Local Reponse Normalization</p>
+<h1 id="specific-notes">Specific notes</h1>
+<hr/>
+<h1 id="tldr-code">TLDR: Code</h1>
+<p>Below are two version implemented in Pytorch and Tensorflow.</p>
+<h2 id="the-pytorch-code-of-alexnet">The Pytorch code of AlexNet.</h2>
+<blockquote>
+<p>The dropout_rate = 0.5, it&rsquo;s the default value in Pytorch implementation of <code>dropout</code></p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="kr">class</span> <span class="nx">AlexNet</span><span class="p">(</span><span class="nx">nn</span><span class="p">.</span><span class="nx">Module</span><span class="p">)</span><span class="o">:</span>
+
+    <span class="nx">def</span> <span class="nx">__init__</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">:</span>
+        <span class="kr">super</span><span class="p">(</span><span class="nx">AlexNet</span><span class="p">,</span> <span class="nx">self</span><span class="p">).</span><span class="nx">__init__</span><span class="p">()</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">features</span> <span class="o">=</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">Sequential</span><span class="p">(</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="nx">kernel_size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="nx">stride</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nx">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">MaxPool2d</span><span class="p">(</span><span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="nx">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nx">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">MaxPool2d</span><span class="p">(</span><span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Conv2d</span><span class="p">(</span><span class="mi">192</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Conv2d</span><span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">MaxPool2d</span><span class="p">(</span><span class="nx">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">classifier</span> <span class="o">=</span> <span class="nx">nn</span><span class="p">.</span><span class="nx">Sequential</span><span class="p">(</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Dropout</span><span class="p">(),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Linear</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4096</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Dropout</span><span class="p">(),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Linear</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">4096</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">ReLU</span><span class="p">(</span><span class="nx">inplace</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span>
+            <span class="nx">nn</span><span class="p">.</span><span class="nx">Linear</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="nx">num_classes</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span><span class="o">:</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">features</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">classifier</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">x</span>
+</pre></div>
+<h2 id="tensorflow-implementation-with-slim">Tensorflow Implementation with slim</h2>
+<div class="alert alert-success" role="alert">
+<ul>
+<li>
+<p>All the fully connected layers have been transformed to conv2d layers</p>
+</li>
+<li>
+<p>To use in classification mode, resize input to <code>224x224</code> or set <code>global_pool = True</code>.</p>
+</li>
+<li>
+<p>LRN layers have been removed </p>
+</li>
+<li>
+<p>Change the initializers from <code>random_normal_initializer</code> to <code>xavier_initializer</code>.</p>
+</li>
+</ul>
+</div>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+
+<span class="n">slim</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">slim</span>
+<span class="n">trunc_normal</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">stddev</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal_initializer</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">stddev</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">alexnet_v2_arg_scope</span><span class="p">(</span><span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">([</span><span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">,</span> <span class="n">slim</span><span class="o">.</span><span class="n">fully_connected</span><span class="p">],</span>
+                        <span class="n">activation_fn</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
+                        <span class="n">biases_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+                        <span class="n">weights_regularizer</span><span class="o">=</span><span class="n">slim</span><span class="o">.</span><span class="n">l2_regularizer</span><span class="p">(</span><span class="n">weight_decay</span><span class="p">)):</span>
+    <span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">([</span><span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'SAME'</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">([</span><span class="n">slim</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'VALID'</span><span class="p">)</span> <span class="k">as</span> <span class="n">arg_sc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arg_sc</span>
+
+
+<span class="k">def</span> <span class="nf">alexnet_v2</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
+                <span class="n">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                <span class="n">is_training</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">dropout_keep_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">spatial_squeeze</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">scope</span><span class="o">=</span><span class="s1">'alexnet_v2'</span><span class="p">,</span>
+                <span class="n">global_pool</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">"""AlexNet version 2.</span>
+<span class="sd">    Described in: http://arxiv.org/pdf/1404.5997v2.pdf</span>
+<span class="sd">    Parameters from:</span>
+<span class="sd">    github.com/akrizhevsky/cuda-convnet2/blob/master/layers/</span>
+<span class="sd">    layers-imagenet-1gpu.cfg</span>
+<span class="sd">    Note: All the fully_connected layers have been transformed to conv2d layers.</span>
+<span class="sd">        To use in classification mode, resize input to 224x224 or set</span>
+<span class="sd">        global_pool=True. To use in fully convolutional mode, set</span>
+<span class="sd">        spatial_squeeze to false.</span>
+<span class="sd">        The LRN layers have been removed and change the initializers from</span>
+<span class="sd">        random_normal_initializer to xavier_initializer.</span>
+<span class="sd">    Args:</span>
+<span class="sd">    inputs: a tensor of size [batch_size, height, width, channels].</span>
+<span class="sd">    num_classes: the number of predicted classes. If 0 or None, the logits layer</span>
+<span class="sd">    is omitted and the input features to the logits layer are returned instead.</span>
+<span class="sd">    is_training: whether or not the model is being trained.</span>
+<span class="sd">    dropout_keep_prob: the probability that activations are kept in the dropout</span>
+<span class="sd">        layers during training.</span>
+<span class="sd">    spatial_squeeze: whether or not should squeeze the spatial dimensions of the</span>
+<span class="sd">        logits. Useful to remove unnecessary dimensions for classification.</span>
+<span class="sd">    scope: Optional scope for the variables.</span>
+<span class="sd">    global_pool: Optional boolean flag. If True, the input to the classification</span>
+<span class="sd">        layer is avgpooled to size 1x1, for any input size. (This is not part</span>
+<span class="sd">        of the original AlexNet.)</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    net: the output of the logits layer (if num_classes is a non-zero integer),</span>
+<span class="sd">        or the non-dropped-out input to the logits layer (if num_classes is 0</span>
+<span class="sd">        or None).</span>
+<span class="sd">    end_points: a dict of tensors with intermediate activations.</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="s1">'alexnet_v2'</span><span class="p">,</span> <span class="p">[</span><span class="n">inputs</span><span class="p">])</span> <span class="k">as</span> <span class="n">sc</span><span class="p">:</span>
+    <span class="n">end_points_collection</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">original_name_scope</span> <span class="o">+</span> <span class="s1">'_end_points'</span>
+    <span class="c1"># Collect outputs for conv2d, fully_connected and max_pool2d.</span>
+    <span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">([</span><span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">,</span> <span class="n">slim</span><span class="o">.</span><span class="n">fully_connected</span><span class="p">,</span> <span class="n">slim</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">],</span>
+                        <span class="n">outputs_collections</span><span class="o">=</span><span class="p">[</span><span class="n">end_points_collection</span><span class="p">]):</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'VALID'</span><span class="p">,</span>
+                        <span class="n">scope</span><span class="o">=</span><span class="s1">'conv1'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'pool1'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'conv2'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'pool2'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'conv3'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'conv4'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'conv5'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'pool5'</span><span class="p">)</span>
+
+        <span class="c1"># Use conv2d instead of fully_connected layers.</span>
+        <span class="k">with</span> <span class="n">slim</span><span class="o">.</span><span class="n">arg_scope</span><span class="p">([</span><span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">],</span>
+                            <span class="n">weights_initializer</span><span class="o">=</span><span class="n">trunc_normal</span><span class="p">(</span><span class="mf">0.005</span><span class="p">),</span>
+                            <span class="n">biases_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)):</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'VALID'</span><span class="p">,</span>
+                            <span class="n">scope</span><span class="o">=</span><span class="s1">'fc6'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">dropout_keep_prob</span><span class="p">,</span> <span class="n">is_training</span><span class="o">=</span><span class="n">is_training</span><span class="p">,</span>
+                            <span class="n">scope</span><span class="o">=</span><span class="s1">'dropout6'</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">scope</span><span class="o">=</span><span class="s1">'fc7'</span><span class="p">)</span>
+        <span class="c1"># Convert end_points_collection into a end_point dict.</span>
+        <span class="n">end_points</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">convert_collection_to_dict</span><span class="p">(</span>
+            <span class="n">end_points_collection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">global_pool</span><span class="p">:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">keep_dims</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'global_pool'</span><span class="p">)</span>
+            <span class="n">end_points</span><span class="p">[</span><span class="s1">'global_pool'</span><span class="p">]</span> <span class="o">=</span> <span class="n">net</span>
+        <span class="k">if</span> <span class="n">num_classes</span><span class="p">:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">dropout_keep_prob</span><span class="p">,</span> <span class="n">is_training</span><span class="o">=</span><span class="n">is_training</span><span class="p">,</span>
+                                <span class="n">scope</span><span class="o">=</span><span class="s1">'dropout7'</span><span class="p">)</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">slim</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                            <span class="n">activation_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">normalizer_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">biases_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+                            <span class="n">scope</span><span class="o">=</span><span class="s1">'fc8'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">spatial_squeeze</span><span class="p">:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">'fc8/squeezed'</span><span class="p">)</span>
+            <span class="n">end_points</span><span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">'/fc8'</span><span class="p">]</span> <span class="o">=</span> <span class="n">net</span>
+        <span class="k">return</span> <span class="n">net</span><span class="p">,</span> <span class="n">end_points</span>
+<span class="n">alexnet_v2</span><span class="o">.</span><span class="n">default_image_size</span> <span class="o">=</span> <span class="mi">224</span>
+</pre></div>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/image-recognition.html" class="tag">Image Recognition</a>
+                    <a href="../../../../tag/alexnet.html" class="tag">Alexnet</a>
+                    <a href="../../../../tag/cnn.html" class="tag">CNN</a>
+                    <a href="../../../../tag/imagenet.html" class="tag">ImageNet</a>
+                    <a href="../../../../tag/2012.html" class="tag">2012</a>
+                    <a href="../../../../tag/paper.html" class="tag">PAPER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

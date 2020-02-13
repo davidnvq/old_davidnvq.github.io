@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>AI nào cho Việt Nam | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>AI nào cho Việt Nam</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#ai-nao-cho-viet-nam" style="border-bottom: 0px" title="AI n&agrave;o cho Việt Nam?">AI n&agrave;o cho Việt Nam?</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">AI nào cho Việt Nam</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 23, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/other.html">other</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#ai-nao-cho-viet-nam" style="border-bottom: 0px" title="AI n&agrave;o cho Việt Nam?">AI n&agrave;o cho Việt Nam?</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="ai-nao-cho-viet-nam">AI n&agrave;o cho Việt Nam?</h1>
+<blockquote>
+<p>T&aacute;c giả: Gi&aacute;o sư Hồ T&uacute; Bảo
+Viện John von Neumann, Đại học Quốc gia th&agrave;nh phố Hồ Ch&iacute; Minh
+Viện Nghi&ecirc;n cứu Cao cấp về To&aacute;n.</p>
+</blockquote>
+<p>Sau hơn một năm cả nước đ&atilde; n&oacute;i rất nhiều về c&aacute;ch mạng c&ocirc;ng nghiệp lần thứ tư l&agrave;
+g&igrave;, đ&atilde; đến l&uacute;c ch&uacute;ng ta phải h&agrave;nh động nhiều hơn, trong đ&oacute; c&oacute; việc cần l&agrave;m g&igrave; v&agrave;
+l&agrave;m thế n&agrave;o?</p>
+<p>Sự cộng hưởng trong những năm vừa qua của c&aacute;c c&ocirc;ng nghệ số c&oacute; nhiều đột ph&aacute;
+(như điện to&aacute;n đ&aacute;m m&acirc;y, internet vạn vật, dữ liệu lớn, tr&iacute; tuệ nh&acirc;n tạo&hellip;) đ&atilde; b&aacute;o
+hiệu những thay đổi lớn lao đang bắt đầu xảy ra, được gọi ở nhiều nơi l&agrave; cuộc c&aacute;ch
+mạng c&ocirc;ng nghiệp lần thứ tư với đặc trưng cơ bản l&agrave; sản xuất th&ocirc;ng minh. Việc sản
+xuất th&ocirc;ng minh n&agrave;y được xem v&agrave; tin rằng sẽ chủ yếu dựa v&agrave;o lĩnh vực tr&iacute; tuệ nh&acirc;n
+tạo, thường gọi l&agrave; AI theo t&ecirc;n tiếng Anh. AI c&ograve;n được hiểu một c&aacute;ch d&acirc;n d&atilde; hơn l&agrave;
+&ldquo;th&ocirc;ng minh nh&acirc;n tạo&rdquo;, tức l&agrave; l&agrave;m sao cho m&aacute;y m&oacute;c, chủ yếu l&agrave; m&aacute;y t&iacute;nh, c&oacute; những
+khả năng của tr&iacute; th&ocirc;ng minh con người.</p>
+<p>Nếu n&oacute;i một c&aacute;ch dễ hiểu th&igrave; AI l&agrave; g&igrave;? Tại sao cần v&agrave; c&oacute; thể d&ugrave;ng AI để ph&aacute;t triển
+đất nước khi nhiều lĩnh vực sản xuất của ta đang ở tr&igrave;nh độ của c&aacute;ch mạng c&ocirc;ng
+nghiệp những lần trước? Quan trọng hơn, ta cần AI g&igrave;, ph&aacute;t triển v&agrave; d&ugrave;ng AI đ&oacute; thế
+n&agrave;o?
+AI đ&atilde; c&oacute; một lịch sử hơn 60 năm, ngay sau khi những chiếc m&aacute;y t&iacute;nh điện tử đầu
+ti&ecirc;n với chức năng cộng trừ nh&acirc;n chia ra đời v&agrave;o những năm 1940 của thế kỷ trước.
+Nhưng chỉ &iacute;t năm sau đ&oacute;, con người đ&atilde; c&oacute; mục ti&ecirc;u l&agrave;m những chiếc m&aacute;y t&iacute;nh c&oacute; AI,
+ti&ecirc;u biểu l&agrave; c&aacute;c khả năng suy luận, giải quyết vấn đề, hiểu ng&ocirc;n ngữ, nhận thức v&agrave;
+học tập.
+Trước hết l&agrave; l&agrave;m cho m&aacute;y biết suy luận. Để l&agrave;m vậy cần đưa được c&aacute;c nguy&ecirc;n l&yacute;,
+c&aacute;c c&aacute;ch lập luận logic của con người v&agrave;o m&aacute;y dưới dạng c&aacute;c chương tr&igrave;nh gọi l&agrave;
+động cơ suy diễn. Ngo&agrave;i ra, phải đưa v&agrave;o v&agrave; diễn đạt được tri thức của con người
+trong m&aacute;y theo những c&aacute;ch n&agrave;o đ&oacute;, gọi l&agrave; cơ sở tri thức, để động cơ suy diễn d&ugrave;ng
+đuợc c&aacute;c tri thức n&agrave;y khi lập luận. C&oacute; thể h&igrave;nh dung động cơ suy diễn như c&aacute;i m&aacute;y
+c&ograve;n tri thức như nhi&ecirc;n liệu đưa v&agrave;o trong m&aacute;y đ&oacute; để tạo ra c&aacute;c kết quả suy diễn. Đ&atilde;
+từ l&acirc;u, c&ocirc;ng thức cơ bản của AI l&agrave; &ldquo;AI = suy diễn + tri thức&rdquo;.
+Những   mốc ch&iacute;nh   trong   lịch    sử ph&aacute;t triển   ng&agrave;nh   AI
+Thực hiện c&ocirc;ng thức tr&ocirc;ng đơn giản n&agrave;y kh&ocirc;ng hề đơn giản. Trong những năm 70
+của thế kỷ trước một mục ti&ecirc;u ch&iacute;nh của AI li&ecirc;n quan việc m&aacute;y suy luận l&agrave; c&aacute;c hệ
+chuy&ecirc;n gia. Mỗi hệ chuy&ecirc;n gia l&agrave; một chương tr&igrave;nh m&aacute;y t&iacute;nh biết suy luận với tri
+thức chuy&ecirc;n gia trong một lĩnh vực hẹp, c&oacute; thể tương t&aacute;c với người d&ugrave;ng để đưa ra
+c&aacute;c quyết định, c&aacute;c lời khuy&ecirc;n&hellip; như của c&aacute;c chuy&ecirc;n gia. Hơn ba mươi năm trước
+những &ldquo;d&acirc;n AI&rdquo; ở ta đ&atilde; nỗ lực l&agrave;m một hệ chuy&ecirc;n gia về chẩn đo&aacute;n bệnh với mơ
+ước sẽ copy th&agrave;nh h&agrave;ng ngh&igrave;n bản để gi&uacute;p b&aacute;c sĩ ở những bệnh viện hay trạm y tế
+xa x&ocirc;i cũng c&oacute; thể kh&aacute;m chữa bệnh gần như c&aacute;c thầy thuốc bậc thầy. Tuy nhi&ecirc;n
+việc n&agrave;y kh&ocirc;ng th&agrave;nh. Kh&ocirc;ng chỉ c&oacute; thất bại ở Việt Nam, c&aacute;c hệ chuy&ecirc;n gia cũng
+thất bại khắp nơi. Nguy&ecirc;n nh&acirc;n ch&iacute;nh l&agrave; việc thu thập tri thức chuy&ecirc;n gia dưới c&aacute;c
+dạng tường minh để c&oacute; thể đưa v&agrave;o m&aacute;y t&iacute;nh thực ra rất kh&oacute; khăn. Vượt qua kh&oacute;
+khăn n&agrave;y ch&iacute;nh l&agrave; một động lực của lĩnh vực học m&aacute;y (machine learning), hiện nay
+đang đ&oacute;ng vai tr&ograve; trung t&acirc;m của AI.
+Khả năng giải quyết vấn đề của m&aacute;y cũng đ&atilde; chủ yếu dựa v&agrave;o khả năng suy diễn
+của m&aacute;y nhằm từng bước t&igrave;m ra &ldquo;đường đi nước bước&rdquo; để dần đến đ&iacute;ch. Khả năng
+n&agrave;y thường được &ldquo;đo&rdquo; bằng c&aacute;c trận đấu cờ của m&aacute;y với người. V&agrave;o năm 1997 m&aacute;y
+t&iacute;nh Deep Blue của IBM với AI đ&atilde; đ&aacute;nh bại nh&agrave; v&ocirc; địch cờ vua thế giới Garry
+Kasparov, v&agrave; cuối năm 2006 m&aacute;y t&iacute;nh Deep Fritz lại đ&aacute;nh bại nh&agrave; v&ocirc; địch Kramnik.
+Hai chục năm sau, cuối năm 2016 v&agrave; 2017, chương tr&igrave;nh AlphaGo v&agrave; AlphaGo Zero
+của Google đ&atilde; thắng Lee Sedol, nh&agrave; v&ocirc; địch của m&ocirc;n cờ Go, vốn phức tạp hơn cờ
+vua rất nhiều. AlphaGo dựa tr&ecirc;n kết hợp của kỹ thuật học m&aacute;y v&agrave; t&igrave;m kiếm nhanh
+của m&aacute;y t&iacute;nh trong một kh&ocirc;ng gian rất nhiều c&aacute;c nước cờ khi m&aacute;y biết học theo rất
+nhiều v&aacute;n cờ nổi tiếng trong qu&aacute; khứ.
+L&agrave;m cho m&aacute;y c&oacute; khả năng nhận thức li&ecirc;n quan đến c&aacute;c gi&aacute;c quan của con người.
+Trước hết l&agrave; hiểu những thứ nghe v&agrave; nh&igrave;n được. Đ&oacute; l&agrave; việc m&aacute;y &ldquo;nghe&rdquo; được tiếng
+người v&agrave; chuyển th&agrave;nh c&aacute;c c&acirc;u chữ ở dạng số (nhận dạng tiếng n&oacute;i). Đ&oacute; l&agrave; việc
+m&aacute;y &ldquo;đọc&rdquo; được chữ viết của con người trong s&aacute;ch b&aacute;o v&agrave; chuyển ch&uacute;ng th&agrave;nh c&aacute;c
+c&acirc;u chữ tr&ecirc;n m&aacute;y (nhận dạng chữ viết). L&agrave;m m&aacute;y &ldquo;hiểu&rdquo; được tiếng n&oacute;i v&agrave; chữ viết
+của con người dựa tr&ecirc;n việc ph&acirc;n t&iacute;ch c&aacute;c c&acirc;u chữ m&aacute;y thu được khi nghe v&agrave; nh&igrave;n
+(hiểu ng&ocirc;n ngữ tự nhi&ecirc;n). Một kết quả đặc sắc của việc hiểu n&agrave;y l&agrave; dịch c&aacute;c văn bản
+từ một ng&ocirc;n ngữ n&agrave;y sang ng&ocirc;n
+ngữ kh&aacute;c (dịch m&aacute;y). Rất nhiều
+trong ch&uacute;ng ta đang h&agrave;ng ng&agrave;y
+d&ugrave;ng hệ dịch miễn ph&iacute; của Google
+để dịch nhanh nhiều t&agrave;i liệu tiếng
+Anh qua tiếng Việt. Gần đ&acirc;y hơn,
+c&aacute;c ứng dụng nhận dạng tiếng n&oacute;i
+bắt đầu trở n&ecirc;n phổ biến.
+B&ecirc;n cạnh việc nh&igrave;n v&agrave; đọc được
+chữ viết l&agrave; việc l&agrave;m cho m&aacute;y
+&ldquo;nh&igrave;n&rdquo; được nhiều thứ kh&aacute;c qua Người m&aacute;y ASIMO đưa đồ uống cho kh&aacute;ch theo y&ecirc;u cầu
+(http://world.honda.com/ASIMO/)
+camera v&agrave; &ldquo;hiểu&rdquo; c&aacute;c h&igrave;nh ảnh thu được (xử l&yacute; ảnh). Chẳng hạn đ&oacute; l&agrave; l&agrave;m sao m&aacute;y
+ph&aacute;t hiện được những bất thường từ những bức ảnh phức tạp trong y học, hoặc
+việc m&aacute;y nhận biết được ảnh của những vật thể đang chuyển động (như biển số xe
+chạy tr&ecirc;n cao tốc khi trời mưa hay nhận dạng mặt người ở s&acirc;n bay).
+Khi internet ra đời, những kỹ thuật AI kể tr&ecirc;n được nh&uacute;ng v&agrave;o m&ocirc;i trường mạng,
+như m&aacute;y dịch tự động qua mạng, nhận dạng tiếng n&oacute;i qua mạng, v&agrave; ti&ecirc;u biểu l&agrave; c&aacute;c
+t&aacute;c tử th&ocirc;ng minh. Mỗi t&aacute;c tử th&ocirc;ng minh tr&ecirc;n mạng l&agrave; một phần mềm tự quản, tti&ecirc;u
+biểu l&agrave; c&aacute;c t&aacute;c tử hoạt động tr&ecirc;n internet v&agrave; c&oacute; thể thực hiện c&aacute;c nhiệm vụ được
+giao ph&oacute;. C&ocirc;ng thức cơ bản của AI cho c&aacute;c b&agrave;i to&aacute;n suy diễn, giải quyết vấn đề, lập
+kế hoạch, trợ gi&uacute;p quyết định th&ocirc;ng minh&hellip; do vậy trở th&agrave;nh
+AI = Suy diễn + Tri thức + M&ocirc;i trường
+Ở đ&acirc;y &ldquo;m&ocirc;i trường&rdquo; ch&iacute;nh l&agrave; Internet, l&agrave; c&aacute;c thiết bị li&ecirc;n lạc kh&ocirc;ng d&acirc;y, c&aacute;c thiết bị
+t&iacute;nh to&aacute;n v&agrave; lưu trữ th&ocirc;ng tin, l&agrave; điện to&aacute;n đ&aacute;m m&acirc;y...
+AI cũng gắn kết với lĩnh vực robot, l&agrave;m cho c&aacute;c robot xưa vốn chỉ biết hoạt động
+theo một chương tr&igrave;nh cố định th&igrave; nay đang c&oacute; th&ecirc;m c&aacute;c chức năng của AI v&agrave; trở
+th&agrave;nh c&aacute;c robot th&ocirc;ng minh.
+Tuy hầu hết mọi người đều c&oacute; những h&igrave;nh dung về AI qua c&aacute;c chức năng AI kể tr&ecirc;n,
+&iacute;t người ngo&agrave;i ng&agrave;nh biết c&aacute;c rằng c&aacute;c tiến bộ đột ph&aacute; của AI lại chủ yếu dựa tr&ecirc;n
+lĩnh vực học m&aacute;y (machine learning).
+Học m&aacute;y l&agrave; một nh&aacute;nh của AI với mục ti&ecirc;u l&agrave;m cho m&aacute;y c&oacute; những khả năng học tập
+của con người. Đ&iacute;ch của việc học của cả người v&agrave; m&aacute;y l&agrave; để c&oacute; th&ecirc;m kiến thức v&agrave;
+hiểu biết mới. Điều đặc biệt l&agrave; việc học của m&aacute;y được thực hiện qua sự ph&acirc;n t&iacute;ch
+c&aacute;c nguồn dữ liệu để t&igrave;m ra c&aacute;c kiến thức v&agrave; hiểu biết con người cần.
+Học m&aacute;y đ&atilde; ph&aacute;t triển chừng nửa thế kỷ. Khi nhận ra những kh&oacute; khăn bản chất về
+việc tạo tri thức cho c&aacute;c hệ AI, cũng l&agrave; l&uacute;c con người nhận ra học m&aacute;y ch&iacute;nh l&agrave; con
+đường để c&oacute; thể vượt qua kh&oacute; khăn n&agrave;y.
+Sở dĩ vậy v&igrave; tri thức đưa v&agrave;o c&aacute;c hệ AI đều
+phải l&agrave; tri thức tường minh, diễn giải r&otilde;
+r&agrave;ng. Tuy nhi&ecirc;n, chỉ một phần tri thức của
+con người l&agrave; tường minh c&ograve;n phần lớn l&agrave;
+kinh nghiệm, l&agrave; trực cảm, l&agrave; những hiểu
+biết tiềm ẩn chỉ ph&aacute;t lộ v&agrave; kết nối khi họ
+suy nghĩ để đưa ra c&aacute;c quyết định h&agrave;nh
+động. Ch&iacute;nh c&aacute;c tri thức ẩn n&agrave;y được lưu
+trong dữ liệu do đo đạc, quan s&aacute;t từ h&agrave;nh
+động của của con người (như c&aacute;c bệnh &aacute;n
+điện tử ẩn chứa rất nhiều tri thức v&agrave; kinh
+nghiệm của b&aacute;c sĩ). Mục ti&ecirc;u của học m&aacute;y Ba th&agrave;nh   phần    ch&iacute;nh   của khoa    học dữ liệu
+ch&iacute;nh l&agrave; l&agrave;m sao
+ph&aacute;t hiện ra c&aacute;c tri
+thức tiềm ẩn n&agrave;y
+từ dữ liệu v&agrave;
+chuyển ch&uacute;ng
+th&agrave;nh dạng tường
+minh.
+Thống k&ecirc; to&aacute;n học
+đ&atilde; ph&aacute;t triển hơn
+bốn trăm năm qua
+v&agrave; cũng l&agrave; khoa
+học nhằm tạo ra,
+ph&acirc;n t&iacute;ch v&agrave; đưa
+ra kết luận từ c&aacute;c
+bảng dữ liệu, rất
+l&acirc;u trước khi c&oacute; ph&acirc;n t&iacute;ch thống k&ecirc; với m&aacute;y t&iacute;nh. Tuy phương ph&aacute;p ban đầu kh&aacute;c
+nhau, những m&ocirc; h&igrave;nh to&aacute;n học chặt chẽ của thống k&ecirc; đ&atilde; v&agrave; đang trở th&agrave;nh nền tảng
+cho học m&aacute;y. Thống k&ecirc; v&agrave; học m&aacute;y x&iacute;ch lại gần nhau trong khoảng hơn hai chục
+năm qua, bổ sung cho nhau, tạo n&ecirc;n thay đổi lớn cho cả hai lĩnh vực. Sự kết hợp
+n&agrave;y v&agrave; sức mạnh của ch&uacute;ng đ&atilde; h&igrave;nh th&agrave;nh v&agrave; khẳng định một khoa học thiết yếu
+của thời chuyển đổi số: Khoa học dữ liệu. Đ&acirc;y l&agrave; khoa học về việc tạo ra, quản l&yacute;,
+ph&acirc;n t&iacute;ch v&agrave; khai th&aacute;c dữ liệu. Dữ liệu l&agrave; t&agrave;i nguy&ecirc;n ch&iacute;nh của ph&aacute;t triển trong thời
+hiện đại, v&agrave; do vậy khoa học dữ liệu c&oacute; một gi&aacute; trị to lớn n&oacute;i chung, v&agrave; c&oacute; thể xem
+khoa học dữ liệu l&agrave; một th&agrave;nh phần của AI theo nghĩa rộng.
+Khoa    học dữ liệu:    Từ dữ liệu  đến quyết   định    v&agrave;  h&agrave;nh    động
+Chiến   lược    về AI   của một số quốc gia (https://medium.com/politics-ai/an-overview-of-national-aistrategies-2a70ec6edfd)
+Hầu hết c&aacute;c lĩnh vực của AI như nhận dạng ảnh, hiểu ng&ocirc;n ngữ, dịch tự động, nhận
+dạng tiếng n&oacute;i&hellip; trong nhiều năm qua đều ph&aacute;t triển dựa tr&ecirc;n khai th&aacute;c dữ liệu về
+ảnh, ng&ocirc;n ngữ, tiếng n&oacute;i với c&aacute;c phương ph&aacute;p của học m&aacute;y. Lời giải học m&aacute;y dẫn
+dắt bởi dữ liệu (data-driven) hiện l&agrave; phương ph&aacute;p phổ biến của AI v&agrave; nhờ vậy đang
+tạo n&ecirc;n c&aacute;c đột ph&aacute; của lĩnh vực n&agrave;y.
+Nhận thức về thời chuyển đổi số v&agrave; sức mạnh của AI, gần đ&acirc;y rất nhiều quốc gia, cả
+c&aacute;c nước ph&aacute;t triển như Mỹ, Ph&aacute;p, Đức, Anh, Canada, Nhật, H&agrave;n quốc, Trung
+Quốc&hellip; v&agrave; nhiều nước &iacute;t ph&aacute;t triển hơn như Kenya, Mexico, Tunisia, Malaysia&hellip; đều
+x&acirc;y dựng chiến lược quốc gia về AI của m&igrave;nh. Dưới c&aacute;i &ocirc; rất rộng của AI, mỗi quốc
+gia kể tr&ecirc;n đều định ra những nội dung m&igrave;nh cần l&agrave;m v&agrave; con đường đạt c&aacute;c đ&iacute;ch đ&oacute;.
+Th&iacute; dụ như nước Ph&aacute;p đ&atilde; d&agrave;nh 1,5 tỷ Euro cho chiến lược n&agrave;y trong 5 năm với một
+kế hoạch được giao cho nh&agrave; to&aacute;n học C&eacute;dric Villani chủ tr&igrave;, người c&ugrave;ng nhận giải
+thưởng Fields với gi&aacute;o sư Ng&ocirc; Bảo Ch&acirc;u. Kinh ph&iacute; n&agrave;y được sơ bộ d&agrave;nh 700 triệu
+Euro cho nghi&ecirc;n cứu AI, 100 triệu cho c&aacute;c c&ocirc;ng ty v&agrave; khởi nghiệp trong năm đầu, 70
+triệu cho mỗi năm cho Ng&acirc;n h&agrave;ng đầu tư của Ph&aacute;p, 400 triệu cho c&aacute;c đề &aacute;n AI của
+c&ocirc;ng nghiệp.
+Việt Nam c&oacute; cần chiến lược quốc gia về AI kh&ocirc;ng? V&agrave; nếu c&oacute; th&igrave; n&ecirc;n l&agrave; thế n&agrave;o?
+Đ&acirc;y l&agrave; những c&acirc;u hỏi lớn, v&agrave; b&agrave;i b&aacute;o n&agrave;y chỉ đưa ra một số &yacute; kiến ban đầu về một
+c&acirc;u hỏi li&ecirc;n quan v&agrave; đơn giản hơn: AI n&agrave;o cho Việt Nam?
+Tổng    thống   Ph&aacute;p    Macron  tuy&ecirc;n   bố tại  hội nghị AI phục    vụ cho  nh&acirc;n    loại    (29.3.2018)
+Ở đ&acirc;y ta n&oacute;i đến c&aacute;c ứng dụng của AI, v&agrave; c&aacute;c ứng dụng n&agrave;y cần dựa tr&ecirc;n việc l&agrave;m
+chủ được c&aacute;c kỹ thuật, c&ocirc;ng nghệ AI đ&atilde; được t&igrave;m ra tr&ecirc;n thế giới cũng như nghi&ecirc;n
+cứu c&aacute;c kỹ thuật AI đặc th&ugrave; cho Việt Nam (như hiểu tiếng Việt).
+Truyền th&ocirc;ng thường giới thiệu AI với c&ocirc;ng ch&uacute;ng qua c&aacute;c robot. C&aacute;c robot th&ocirc;ng
+minh t&iacute;ch hợp c&aacute;c kỹ thuật từ nhiều lĩnh vực của AI, từ nghe nh&igrave;n đến hiểu tiếng n&oacute;i,
+biết trả lời c&aacute;c c&acirc;u hỏi, biết suy luận, thể hiện biểu cảm tr&ecirc;n mặt&hellip; Ta thường thấy
+c&aacute;c video về robot phục vụ người gi&agrave;, bưng b&ecirc; c&agrave;-ph&ecirc; ở qu&aacute;n, nhặt r&aacute;c tr&ecirc;n phố&hellip;
+Ng&agrave;y 13 th&aacute;ng 7 vừa qua, nhiều người Việt đ&atilde; tận mắt thấy robot Sophia biểu diễn
+ở H&agrave; Nội.
+Một ứng dụng kh&aacute;c của AI được n&oacute;i nhiều gần đ&acirc;y, l&agrave; c&aacute;c &ocirc;t&ocirc; tự l&aacute;i. C&aacute;c &ocirc;t&ocirc; tự l&aacute;i
+bắt đầu đi tr&ecirc;n đường, kết quả của rất nhiều năm &ldquo;học&rdquo; tự l&aacute;i tr&ecirc;n sa mạc, khởi
+nguồn từ c&aacute;c cuộc thi l&agrave;m robot đ&aacute; b&oacute;ng mấy chục năm qua (Robotcup), rồi c&aacute;c
+cuộc thi mang t&ecirc;n &ldquo;th&aacute;ch thức lớn của DARPA&rdquo; từ 2004 (DARPA l&agrave; viết tắt của cơ
+quan chỉ đạo c&aacute;c dự &aacute;n nghi&ecirc;n cứu quốc ph&ograve;ng ti&ecirc;n tiến của Mỹ). Cuộc thi cũng
+hướng đến s&aacute;ng tạo c&aacute;c c&ocirc;ng nghệ t&iacute;ch hợp từ thị gi&aacute;c m&aacute;y, robot, lập kế hoạch tự
+động, học m&aacute;y, lập luận&hellip; để &ocirc;t&ocirc; c&oacute; thể tự chạy an to&agrave;n.
+C&aacute;c robot th&ocirc;ng minh, &ocirc;t&ocirc; tự l&aacute;i&hellip; kể tr&ecirc;n l&agrave; đỉnh cao của ứng dụng kỹ thuật AI v&agrave;o
+c&aacute;c hệ thống tự động, một trong c&aacute;c đ&iacute;ch h&agrave;ng đầu của AI tại c&aacute;c nước c&ocirc;ng nghiệp
+c&oacute; nền kinh tế v&agrave; khoa học ph&aacute;t triển.
+Trong chừng mực n&agrave;o đấy AI trong mắt đa số người Việt phần lớn l&agrave; c&aacute;c hệ tự động
+th&ocirc;ng minh, l&agrave; robot. Rất nhiều bạn trẻ băn khoăn về một ng&agrave;y c&aacute;c robot sẽ thống trị
+con người v&agrave; rất th&iacute;ch th&uacute; với robot Sophia. Tuy nhi&ecirc;n, nhiều người l&agrave;m AI nhận
+định rằng trong sự kiện ồn &agrave;o vừa qua về robot n&agrave;y, Sophia kh&aacute; về biểu cảm tr&ecirc;n
+mặt, nhưng c&aacute;c ph&aacute;t biểu ch&agrave;o đ&oacute;n, c&aacute;c c&acirc;u hỏi-đ&aacute;p&hellip; đều mới ứng dụng c&aacute;c kỹ
+thuật AI đơn giản, l&agrave;m sẵn v&agrave; ở mức quảng c&aacute;o nhưng chưa phải &ldquo;AI thật&rdquo;.
+Vậy AI n&agrave;o cho Việt Nam?
+C&acirc;u trả lời chung l&agrave; ta cần những AI gắn với c&aacute;c mục ti&ecirc;u ph&aacute;t triển của đất nước.
+Đấy l&agrave; AI cho một ch&iacute;nh phủ điện tử hiệu quả, l&agrave; AI cho n&ocirc;ng nghiệp th&agrave;nh th&ocirc;ng
+minh, l&agrave; AI cho du lịch th&agrave;nh một ng&agrave;nh dịch vụ th&ocirc;ng minh, l&agrave; AI để giao th&ocirc;ng an
+to&agrave;n v&agrave; nhanh hơn, l&agrave; AI cho chăm s&oacute;c sức khoẻ người d&acirc;n tốt hơn&hellip; Những AI n&agrave;y
+đang cần được nh&igrave;n nhận v&agrave; ưu ti&ecirc;n ph&aacute;t triển hơn c&aacute;c hệ tự động th&ocirc;ng minh, vốn
+rất quan trọng với c&aacute;c nước c&oacute; nền c&ocirc;ng nghiệp ph&aacute;t triển nhưng chưa khẩn thiết
+cho một quốc gia chưa lấy c&ocirc;ng nghiệp l&agrave;m trọng t&acirc;m ph&aacute;t triển như Việt Nam.
+Ở tr&ecirc;n đ&atilde; b&agrave;n về vai tr&ograve; cơ bản của học m&aacute;y, v&agrave; ta c&oacute; thể n&oacute;i AI sẽ ứng dụng được
+v&agrave;o mọi lĩnh vực vừa kể tr&ecirc;n nếu ở đ&oacute; cần d&ugrave;ng dữ liệu. Những lĩnh vực ưu ti&ecirc;n
+ph&aacute;t triển của đất nước như n&ocirc;ng nghiệp, du lịch, giao th&ocirc;ng, m&ocirc;i trường, t&agrave;i ch&iacute;nh,
+y tế&hellip; đều c&oacute; rất nhiều dữ liệu v&agrave; đều l&agrave; những mảnh đất quan trọng để tr&ecirc;n đ&oacute; đưa
+v&agrave;o giải ph&aacute;p AI. Khi t&igrave;m giải ph&aacute;p AI cho c&aacute;c lĩnh vực n&agrave;y, c&aacute;c kỹ thuật AI cơ bản
+sẽ được sử dụng, như hiểu ng&ocirc;n ngữ d&ugrave;ng cho xử l&yacute; tự động c&aacute;c văn bản, nhận
+dạng tiếng n&oacute;i d&ugrave;ng nhập liệu v&agrave; giao tiếp người m&aacute;y&hellip;
+Từ đ&acirc;y c&oacute; thể nhận định rằng trong ho&agrave;n cảnh cụ thể của Việt Nam, l&uacute;c n&agrave;y c&aacute;i AI ta
+cần nhiều hơn l&agrave; AI dựa tr&ecirc;n khai th&aacute;c dữ liệu trong c&aacute;c lĩnh vực kinh tế v&agrave; x&atilde; hội.
+Chẳng hạn đ&oacute; l&agrave; AI để tổ chức c&aacute;c kho văn bản của ch&iacute;nh phủ, c&aacute;c tỉnh th&agrave;nh, c&aacute;c
+bộ ng&agrave;nh&hellip; để c&oacute; thể như t&igrave;m ra rất nhanh c&aacute;c văn bản li&ecirc;n quan đến một quyết
+định quan trọng, hoặc tr&iacute;ch r&uacute;t ra c&aacute;c điều khoản từ c&aacute;c văn bản đ&oacute; cho một nhu cầu
+n&agrave;o đ&oacute;&hellip;
+Chẳng hạn đ&oacute; l&agrave; AI cho n&ocirc;ng nghiệp th&ocirc;ng minh khi đ&aacute;nh gi&aacute; được thị trường, đ&aacute;nh
+gi&aacute; được cung cầu trong v&agrave; ngo&agrave;i nước về c&aacute;c loại sản phẩm để c&oacute; thể quy hoạch
+sản xuất, để tr&aacute;nh được m&ugrave;a mất gi&aacute; được gi&aacute; mất m&ugrave;a&hellip; b&ecirc;n cạnh c&aacute;c trang trại
+th&ocirc;ng minh như số đ&ocirc;ng vẫn đang hướng đến.
+Chẳng hạn đ&oacute; l&agrave; AI để c&oacute; thể ph&aacute;t hiện c&aacute;c bất thường trong chi ti&ecirc;u tiền bạc v&agrave; sử
+dụng t&agrave;i sản nh&agrave; nước ngay khi những điều n&agrave;y đang xảy ra.
+Chẳng hạn đ&oacute; l&agrave; AI để c&aacute;c doanh nghiệp vừa v&agrave; nhỏ c&oacute; thể l&agrave;m ph&acirc;n t&iacute;ch kinh
+doanh khi x&acirc;y dựng c&aacute;c kế hoạch v&agrave; đưa ra c&aacute;c quyết định trong sản xuất.
+Trong c&aacute;c th&iacute; dụ tr&ecirc;n, điều quan trọng l&agrave; ch&uacute;ng ta phải x&acirc;y dựng được c&aacute;c cơ sở dữ
+liệu của quốc gia, địa phương, doanh nghiệp v&agrave; khai th&aacute;c được ch&uacute;ng. Đ&acirc;y ch&iacute;nh l&agrave;
+hạ tầng số thiết yếu của AI cho Việt Nam.
+Tất nhi&ecirc;n ta cần đ&agrave;o tạo ra lực lượng tinh nhuệ l&agrave;m AI, cần nối kết được lực lượng
+AI trong v&agrave; ngo&agrave;i nước, v&agrave; cần một chiến lược AI của Việt Nam.
+Trước khi đến một chiến lược AI của đất nước, nh&igrave;n r&otilde; những AI n&agrave;o ta đang cần v&agrave;
+ưu ti&ecirc;n l&agrave; một điều cần thiết.
+Hồ T&uacute; Bảo
+Viện John von Neumann, Đại học Quốc gia th&agrave;nh phố Hồ Ch&iacute; Minh
+Viện Nghi&ecirc;n cứu Cao cấp về To&aacute;n</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/other.html" class="tag">OTHER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Maxout ICML 2013 | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Maxout ICML 2013</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#review-of-dropout" style="border-bottom: 0px" title="Review of dropout">Review of dropout</a></li><li><a class="toc-href" href="#description-of-maxout" style="border-bottom: 0px" title="Description of Maxout">Description of Maxout</a></li><li><a class="toc-href" href="#maxout-is-a-universal-approximator" style="border-bottom: 0px" title="Maxout is a universal approximator">Maxout is a universal approximator</a></li><li><a class="toc-href" href="#experimental-results" style="border-bottom: 0px" title="Experimental Results">Experimental Results</a></li><li><a class="toc-href" href="#model-averaging" style="border-bottom: 0px" title="Model Averaging">Model Averaging</a></li><li><a class="toc-href" href="#notes" style="border-bottom: 0px" title="Notes">Notes</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Maxout ICML 2013</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 15, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/paper.html">paper</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#abstract" style="border-bottom: 0px" title="Abstract">Abstract</a></li><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a></li><li><a class="toc-href" href="#review-of-dropout" style="border-bottom: 0px" title="Review of dropout">Review of dropout</a></li><li><a class="toc-href" href="#description-of-maxout" style="border-bottom: 0px" title="Description of Maxout">Description of Maxout</a></li><li><a class="toc-href" href="#maxout-is-a-universal-approximator" style="border-bottom: 0px" title="Maxout is a universal approximator">Maxout is a universal approximator</a></li><li><a class="toc-href" href="#experimental-results" style="border-bottom: 0px" title="Experimental Results">Experimental Results</a></li><li><a class="toc-href" href="#model-averaging" style="border-bottom: 0px" title="Model Averaging">Model Averaging</a></li><li><a class="toc-href" href="#notes" style="border-bottom: 0px" title="Notes">Notes</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h2 id="abstract">Abstract</h2>
+<ol>
+<li>Link to paper, which appears on ICML 2013.</li>
+<li>Maxout network (maxout - its output is the max of a set of inputs)</li>
+<li>Design to both facilitate optimization by dropout and improve the accuracy.</li>
+<li>The SOTA results on MNIST, CIFAR-10, CIFAR-100, SVHN.</li>
+</ol>
+<h2 id="introduction">Introduction</h2>
+<p>Dropout - an inexpensive and simple means for:</p>
+<ol>
+<li>training a large ensemble of models that share params.</li>
+<li>approximately averaging together these models&rsquo; predictions.</li>
+</ol>
+<p>Dropout is applied in MLP, CNN and get the SOTA.</p>
+<p>This paper argues that: </p>
+<ul>
+<li>The best  performance may be obtained by directly designing a model that enhances dropout&rsquo;s abilities as a model averaging technique.</li>
+<li>They introduce <code>maxout</code> layer with that purpose.</li>
+</ul>
+<h2 id="review-of-dropout">Review of dropout</h2>
+<p>Dropout is a technique applied in deterministic feedforward networks: predict output <code>y</code> given vector <code>x</code> with a series of hidden layers <span class="math">\(\textbf{h} = \{h^{(1)},...,h^{(L)}\}\)</span>.</p>
+<p>Dropout trains an ensemble of models consisting of the set of all models that contain a subset of the variables in both <code>v</code> and h. </p>
+<ul>
+<li>The same set of parameters <span class="math">\(\theta\)</span> is used to parameterize a family of distributions <span class="math">\(p(y|v; \theta, \mu)\)</span> where <span class="math">\(\mu \in M\)</span> is a binary mask determining which variables to include in the model.</li>
+<li>On each presentation of a training example, we train a different sub-model by following the gradient of <span class="math">\(logp(y|v;\theta, \mu)\)</span> for a different randomly sampled <span class="math">\(\mu\)</span>.</li>
+<li>For many parameterization of <span class="math">\(p\)</span>, the initiation of different sub-models <span class="math">\(p(y|v; \theta, \mu)\)</span> can be obtained by elem-wise multiplication of v and h with the mask <span class="math">\(\mu\)</span>. </li>
+</ul>
+<p>Dropout and bagging:</p>
+<ul>
+<li>
+<p>Similar: Dropout training is similar to bagging where many different models are trained on different subsets of the data.</p>
+</li>
+<li>
+<p>Different: In dropout </p>
+</li>
+<li>Each model is trained for only 1 step</li>
+<li>All the models share parameters.</li>
+</ul>
+<p>This training procedure behave as if: </p>
+<ul>
+<li>It is training an ensemble rather than a single model (an ensemble with bagging under <code>parameter sharing constraint</code>).</li>
+<li>Each update must have a large effect (unlike SGD makes a steady progress with small steps), so that it makes the sub-model induced by that <span class="math">\(\mu\)</span> fit the current input v well.</li>
+<li>Each update step is considered as an update to different model on a different subset of training set.</li>
+</ul>
+<p>In prediction phase</p>
+<ul>
+<li>Bagging averages with the arithmetic mean &larr; impossible with exponentially many models using dropout.</li>
+<li>Fortunately, some model families (such as deep non-linear network) yield an inexpensive geometric mean.</li>
+<li>If <span class="math">\(p(y|v;\theta) = softmax(v^TW + b)\)</span>, then the geometric mean of <span class="math">\(p(y|v; \theta, \mu)\)</span> where <span class="math">\(\mu \in M\)</span> over <span class="math">\(M\)</span> is simply <span class="math">\(softmax(v^TW/2 + b)\)</span>. </li>
+<li>The average prediction of exponentially many sub-models can be computed simply by running the full model with the weights divided by 2.</li>
+</ul>
+<h2 id="description-of-maxout">Description of Maxout</h2>
+<p>The maxout model is simply uses a new type of activation function: the maxout unit.</p>
+<p>Given the input <span class="math">\(x \in R^d\)</span> (x may be a vector v, or may be a hidden layer&rsquo;s state), a maxout hidden layer implements the function:</p>
+<p><span class="math">\(h_i(x) = max_{j \in [1,k]}z_{i,j}\)</span></p>
+<p>where <span class="math">\(z_{ij} = x^TW_{..ij} + b_{ij}\)</span> and <span class="math">\(W \in R^{d \times m\times k}\)</span> and <span class="math">\(b\in R^{m \times k}\)</span>.</p>
+<p>In CNN, a maxout feature map can be constructed by taking the maximum across k affine feature maps (pool across channels). </p>
+<ul>
+<li>When training with dropout, we perform the elem-wise multiplication with the dropout mask immediately before the multiplication by the weights in all cases.</li>
+<li>A single maxout unit can be interpreted as making a piecewise linear approx to an arbitrary convex function (see Fig.1).</li>
+</ul>
+<p><img alt="" src="https://d2mxuefqeaa7sj.cloudfront.net/s_181B4C9A1CF08268454C195FA358E6ED2E4EEEFD261BA3D2C40C18FCCF458838_1531408560500_image.png"/></p>
+<p>Characteristics of maxout:</p>
+<ol>
+<li>The representation it produces is not sparse though the gradient is highly sparse and dropout will artificially sparsify the effective representation during training.</li>
+<li>maxout is locally linear almost everywhere while the other activation functions have significant cuvature.</li>
+</ol>
+<p>&rarr; They are very robust and easy to train with dropout.</p>
+<h2 id="maxout-is-a-universal-approximator">Maxout is a universal approximator</h2>
+<ol>
+<li>A standard MLP with enough hidden units is a universal approximator. </li>
+</ol>
+<p><img alt="" src="https://d2mxuefqeaa7sj.cloudfront.net/s_181B4C9A1CF08268454C195FA358E6ED2E4EEEFD261BA3D2C40C18FCCF458838_1531410910906_image.png"/></p>
+<ol>
+<li>maxout networks are universal approximators as well.
+<img alt="" src="https://d2mxuefqeaa7sj.cloudfront.net/s_181B4C9A1CF08268454C195FA358E6ED2E4EEEFD261BA3D2C40C18FCCF458838_1531411300798_image.png"/></li>
+</ol>
+<p>Example, they show that a  maxout model with just 2 hidden units can approx any continous function of <span class="math">\(v \in R^n\)</span> if each maxout unit may have many affine components.</p>
+<h2 id="experimental-results">Experimental Results</h2>
+<ul>
+<li>MNIST</li>
+<li>CIFAR-10</li>
+<li>CIFAR-100</li>
+<li>SVHN</li>
+</ul>
+<h2 id="model-averaging">Model Averaging</h2>
+<h2 id="notes">Notes</h2>
+<p>Deterministic algorithm is an algorithm which, given a particular input, will always produce the same output, with the underlying machine always passing through the same sequence of states.</p>
+<p>Deterministic model: model x&aacute;c định (tất định).</p>
+<ul>
+<li><a href="http://www.simon-hohberg.de/">Visualization</a></li>
+<li><a href="http://cs231n.github.io/neural-networks-1/">Explained</a></li>
+<li><a href="https://github.com/Duncanswilson/maxout-pytorch/blob/master/maxout_pytorch.ipynb">Code in Pytorch</a></li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "true";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/maxout.html" class="tag">Maxout</a>
+                    <a href="../../../../tag/icml.html" class="tag">ICML</a>
+                    <a href="../../../../tag/dropout.html" class="tag">Dropout</a>
+                    <a href="../../../../tag/2013.html" class="tag">2013</a>
+                    <a href="../../../../tag/paper.html" class="tag">PAPER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

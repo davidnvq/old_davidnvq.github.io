@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Summary of Object Detection Papers | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Summary of Object Detection Papers</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#object-detection-papers" style="border-bottom: 0px" title="Object Detection Papers">Object Detection Papers</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#deep-neural-networks-for-object-detection" style="border-bottom: 0px" title="Deep Neural Networks for Object Detection">Deep Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#overfeat-integrated-recognition-localization-and-detection-using-convolutional-networks" style="border-bottom: 0px" title="OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks">OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks</a></li></ol></li><li><a class="toc-href" href="#r-cnn_1" style="border-bottom: 0px" title="R-CNN">R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation" style="border-bottom: 0px" title="Rich feature hierarchies for accurate object detection and semantic segmentation">Rich feature hierarchies for accurate object detection and semantic segmentation</a></li></ol></li><li><a class="toc-href" href="#fast-r-cnn_1" style="border-bottom: 0px" title="Fast R-CNN">Fast R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#fast-r-cnn_2" style="border-bottom: 0px" title="Fast R-CNN">Fast R-CNN</a></li><li><a class="toc-href" href="#a-fast-rcnn-hard-positive-generation-via-adversary-for-object-detection" style="border-bottom: 0px" title="A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection">A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection</a></li></ol></li><li><a class="toc-href" href="#faster-r-cnn_1" style="border-bottom: 0px" title="Faster R-CNN">Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks" style="border-bottom: 0px" title="Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a></li><li><a class="toc-href" href="#r-cnn-minus-r" style="border-bottom: 0px" title="R-CNN minus R">R-CNN minus R</a></li><li><a class="toc-href" href="#faster-r-cnn-in-mxnet-with-distributed-implementation-and-data-parallelization" style="border-bottom: 0px" title="Faster R-CNN in MXNet with distributed implementation and data parallelization">Faster R-CNN in MXNet with distributed implementation and data parallelization</a></li></ol></li><li><a class="toc-href" href="#contextual-priming-and-feedback-for-faster-r-cnn_1" style="border-bottom: 0px" title="Contextual Priming and Feedback for Faster R-CNN">Contextual Priming and Feedback for Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#an-implementation-of-faster-rcnn-with-study-for-region-sampling" style="border-bottom: 0px" title="An Implementation of Faster RCNN with Study for Region Sampling">An Implementation of Faster RCNN with Study for Region Sampling</a></li><li><a class="toc-href" href="#interpretable-r-cnn" style="border-bottom: 0px" title="Interpretable R-CNN">Interpretable R-CNN</a></li></ol></li><li><a class="toc-href" href="#light-head-r-cnn_1" style="border-bottom: 0px" title="Light-Head R-CNN">Light-Head R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#light-head-r-cnn-in-defense-of-two-stage-object-detector" style="border-bottom: 0px" title="Light-Head R-CNN: In Defense of Two-Stage Object Detector">Light-Head R-CNN: In Defense of Two-Stage Object Detector</a></li></ol></li><li><a class="toc-href" href="#cascade-r-cnn_1" style="border-bottom: 0px" title="Cascade R-CNN">Cascade R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#cascade-r-cnn-delving-into-high-quality-object-detection" style="border-bottom: 0px" title="Cascade R-CNN: Delving into High Quality Object Detection">Cascade R-CNN: Delving into High Quality Object Detection</a></li></ol></li><li><a class="toc-href" href="#multibox-scalable-object-detection-using-deep-neural-networks_1" style="border-bottom: 0px" title="MultiBox Scalable Object Detection using Deep Neural Networks">MultiBox Scalable Object Detection using Deep Neural Networks</a></li><li><a class="toc-href" href="#scalable-high-quality-object-detection" style="border-bottom: 0px" title="Scalable, High-Quality Object Detection">Scalable, High-Quality Object Detection</a></li><li><a class="toc-href" href="#spp-net-spatial-pyramid-pooling-in-deep-convolutional-networks-for-visual-recognition" style="border-bottom: 0px" title="SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition">SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</a></li><li><a class="toc-href" href="#deepid-net-deformable-deep-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection">DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#object-detectors-emerge-in-deep-scene-cnns" style="border-bottom: 0px" title="Object Detectors Emerge in Deep Scene CNNs">Object Detectors Emerge in Deep Scene CNNs</a></li><li><a class="toc-href" href="#segdeepm-exploiting-segmentation-and-context-in-deep-neural-networks-for-object-detection" style="border-bottom: 0px" title="segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection">segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#object-detection-networks-on-convolutional-feature-maps" style="border-bottom: 0px" title="Object Detection Networks on Convolutional Feature Maps">Object Detection Networks on Convolutional Feature Maps</a></li><li><a class="toc-href" href="#improving-object-detection-with-deep-convolutional-networks-via-bayesian-optimization-and-structured-prediction" style="border-bottom: 0px" title="Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction">Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction</a></li><li><a class="toc-href" href="#deepbox-learning-objectness-with-convolutional-networks" style="border-bottom: 0px" title="DeepBox: Learning Objectness with Convolutional Networks">DeepBox: Learning Objectness with Convolutional Networks</a></li><li><a class="toc-href" href="#mr-cnn-object-detection-via-a-multi-region-semantic-segmentation-aware-cnn-model" style="border-bottom: 0px" title="MR-CNN Object detection via a multi-region &amp; semantic segmentation-aware CNN model">MR-CNN Object detection via a multi-region &amp; semantic segmentation-aware CNN model</a></li><li><a class="toc-href" href="#yolo-you-only-look-once-unified-real-time-object-detection" style="border-bottom: 0px" title="YOLO You Only Look Once: Unified, Real-Time Object Detection">YOLO You Only Look Once: Unified, Real-Time Object Detection</a></li><li><a class="toc-href" href="#start-training-yolo-with-our-own-data" style="border-bottom: 0px" title="Start Training YOLO with Our Own Data">Start Training YOLO with Our Own Data</a></li><li><a class="toc-href" href="#yolo-core-ml-versus-mpsnngraph" style="border-bottom: 0px" title="YOLO: Core ML versus MPSNNGraph">YOLO: Core ML versus MPSNNGraph</a></li><li><a class="toc-href" href="#tensorflow-yolo-object-detection-on-android" style="border-bottom: 0px" title="TensorFlow YOLO object detection on Android">TensorFlow YOLO object detection on Android</a></li><li><a class="toc-href" href="#computer-vision-in-ios-object-detection" style="border-bottom: 0px" title="Computer Vision in iOS &ndash; Object Detection">Computer Vision in iOS &ndash; Object Detection</a></li><li><a class="toc-href" href="#yolov2" style="border-bottom: 0px" title="YOLOv2">YOLOv2</a></li><li><a class="toc-href" href="#yolo9000-better-faster-stronger" style="border-bottom: 0px" title="YOLO9000: Better, Faster, Stronger">YOLO9000: Better, Faster, Stronger</a></li><li><a class="toc-href" href="#yolo_mark-gui-for-marking-bounded-boxes-of-objects-in-images-for-training-yolo-v2" style="border-bottom: 0px" title="Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2">Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2</a></li><li><a class="toc-href" href="#lightnet-bringing-pjreddies-darknet-out-of-the-shadows" style="border-bottom: 0px" title="LightNet: Bringing pjreddie&rsquo;s DarkNet out of the shadows">LightNet: Bringing pjreddie&rsquo;s DarkNet out of the shadows</a></li><li><a class="toc-href" href="#yolo-v2-bounding-box-tool" style="border-bottom: 0px" title="YOLO v2 Bounding Box Tool">YOLO v2 Bounding Box Tool</a></li><li><a class="toc-href" href="#yolov3-yolov3-an-incremental-improvement" style="border-bottom: 0px" title="YOLOv3 YOLOv3: An Incremental Improvement">YOLOv3 YOLOv3: An Incremental Improvement</a></li><li><a class="toc-href" href="#attentionnet-aggregating-weak-directions-for-accurate-object-detection" style="border-bottom: 0px" title="AttentionNet: Aggregating Weak Directions for Accurate Object Detection">AttentionNet: Aggregating Weak Directions for Accurate Object Detection</a></li><li><a class="toc-href" href="#densebox-unifying-landmark-localization-with-end-to-end-object-detection" style="border-bottom: 0px" title="DenseBox: Unifying Landmark Localization with End to End Object Detection">DenseBox: Unifying Landmark Localization with End to End Object Detection</a></li><li><a class="toc-href" href="#ssd-single-shot-multibox-detector" style="border-bottom: 0px" title="SSD: Single Shot MultiBox Detector">SSD: Single Shot MultiBox Detector</a></li><li><a class="toc-href" href="#dssd-deconvolutional-single-shot-detector" style="border-bottom: 0px" title="DSSD : Deconvolutional Single Shot Detector">DSSD : Deconvolutional Single Shot Detector</a></li><li><a class="toc-href" href="#enhancement-of-ssd-by-concatenating-feature-maps-for-object-detection" style="border-bottom: 0px" title="Enhancement of SSD by concatenating feature maps for object detection">Enhancement of SSD by concatenating feature maps for object detection</a></li><li><a class="toc-href" href="#context-aware-single-shot-detector" style="border-bottom: 0px" title="Context-aware Single-Shot Detector">Context-aware Single-Shot Detector</a></li><li><a class="toc-href" href="#feature-fused-ssd-fast-detection-for-small-objects" style="border-bottom: 0px" title="Feature-Fused SSD: Fast Detection for Small Objects">Feature-Fused SSD: Fast Detection for Small Objects</a></li><li><a class="toc-href" href="#fssd-feature-fusion-single-shot-multibox-detector" style="border-bottom: 0px" title="FSSD: Feature Fusion Single Shot Multibox Detector">FSSD: Feature Fusion Single Shot Multibox Detector</a></li><li><a class="toc-href" href="#weaving-multi-scale-context-for-single-shot-detector" style="border-bottom: 0px" title="Weaving Multi-scale Context for Single Shot Detector">Weaving Multi-scale Context for Single Shot Detector</a></li><li><a class="toc-href" href="#essd-extend-the-shallow-part-of-single-shot-multibox-detector-via-convolutional-neural-network" style="border-bottom: 0px" title="ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network">ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network</a></li><li><a class="toc-href" href="#tiny-ssd-a-tiny-single-shot-detection-deep-convolutional-neural-network-for-real-time-embedded-object-detection" style="border-bottom: 0px" title="Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection">Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection</a></li><li><a class="toc-href" href="#mdssd-multi-scale-deconvolutional-single-shot-detector-for-small-objects" style="border-bottom: 0px" title="MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects">MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects</a></li><li><a class="toc-href" href="#inside-outside-net-detecting-objects-in-context-with-skip-pooling-and-recurrent-neural-networks" style="border-bottom: 0px" title="Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks">Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks</a></li><li><a class="toc-href" href="#adaptive-object-detection-using-adjacency-and-zoom-prediction" style="border-bottom: 0px" title="Adaptive Object Detection Using Adjacency and Zoom Prediction">Adaptive Object Detection Using Adjacency and Zoom Prediction</a></li><li><a class="toc-href" href="#factors-in-finetuning-deep-model-for-object-detection" style="border-bottom: 0px" title="Factors in Finetuning Deep Model for object detection">Factors in Finetuning Deep Model for object detection</a></li><li><a class="toc-href" href="#factors-in-finetuning-deep-model-for-object-detection-with-long-tail-distribution" style="border-bottom: 0px" title="Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution">Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution</a></li><li><a class="toc-href" href="#we-dont-need-no-bounding-boxes-training-object-class-detectors-using-only-human-verification" style="border-bottom: 0px" title="We don&rsquo;t need no bounding-boxes: Training object class detectors using only human verification">We don&rsquo;t need no bounding-boxes: Training object class detectors using only human verification</a></li><li><a class="toc-href" href="#hypernet-towards-accurate-region-proposal-generation-and-joint-object-detection" style="border-bottom: 0px" title="HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection">HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection</a></li><li><a class="toc-href" href="#a-multipath-network-for-object-detection" style="border-bottom: 0px" title="A MultiPath Network for Object Detection">A MultiPath Network for Object Detection</a></li><li><a class="toc-href" href="#craft-objects-from-images" style="border-bottom: 0px" title="CRAFT Objects from Images">CRAFT Objects from Images</a></li><li><a class="toc-href" href="#ohem-training-region-based-object-detectors-with-online-hard-example-mining" style="border-bottom: 0px" title="OHEM Training Region-based Object Detectors with Online Hard Example Mining">OHEM Training Region-based Object Detectors with Online Hard Example Mining</a></li><li><a class="toc-href" href="#s-ohem-stratified-online-hard-example-mining-for-object-detection" style="border-bottom: 0px" title="S-OHEM: Stratified Online Hard Example Mining for Object Detection">S-OHEM: Stratified Online Hard Example Mining for Object Detection</a></li><li><a class="toc-href" href="#exploit-all-the-layers-fast-and-accurate-cnn-object-detector-with-scale-dependent-pooling-and-cascaded-rejection-classifiers" style="border-bottom: 0px" title="Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers">Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers</a></li><li><a class="toc-href" href="#r-fcn-object-detection-via-region-based-fully-convolutional-networks" style="border-bottom: 0px" title="R-FCN: Object Detection via Region-based Fully Convolutional Networks">R-FCN: Object Detection via Region-based Fully Convolutional Networks</a></li><li><a class="toc-href" href="#r-fcn-3000-at-30fps-decoupling-detection-and-classification" style="border-bottom: 0px" title="R-FCN-3000 at 30fps: Decoupling Detection and Classification">R-FCN-3000 at 30fps: Decoupling Detection and Classification</a></li><li><a class="toc-href" href="#recycle-deep-features-for-better-object-detection" style="border-bottom: 0px" title="Recycle deep features for better object detection">Recycle deep features for better object detection</a></li><li><a class="toc-href" href="#ms-cnn-a-unified-multi-scale-deep-convolutional-neural-network-for-fast-object-detection" style="border-bottom: 0px" title="MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection">MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection</a></li><li><a class="toc-href" href="#multi-stage-object-detection-with-group-recursive-learning" style="border-bottom: 0px" title="Multi-stage Object Detection with Group Recursive Learning">Multi-stage Object Detection with Group Recursive Learning</a></li><li><a class="toc-href" href="#subcategory-aware-convolutional-neural-networks-for-object-proposals-and-detection" style="border-bottom: 0px" title="Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection">Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection</a></li><li><a class="toc-href" href="#pvanet-lightweight-deep-neural-networks-for-real-time-object-detection" style="border-bottom: 0px" title="PVANet: Lightweight Deep Neural Networks for Real-time Object Detection">PVANet: Lightweight Deep Neural Networks for Real-time Object Detection</a></li><li><a class="toc-href" href="#gated-bi-directional-cnn-for-object-detection" style="border-bottom: 0px" title="Gated Bi-directional CNN for Object Detection">Gated Bi-directional CNN for Object Detection</a></li><li><a class="toc-href" href="#crafting-gbd-net-for-object-detection" style="border-bottom: 0px" title="Crafting GBD-Net for Object Detection">Crafting GBD-Net for Object Detection</a></li><li><a class="toc-href" href="#stuffnet-using-stuff-to-improve-object-detection" style="border-bottom: 0px" title="StuffNet: Using &lsquo;Stuff&rsquo; to Improve Object Detection">StuffNet: Using &lsquo;Stuff&rsquo; to Improve Object Detection</a></li><li><a class="toc-href" href="#generalized-haar-filter-based-deep-networks-for-real-time-object-detection-in-traffic-scene" style="border-bottom: 0px" title="Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene">Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene</a></li><li><a class="toc-href" href="#hierarchical-object-detection-with-deep-reinforcement-learning" style="border-bottom: 0px" title="Hierarchical Object Detection with Deep Reinforcement Learning">Hierarchical Object Detection with Deep Reinforcement Learning</a></li><li><a class="toc-href" href="#learning-to-detect-and-localize-many-objects-from-few-examples" style="border-bottom: 0px" title="Learning to detect and localize many objects from few examples">Learning to detect and localize many objects from few examples</a></li><li><a class="toc-href" href="#speedaccuracy-trade-offs-for-modern-convolutional-object-detectors" style="border-bottom: 0px" title="Speed/accuracy trade-offs for modern convolutional object detectors">Speed/accuracy trade-offs for modern convolutional object detectors</a></li><li><a class="toc-href" href="#squeezedet-unified-small-low-power-fully-convolutional-neural-networks-for-real-time-object-detection-for-autonomous-driving" style="border-bottom: 0px" title="SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving">SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving</a></li><li><a class="toc-href" href="#feature-pyramid-network-fpn" style="border-bottom: 0px" title="Feature Pyramid Network (FPN)">Feature Pyramid Network (FPN)</a></li><li><a class="toc-href" href="#action-driven-object-detection-with-top-down-visual-attentions" style="border-bottom: 0px" title="Action-Driven Object Detection with Top-Down Visual Attentions">Action-Driven Object Detection with Top-Down Visual Attentions</a></li><li><a class="toc-href" href="#beyond-skip-connections-top-down-modulation-for-object-detection" style="border-bottom: 0px" title="Beyond Skip Connections: Top-Down Modulation for Object Detection">Beyond Skip Connections: Top-Down Modulation for Object Detection</a></li><li><a class="toc-href" href="#wide-residual-inception-networks-for-real-time-object-detection" style="border-bottom: 0px" title="Wide-Residual-Inception Networks for Real-time Object Detection">Wide-Residual-Inception Networks for Real-time Object Detection</a></li><li><a class="toc-href" href="#attentional-network-for-visual-object-detection" style="border-bottom: 0px" title="Attentional Network for Visual Object Detection">Attentional Network for Visual Object Detection</a></li><li><a class="toc-href" href="#learning-chained-deep-features-and-classifiers-for-cascade-in-object-detection" style="border-bottom: 0px" title="Learning Chained Deep Features and Classifiers for Cascade in Object Detection">Learning Chained Deep Features and Classifiers for Cascade in Object Detection</a></li><li><a class="toc-href" href="#denet-scalable-real-time-object-detection-with-directed-sparse-sampling" style="border-bottom: 0px" title="DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling">DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling</a></li><li><a class="toc-href" href="#discriminative-bimodal-networks-for-visual-localization-and-detection-with-natural-language-queries" style="border-bottom: 0px" title="Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries">Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries</a></li><li><a class="toc-href" href="#spatial-memory-for-context-reasoning-in-object-detection" style="border-bottom: 0px" title="Spatial Memory for Context Reasoning in Object Detection">Spatial Memory for Context Reasoning in Object Detection</a></li><li><a class="toc-href" href="#accurate-single-stage-detector-using-recurrent-rolling-convolution" style="border-bottom: 0px" title="Accurate Single Stage Detector Using Recurrent Rolling Convolution">Accurate Single Stage Detector Using Recurrent Rolling Convolution</a></li><li><a class="toc-href" href="#deep-occlusion-reasoning-for-multi-camera-multi-target-detection" style="border-bottom: 0px" title="Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection">Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection</a></li><li><a class="toc-href" href="#lcdet-low-complexity-fully-convolutional-neural-networks-for-object-detection-in-embedded-systems" style="border-bottom: 0px" title="LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems">LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems</a></li><li><a class="toc-href" href="#point-linking-network-for-object-detection" style="border-bottom: 0px" title="Point Linking Network for Object Detection">Point Linking Network for Object Detection</a></li><li><a class="toc-href" href="#perceptual-generative-adversarial-networks-for-small-object-detection" style="border-bottom: 0px" title="Perceptual Generative Adversarial Networks for Small Object Detection">Perceptual Generative Adversarial Networks for Small Object Detection</a></li><li><a class="toc-href" href="#few-shot-object-detection" style="border-bottom: 0px" title="Few-shot Object Detection">Few-shot Object Detection</a></li><li><a class="toc-href" href="#yes-net-an-effective-detector-based-on-global-information" style="border-bottom: 0px" title="Yes-Net: An effective Detector Based on Global Information">Yes-Net: An effective Detector Based on Global Information</a></li><li><a class="toc-href" href="#smc-faster-r-cnn-toward-a-scene-specialized-multi-object-detector" style="border-bottom: 0px" title="SMC Faster R-CNN: Toward a scene-specialized multi-object detector">SMC Faster R-CNN: Toward a scene-specialized multi-object detector</a></li><li><a class="toc-href" href="#towards-lightweight-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="Towards lightweight convolutional neural networks for object detection">Towards lightweight convolutional neural networks for object detection</a></li><li><a class="toc-href" href="#ron-reverse-connection-with-objectness-prior-networks-for-object-detection" style="border-bottom: 0px" title="RON: Reverse Connection with Objectness Prior Networks for Object Detection">RON: Reverse Connection with Objectness Prior Networks for Object Detection</a></li><li><a class="toc-href" href="#mimicking-very-efficient-network-for-object-detection" style="border-bottom: 0px" title="Mimicking Very Efficient Network for Object Detection">Mimicking Very Efficient Network for Object Detection</a></li><li><a class="toc-href" href="#residual-features-and-unified-prediction-network-for-single-stage-detection" style="border-bottom: 0px" title="Residual Features and Unified Prediction Network for Single Stage Detection">Residual Features and Unified Prediction Network for Single Stage Detection</a></li><li><a class="toc-href" href="#deformable-part-based-fully-convolutional-network-for-object-detection" style="border-bottom: 0px" title="Deformable Part-based Fully Convolutional Network for Object Detection">Deformable Part-based Fully Convolutional Network for Object Detection</a></li><li><a class="toc-href" href="#adaptive-feeding-achieving-fast-and-accurate-detections-by-adaptively-combining-object-detectors" style="border-bottom: 0px" title="Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors">Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors</a></li><li><a class="toc-href" href="#recurrent-scale-approximation-for-object-detection-in-cnn" style="border-bottom: 0px" title="Recurrent Scale Approximation for Object Detection in CNN">Recurrent Scale Approximation for Object Detection in CNN</a></li><li><a class="toc-href" href="#dsod-learning-deeply-supervised-object-detectors-from-scratch" style="border-bottom: 0px" title="DSOD: Learning Deeply Supervised Object Detectors from Scratch">DSOD: Learning Deeply Supervised Object Detectors from Scratch</a></li><li><a class="toc-href" href="#focal-loss-for-dense-object-detection" style="border-bottom: 0px" title="Focal Loss for Dense Object Detection">Focal Loss for Dense Object Detection</a></li><li><a class="toc-href" href="#focal-loss-dense-detector-for-vehicle-surveillance" style="border-bottom: 0px" title="Focal Loss Dense Detector for Vehicle Surveillance">Focal Loss Dense Detector for Vehicle Surveillance</a></li><li><a class="toc-href" href="#couplenet-coupling-global-structure-with-local-parts-for-object-detection" style="border-bottom: 0px" title="CoupleNet: Coupling Global Structure with Local Parts for Object Detection">CoupleNet: Coupling Global Structure with Local Parts for Object Detection</a></li><li><a class="toc-href" href="#incremental-learning-of-object-detectors-without-catastrophic-forgetting" style="border-bottom: 0px" title="Incremental Learning of Object Detectors without Catastrophic Forgetting">Incremental Learning of Object Detectors without Catastrophic Forgetting</a></li><li><a class="toc-href" href="#zoom-out-and-in-network-with-map-attention-decision-for-region-proposal-and-object-detection" style="border-bottom: 0px" title="Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection">Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection</a></li><li><a class="toc-href" href="#stairnet-top-down-semantic-aggregation-for-accurate-one-shot-detection" style="border-bottom: 0px" title="StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection">StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection</a></li><li><a class="toc-href" href="#dynamic-zoom-in-network-for-fast-object-detection-in-large-images" style="border-bottom: 0px" title="Dynamic Zoom-in Network for Fast Object Detection in Large Images">Dynamic Zoom-in Network for Fast Object Detection in Large Images</a></li><li><a class="toc-href" href="#zero-annotation-object-detection-with-web-knowledge-transfer" style="border-bottom: 0px" title="Zero-Annotation Object Detection with Web Knowledge Transfer">Zero-Annotation Object Detection with Web Knowledge Transfer</a></li><li><a class="toc-href" href="#megdet-a-large-mini-batch-object-detector" style="border-bottom: 0px" title="MegDet: A Large Mini-Batch Object Detector">MegDet: A Large Mini-Batch Object Detector</a></li><li><a class="toc-href" href="#single-shot-refinement-neural-network-for-object-detection" style="border-bottom: 0px" title="Single-Shot Refinement Neural Network for Object Detection">Single-Shot Refinement Neural Network for Object Detection</a></li><li><a class="toc-href" href="#receptive-field-block-net-for-accurate-and-fast-object-detection" style="border-bottom: 0px" title="Receptive Field Block Net for Accurate and Fast Object Detection">Receptive Field Block Net for Accurate and Fast Object Detection</a></li><li><a class="toc-href" href="#an-analysis-of-scale-invariance-in-object-detection-snip" style="border-bottom: 0px" title="An Analysis of Scale Invariance in Object Detection - SNIP">An Analysis of Scale Invariance in Object Detection - SNIP</a></li><li><a class="toc-href" href="#feature-selective-networks-for-object-detection" style="border-bottom: 0px" title="Feature Selective Networks for Object Detection">Feature Selective Networks for Object Detection</a></li><li><a class="toc-href" href="#learning-a-rotation-invariant-detector-with-rotatable-bounding-box" style="border-bottom: 0px" title="Learning a Rotation Invariant Detector with Rotatable Bounding Box">Learning a Rotation Invariant Detector with Rotatable Bounding Box</a></li><li><a class="toc-href" href="#scalable-object-detection-for-stylized-objects" style="border-bottom: 0px" title="Scalable Object Detection for Stylized Objects">Scalable Object Detection for Stylized Objects</a></li><li><a class="toc-href" href="#learning-object-detectors-from-scratch-with-gated-recurrent-feature-pyramids" style="border-bottom: 0px" title="Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids">Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids</a></li><li><a class="toc-href" href="#deep-regionlets-for-object-detection" style="border-bottom: 0px" title="Deep Regionlets for Object Detection">Deep Regionlets for Object Detection</a></li><li><a class="toc-href" href="#training-and-testing-object-detectors-with-virtual-images" style="border-bottom: 0px" title="Training and Testing Object Detectors with Virtual Images">Training and Testing Object Detectors with Virtual Images</a></li><li><a class="toc-href" href="#large-scale-object-discovery-and-detector-adaptation-from-unlabeled-video" style="border-bottom: 0px" title="Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video">Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video</a></li><li><a class="toc-href" href="#spot-the-difference-by-object-detection" style="border-bottom: 0px" title="Spot the Difference by Object Detection">Spot the Difference by Object Detection</a></li><li><a class="toc-href" href="#localization-aware-active-learning-for-object-detection" style="border-bottom: 0px" title="Localization-Aware Active Learning for Object Detection">Localization-Aware Active Learning for Object Detection</a></li><li><a class="toc-href" href="#object-detection-with-mask-based-feature-encoding" style="border-bottom: 0px" title="Object Detection with Mask-based Feature Encoding">Object Detection with Mask-based Feature Encoding</a></li><li><a class="toc-href" href="#lstd-a-low-shot-transfer-detector-for-object-detection" style="border-bottom: 0px" title="LSTD: A Low-Shot Transfer Detector for Object Detection">LSTD: A Low-Shot Transfer Detector for Object Detection</a></li><li><a class="toc-href" href="#domain-adaptive-faster-r-cnn-for-object-detection-in-the-wild" style="border-bottom: 0px" title="Domain Adaptive Faster R-CNN for Object Detection in the Wild">Domain Adaptive Faster R-CNN for Object Detection in the Wild</a></li><li><a class="toc-href" href="#pseudo-mask-augmented-object-detection" style="border-bottom: 0px" title="Pseudo Mask Augmented Object Detection">Pseudo Mask Augmented Object Detection</a></li><li><a class="toc-href" href="#revisiting-rcnn-on-awakening-the-classification-power-of-faster-rcnn" style="border-bottom: 0px" title="Revisiting RCNN: On Awakening the Classification Power of Faster RCNN">Revisiting RCNN: On Awakening the Classification Power of Faster RCNN</a></li><li><a class="toc-href" href="#learning-region-features-for-object-detection" style="border-bottom: 0px" title="Learning Region Features for Object Detection">Learning Region Features for Object Detection</a></li><li><a class="toc-href" href="#single-shot-bidirectional-pyramid-networks-for-high-quality-object-detection" style="border-bottom: 0px" title="Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection">Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection</a></li><li><a class="toc-href" href="#object-detection-for-comics-using-manga109-annotations" style="border-bottom: 0px" title="Object Detection for Comics using Manga109 Annotations">Object Detection for Comics using Manga109 Annotations</a></li><li><a class="toc-href" href="#task-driven-super-resolution-object-detection-in-low-resolution-images" style="border-bottom: 0px" title="Task-Driven Super Resolution: Object Detection in Low-resolution Images">Task-Driven Super Resolution: Object Detection in Low-resolution Images</a></li><li><a class="toc-href" href="#transferring-common-sense-knowledge-for-object-detection" style="border-bottom: 0px" title="Transferring Common-Sense Knowledge for Object Detection">Transferring Common-Sense Knowledge for Object Detection</a></li><li><a class="toc-href" href="#multi-scale-location-aware-kernel-representation-for-object-detection" style="border-bottom: 0px" title="Multi-scale Location-aware Kernel Representation for Object Detection">Multi-scale Location-aware Kernel Representation for Object Detection</a></li><li><a class="toc-href" href="#loss-rank-mining-a-general-hard-example-mining-method-for-real-time-detectors" style="border-bottom: 0px" title="Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors">Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors</a></li><li><a class="toc-href" href="#detnet-a-backbone-network-for-object-detection" style="border-bottom: 0px" title="DetNet: A Backbone network for Object Detection">DetNet: A Backbone network for Object Detection</a></li><li><a class="toc-href" href="#robust-physical-adversarial-attack-on-faster-r-cnn-object-detector" style="border-bottom: 0px" title="Robust Physical Adversarial Attack on Faster R-CNN Object Detector">Robust Physical Adversarial Attack on Faster R-CNN Object Detector</a></li><li><a class="toc-href" href="#advdetpatch-attacking-object-detectors-with-adversarial-patches" style="border-bottom: 0px" title="AdvDetPatch: Attacking Object Detectors with Adversarial Patches">AdvDetPatch: Attacking Object Detectors with Adversarial Patches</a></li><li><a class="toc-href" href="#quantization-mimic-towards-very-tiny-cnn-for-object-detection" style="border-bottom: 0px" title="Quantization Mimic: Towards Very Tiny CNN for Object Detection">Quantization Mimic: Towards Very Tiny CNN for Object Detection</a></li><li><a class="toc-href" href="#object-detection-at-200-frames-per-second" style="border-bottom: 0px" title="Object detection at 200 Frames Per Second">Object detection at 200 Frames Per Second</a></li><li><a class="toc-href" href="#object-detection-using-domain-randomization-and-generative-adversarial-refinement-of-synthetic-images" style="border-bottom: 0px" title="Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images">Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images</a></li><li><a class="toc-href" href="#non-maximum-suppression-nms-end-to-end-integration-of-a-convolutional-network-deformable-parts-model-and-non-maximum-suppression" style="border-bottom: 0px" title="Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression">Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression</a></li><li><a class="toc-href" href="#a-convnet-for-non-maximum-suppression" style="border-bottom: 0px" title="A convnet for non-maximum suppression">A convnet for non-maximum suppression</a></li><li><a class="toc-href" href="#improving-object-detection-with-one-line-of-code" style="border-bottom: 0px" title="Improving Object Detection With One Line of Code">Improving Object Detection With One Line of Code</a></li><li><a class="toc-href" href="#soft-nms-improving-object-detection-with-one-line-of-code" style="border-bottom: 0px" title="Soft-NMS &ndash; Improving Object Detection With One Line of Code">Soft-NMS &ndash; Improving Object Detection With One Line of Code</a></li><li><a class="toc-href" href="#learning-non-maximum-suppression" style="border-bottom: 0px" title="Learning non-maximum suppression">Learning non-maximum suppression</a></li><li><a class="toc-href" href="#relation-networks-for-object-detection" style="border-bottom: 0px" title="Relation Networks for Object Detection">Relation Networks for Object Detection</a></li><li><a class="toc-href" href="#adversarial-examples-that-fool-detectors" style="border-bottom: 0px" title="Adversarial Examples that Fool Detectors">Adversarial Examples that Fool Detectors</a></li><li><a class="toc-href" href="#adversarial-examples-are-not-easily-detected-bypassing-ten-detection-methods" style="border-bottom: 0px" title="Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods">Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods</a></li><li><a class="toc-href" href="#weakly-supervised-object-detection-track-and-transfer-watching-videos-to-simulate-strong-human-supervision-for-weakly-supervised-object-detection" style="border-bottom: 0px" title="Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection">Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection</a></li><li><a class="toc-href" href="#weakly-supervised-object-detection-using-pseudo-strong-labels" style="border-bottom: 0px" title="Weakly supervised object detection using pseudo-strong labels">Weakly supervised object detection using pseudo-strong labels</a></li><li><a class="toc-href" href="#saliency-guided-end-to-end-learning-for-weakly-supervised-object-detection" style="border-bottom: 0px" title="Saliency Guided End-to-End Learning for Weakly Supervised Object Detection">Saliency Guided End-to-End Learning for Weakly Supervised Object Detection</a></li><li><a class="toc-href" href="#visual-and-semantic-knowledge-transfer-for-large-scale-semi-supervised-object-detection" style="border-bottom: 0px" title="Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection">Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection</a></li><li><a class="toc-href" href="#video-object-detection-learning-object-class-detectors-from-weakly-annotated-video" style="border-bottom: 0px" title="Video Object Detection Learning Object Class Detectors from Weakly Annotated Video">Video Object Detection Learning Object Class Detectors from Weakly Annotated Video</a></li><li><a class="toc-href" href="#analysing-domain-shift-factors-between-videos-and-images-for-object-detection" style="border-bottom: 0px" title="Analysing domain shift factors between videos and images for object detection">Analysing domain shift factors between videos and images for object detection</a></li><li><a class="toc-href" href="#video-object-recognition" style="border-bottom: 0px" title="Video Object Recognition">Video Object Recognition</a></li><li><a class="toc-href" href="#deep-learning-for-saliency-prediction-in-natural-video" style="border-bottom: 0px" title="Deep Learning for Saliency Prediction in Natural Video">Deep Learning for Saliency Prediction in Natural Video</a></li><li><a class="toc-href" href="#t-cnn-tubelets-with-convolutional-neural-networks-for-object-detection-from-videos" style="border-bottom: 0px" title="T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos">T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos</a></li><li><a class="toc-href" href="#object-detection-from-video-tubelets-with-convolutional-neural-networks" style="border-bottom: 0px" title="Object Detection from Video Tubelets with Convolutional Neural Networks">Object Detection from Video Tubelets with Convolutional Neural Networks</a></li><li><a class="toc-href" href="#object-detection-in-videos-with-tubelets-and-multi-context-cues" style="border-bottom: 0px" title="Object Detection in Videos with Tubelets and Multi-context Cues">Object Detection in Videos with Tubelets and Multi-context Cues</a></li><li><a class="toc-href" href="#context-matters-refining-object-detection-in-video-with-recurrent-neural-networks" style="border-bottom: 0px" title="Context Matters: Refining Object Detection in Video with Recurrent Neural Networks">Context Matters: Refining Object Detection in Video with Recurrent Neural Networks</a></li><li><a class="toc-href" href="#cnn-based-object-detection-in-large-video-images" style="border-bottom: 0px" title="CNN Based Object Detection in Large Video Images">CNN Based Object Detection in Large Video Images</a></li><li><a class="toc-href" href="#object-detection-in-videos-with-tubelet-proposal-networks" style="border-bottom: 0px" title="Object Detection in Videos with Tubelet Proposal Networks">Object Detection in Videos with Tubelet Proposal Networks</a></li><li><a class="toc-href" href="#flow-guided-feature-aggregation-for-video-object-detection" style="border-bottom: 0px" title="Flow-Guided Feature Aggregation for Video Object Detection">Flow-Guided Feature Aggregation for Video Object Detection</a></li><li><a class="toc-href" href="#video-object-detection-using-faster-r-cnn" style="border-bottom: 0px" title="Video Object Detection using Faster R-CNN">Video Object Detection using Faster R-CNN</a></li><li><a class="toc-href" href="#improving-context-modeling-for-video-object-detection-and-tracking" style="border-bottom: 0px" title="Improving Context Modeling for Video Object Detection and Tracking">Improving Context Modeling for Video Object Detection and Tracking</a></li><li><a class="toc-href" href="#temporal-dynamic-graph-lstm-for-action-driven-video-object-detection" style="border-bottom: 0px" title="Temporal Dynamic Graph LSTM for Action-driven Video Object Detection">Temporal Dynamic Graph LSTM for Action-driven Video Object Detection</a></li><li><a class="toc-href" href="#mobile-video-object-detection-with-temporally-aware-feature-maps" style="border-bottom: 0px" title="Mobile Video Object Detection with Temporally-Aware Feature Maps">Mobile Video Object Detection with Temporally-Aware Feature Maps</a></li><li><a class="toc-href" href="#towards-high-performance-video-object-detection" style="border-bottom: 0px" title="Towards High Performance Video Object Detection">Towards High Performance Video Object Detection</a></li><li><a class="toc-href" href="#impression-network-for-video-object-detection" style="border-bottom: 0px" title="Impression Network for Video Object Detection">Impression Network for Video Object Detection</a></li><li><a class="toc-href" href="#spatial-temporal-memory-networks-for-video-object-detection" style="border-bottom: 0px" title="Spatial-Temporal Memory Networks for Video Object Detection">Spatial-Temporal Memory Networks for Video Object Detection</a></li><li><a class="toc-href" href="#3d-detnet-a-single-stage-video-based-vehicle-detector" style="border-bottom: 0px" title="3D-DETNet: a Single Stage Video-Based Vehicle Detector">3D-DETNet: a Single Stage Video-Based Vehicle Detector</a></li><li><a class="toc-href" href="#object-detection-in-videos-by-short-and-long-range-object-linking" style="border-bottom: 0px" title="Object Detection in Videos by Short and Long Range Object Linking">Object Detection in Videos by Short and Long Range Object Linking</a></li><li><a class="toc-href" href="#object-detection-in-video-with-spatiotemporal-sampling-networks" style="border-bottom: 0px" title="Object Detection in Video with Spatiotemporal Sampling Networks">Object Detection in Video with Spatiotemporal Sampling Networks</a></li><li><a class="toc-href" href="#towards-high-performance-video-object-detection-for-mobiles" style="border-bottom: 0px" title="Towards High Performance Video Object Detection for Mobiles">Towards High Performance Video Object Detection for Mobiles</a></li><li><a class="toc-href" href="#object-detection-on-mobile-devices" style="border-bottom: 0px" title="Object Detection on Mobile Devices">Object Detection on Mobile Devices</a></li><li><a class="toc-href" href="#pelee-a-real-time-object-detection-system-on-mobile-devices" style="border-bottom: 0px" title="Pelee: A Real-Time Object Detection System on Mobile Devices">Pelee: A Real-Time Object Detection System on Mobile Devices</a></li><li><a class="toc-href" href="#object-detection-in-3d" style="border-bottom: 0px" title="Object Detection in 3D">Object Detection in 3D</a></li><li><a class="toc-href" href="#vote3deep-fast-object-detection-in-3d-point-clouds-using-efficient-convolutional-neural-networks" style="border-bottom: 0px" title="Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks">Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks</a></li><li><a class="toc-href" href="#complex-yolo-real-time-3d-object-detection-on-point-clouds" style="border-bottom: 0px" title="Complex-YOLO: Real-time 3D Object Detection on Point Clouds">Complex-YOLO: Real-time 3D Object Detection on Point Clouds</a></li><li><a class="toc-href" href="#object-detection-on-rgb-d" style="border-bottom: 0px" title="Object Detection on RGB-D">Object Detection on RGB-D</a></li><li><a class="toc-href" href="#learning-rich-features-from-rgb-d-images-for-object-detection-and-segmentation" style="border-bottom: 0px" title="Learning Rich Features from RGB-D Images for Object Detection and Segmentation">Learning Rich Features from RGB-D Images for Object Detection and Segmentation</a></li><li><a class="toc-href" href="#differential-geometry-boosts-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="Differential Geometry Boosts Convolutional Neural Networks for Object Detection">Differential Geometry Boosts Convolutional Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#a-self-supervised-learning-system-for-object-detection-using-physics-simulation-and-multi-view-pose-estimation" style="border-bottom: 0px" title="A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation">A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation</a></li><li><a class="toc-href" href="#zero-shot-object-detection" style="border-bottom: 0px" title="Zero-Shot Object Detection">Zero-Shot Object Detection</a></li><li><a class="toc-href" href="#zero-shot-object-detection_1" style="border-bottom: 0px" title="Zero-Shot Object Detection">Zero-Shot Object Detection</a></li><li><a class="toc-href" href="#zero-shot-object-detection-learning-to-simultaneously-recognize-and-localize-novel-concepts" style="border-bottom: 0px" title="Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts">Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts</a></li><li><a class="toc-href" href="#zero-shot-object-detection-by-hybrid-region-embedding" style="border-bottom: 0px" title="Zero-Shot Object Detection by Hybrid Region Embedding">Zero-Shot Object Detection by Hybrid Region Embedding</a></li><li><a class="toc-href" href="#salient-object-detection" style="border-bottom: 0px" title="Salient Object Detection">Salient Object Detection</a></li><li><a class="toc-href" href="#best-deep-saliency-detection-models-cvpr-2016-2015" style="border-bottom: 0px" title="Best Deep Saliency Detection Models (CVPR 2016 &amp; 2015)">Best Deep Saliency Detection Models (CVPR 2016 &amp; 2015)</a></li><li><a class="toc-href" href="#large-scale-optimization-of-hierarchical-features-for-saliency-prediction-in-natural-images" style="border-bottom: 0px" title="Large-scale optimization of hierarchical features for saliency prediction in natural images">Large-scale optimization of hierarchical features for saliency prediction in natural images</a></li><li><a class="toc-href" href="#predicting-eye-fixations-using-convolutional-neural-networks" style="border-bottom: 0px" title="Predicting Eye Fixations using Convolutional Neural Networks">Predicting Eye Fixations using Convolutional Neural Networks</a></li><li><a class="toc-href" href="#saliency-detection-by-multi-context-deep-learning" style="border-bottom: 0px" title="Saliency Detection by Multi-Context Deep Learning">Saliency Detection by Multi-Context Deep Learning</a></li><li><a class="toc-href" href="#deepsaliency-multi-task-deep-neural-network-model-for-salient-object-detection" style="border-bottom: 0px" title="DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection">DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection</a></li><li><a class="toc-href" href="#supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection" style="border-bottom: 0px" title="SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection">SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection</a></li><li><a class="toc-href" href="#shallow-and-deep-convolutional-networks-for-saliency-prediction" style="border-bottom: 0px" title="Shallow and Deep Convolutional Networks for Saliency Prediction">Shallow and Deep Convolutional Networks for Saliency Prediction</a></li><li><a class="toc-href" href="#recurrent-attentional-networks-for-saliency-detection" style="border-bottom: 0px" title="Recurrent Attentional Networks for Saliency Detection">Recurrent Attentional Networks for Saliency Detection</a></li><li><a class="toc-href" href="#two-stream-convolutional-networks-for-dynamic-saliency-prediction" style="border-bottom: 0px" title="Two-Stream Convolutional Networks for Dynamic Saliency Prediction">Two-Stream Convolutional Networks for Dynamic Saliency Prediction</a></li><li><a class="toc-href" href="#unconstrained-salient-object-detection-via-proposal-subset-optimization" style="border-bottom: 0px" title="Unconstrained Salient Object Detection via Proposal Subset Optimization">Unconstrained Salient Object Detection via Proposal Subset Optimization</a></li><li><a class="toc-href" href="#dhsnet-deep-hierarchical-saliency-network-for-salient-object-detection" style="border-bottom: 0px" title="DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection">DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection</a></li><li><a class="toc-href" href="#salient-object-subitizingbject-detection-cv-cnn-tutorial" style="border-bottom: 0px" title="Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL">Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Summary of Object Detection Papers</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 21, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#object-detection-papers" style="border-bottom: 0px" title="Object Detection Papers">Object Detection Papers</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#deep-neural-networks-for-object-detection" style="border-bottom: 0px" title="Deep Neural Networks for Object Detection">Deep Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#overfeat-integrated-recognition-localization-and-detection-using-convolutional-networks" style="border-bottom: 0px" title="OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks">OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks</a></li></ol></li><li><a class="toc-href" href="#r-cnn_1" style="border-bottom: 0px" title="R-CNN">R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation" style="border-bottom: 0px" title="Rich feature hierarchies for accurate object detection and semantic segmentation">Rich feature hierarchies for accurate object detection and semantic segmentation</a></li></ol></li><li><a class="toc-href" href="#fast-r-cnn_1" style="border-bottom: 0px" title="Fast R-CNN">Fast R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#fast-r-cnn_2" style="border-bottom: 0px" title="Fast R-CNN">Fast R-CNN</a></li><li><a class="toc-href" href="#a-fast-rcnn-hard-positive-generation-via-adversary-for-object-detection" style="border-bottom: 0px" title="A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection">A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection</a></li></ol></li><li><a class="toc-href" href="#faster-r-cnn_1" style="border-bottom: 0px" title="Faster R-CNN">Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks" style="border-bottom: 0px" title="Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a></li><li><a class="toc-href" href="#r-cnn-minus-r" style="border-bottom: 0px" title="R-CNN minus R">R-CNN minus R</a></li><li><a class="toc-href" href="#faster-r-cnn-in-mxnet-with-distributed-implementation-and-data-parallelization" style="border-bottom: 0px" title="Faster R-CNN in MXNet with distributed implementation and data parallelization">Faster R-CNN in MXNet with distributed implementation and data parallelization</a></li></ol></li><li><a class="toc-href" href="#contextual-priming-and-feedback-for-faster-r-cnn_1" style="border-bottom: 0px" title="Contextual Priming and Feedback for Faster R-CNN">Contextual Priming and Feedback for Faster R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#an-implementation-of-faster-rcnn-with-study-for-region-sampling" style="border-bottom: 0px" title="An Implementation of Faster RCNN with Study for Region Sampling">An Implementation of Faster RCNN with Study for Region Sampling</a></li><li><a class="toc-href" href="#interpretable-r-cnn" style="border-bottom: 0px" title="Interpretable R-CNN">Interpretable R-CNN</a></li></ol></li><li><a class="toc-href" href="#light-head-r-cnn_1" style="border-bottom: 0px" title="Light-Head R-CNN">Light-Head R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#light-head-r-cnn-in-defense-of-two-stage-object-detector" style="border-bottom: 0px" title="Light-Head R-CNN: In Defense of Two-Stage Object Detector">Light-Head R-CNN: In Defense of Two-Stage Object Detector</a></li></ol></li><li><a class="toc-href" href="#cascade-r-cnn_1" style="border-bottom: 0px" title="Cascade R-CNN">Cascade R-CNN</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#cascade-r-cnn-delving-into-high-quality-object-detection" style="border-bottom: 0px" title="Cascade R-CNN: Delving into High Quality Object Detection">Cascade R-CNN: Delving into High Quality Object Detection</a></li></ol></li><li><a class="toc-href" href="#multibox-scalable-object-detection-using-deep-neural-networks_1" style="border-bottom: 0px" title="MultiBox Scalable Object Detection using Deep Neural Networks">MultiBox Scalable Object Detection using Deep Neural Networks</a></li><li><a class="toc-href" href="#scalable-high-quality-object-detection" style="border-bottom: 0px" title="Scalable, High-Quality Object Detection">Scalable, High-Quality Object Detection</a></li><li><a class="toc-href" href="#spp-net-spatial-pyramid-pooling-in-deep-convolutional-networks-for-visual-recognition" style="border-bottom: 0px" title="SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition">SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</a></li><li><a class="toc-href" href="#deepid-net-deformable-deep-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection">DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#object-detectors-emerge-in-deep-scene-cnns" style="border-bottom: 0px" title="Object Detectors Emerge in Deep Scene CNNs">Object Detectors Emerge in Deep Scene CNNs</a></li><li><a class="toc-href" href="#segdeepm-exploiting-segmentation-and-context-in-deep-neural-networks-for-object-detection" style="border-bottom: 0px" title="segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection">segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#object-detection-networks-on-convolutional-feature-maps" style="border-bottom: 0px" title="Object Detection Networks on Convolutional Feature Maps">Object Detection Networks on Convolutional Feature Maps</a></li><li><a class="toc-href" href="#improving-object-detection-with-deep-convolutional-networks-via-bayesian-optimization-and-structured-prediction" style="border-bottom: 0px" title="Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction">Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction</a></li><li><a class="toc-href" href="#deepbox-learning-objectness-with-convolutional-networks" style="border-bottom: 0px" title="DeepBox: Learning Objectness with Convolutional Networks">DeepBox: Learning Objectness with Convolutional Networks</a></li><li><a class="toc-href" href="#mr-cnn-object-detection-via-a-multi-region-semantic-segmentation-aware-cnn-model" style="border-bottom: 0px" title="MR-CNN Object detection via a multi-region &amp; semantic segmentation-aware CNN model">MR-CNN Object detection via a multi-region &amp; semantic segmentation-aware CNN model</a></li><li><a class="toc-href" href="#yolo-you-only-look-once-unified-real-time-object-detection" style="border-bottom: 0px" title="YOLO You Only Look Once: Unified, Real-Time Object Detection">YOLO You Only Look Once: Unified, Real-Time Object Detection</a></li><li><a class="toc-href" href="#start-training-yolo-with-our-own-data" style="border-bottom: 0px" title="Start Training YOLO with Our Own Data">Start Training YOLO with Our Own Data</a></li><li><a class="toc-href" href="#yolo-core-ml-versus-mpsnngraph" style="border-bottom: 0px" title="YOLO: Core ML versus MPSNNGraph">YOLO: Core ML versus MPSNNGraph</a></li><li><a class="toc-href" href="#tensorflow-yolo-object-detection-on-android" style="border-bottom: 0px" title="TensorFlow YOLO object detection on Android">TensorFlow YOLO object detection on Android</a></li><li><a class="toc-href" href="#computer-vision-in-ios-object-detection" style="border-bottom: 0px" title="Computer Vision in iOS &ndash; Object Detection">Computer Vision in iOS &ndash; Object Detection</a></li><li><a class="toc-href" href="#yolov2" style="border-bottom: 0px" title="YOLOv2">YOLOv2</a></li><li><a class="toc-href" href="#yolo9000-better-faster-stronger" style="border-bottom: 0px" title="YOLO9000: Better, Faster, Stronger">YOLO9000: Better, Faster, Stronger</a></li><li><a class="toc-href" href="#yolo_mark-gui-for-marking-bounded-boxes-of-objects-in-images-for-training-yolo-v2" style="border-bottom: 0px" title="Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2">Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2</a></li><li><a class="toc-href" href="#lightnet-bringing-pjreddies-darknet-out-of-the-shadows" style="border-bottom: 0px" title="LightNet: Bringing pjreddie&rsquo;s DarkNet out of the shadows">LightNet: Bringing pjreddie&rsquo;s DarkNet out of the shadows</a></li><li><a class="toc-href" href="#yolo-v2-bounding-box-tool" style="border-bottom: 0px" title="YOLO v2 Bounding Box Tool">YOLO v2 Bounding Box Tool</a></li><li><a class="toc-href" href="#yolov3-yolov3-an-incremental-improvement" style="border-bottom: 0px" title="YOLOv3 YOLOv3: An Incremental Improvement">YOLOv3 YOLOv3: An Incremental Improvement</a></li><li><a class="toc-href" href="#attentionnet-aggregating-weak-directions-for-accurate-object-detection" style="border-bottom: 0px" title="AttentionNet: Aggregating Weak Directions for Accurate Object Detection">AttentionNet: Aggregating Weak Directions for Accurate Object Detection</a></li><li><a class="toc-href" href="#densebox-unifying-landmark-localization-with-end-to-end-object-detection" style="border-bottom: 0px" title="DenseBox: Unifying Landmark Localization with End to End Object Detection">DenseBox: Unifying Landmark Localization with End to End Object Detection</a></li><li><a class="toc-href" href="#ssd-single-shot-multibox-detector" style="border-bottom: 0px" title="SSD: Single Shot MultiBox Detector">SSD: Single Shot MultiBox Detector</a></li><li><a class="toc-href" href="#dssd-deconvolutional-single-shot-detector" style="border-bottom: 0px" title="DSSD : Deconvolutional Single Shot Detector">DSSD : Deconvolutional Single Shot Detector</a></li><li><a class="toc-href" href="#enhancement-of-ssd-by-concatenating-feature-maps-for-object-detection" style="border-bottom: 0px" title="Enhancement of SSD by concatenating feature maps for object detection">Enhancement of SSD by concatenating feature maps for object detection</a></li><li><a class="toc-href" href="#context-aware-single-shot-detector" style="border-bottom: 0px" title="Context-aware Single-Shot Detector">Context-aware Single-Shot Detector</a></li><li><a class="toc-href" href="#feature-fused-ssd-fast-detection-for-small-objects" style="border-bottom: 0px" title="Feature-Fused SSD: Fast Detection for Small Objects">Feature-Fused SSD: Fast Detection for Small Objects</a></li><li><a class="toc-href" href="#fssd-feature-fusion-single-shot-multibox-detector" style="border-bottom: 0px" title="FSSD: Feature Fusion Single Shot Multibox Detector">FSSD: Feature Fusion Single Shot Multibox Detector</a></li><li><a class="toc-href" href="#weaving-multi-scale-context-for-single-shot-detector" style="border-bottom: 0px" title="Weaving Multi-scale Context for Single Shot Detector">Weaving Multi-scale Context for Single Shot Detector</a></li><li><a class="toc-href" href="#essd-extend-the-shallow-part-of-single-shot-multibox-detector-via-convolutional-neural-network" style="border-bottom: 0px" title="ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network">ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network</a></li><li><a class="toc-href" href="#tiny-ssd-a-tiny-single-shot-detection-deep-convolutional-neural-network-for-real-time-embedded-object-detection" style="border-bottom: 0px" title="Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection">Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection</a></li><li><a class="toc-href" href="#mdssd-multi-scale-deconvolutional-single-shot-detector-for-small-objects" style="border-bottom: 0px" title="MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects">MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects</a></li><li><a class="toc-href" href="#inside-outside-net-detecting-objects-in-context-with-skip-pooling-and-recurrent-neural-networks" style="border-bottom: 0px" title="Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks">Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks</a></li><li><a class="toc-href" href="#adaptive-object-detection-using-adjacency-and-zoom-prediction" style="border-bottom: 0px" title="Adaptive Object Detection Using Adjacency and Zoom Prediction">Adaptive Object Detection Using Adjacency and Zoom Prediction</a></li><li><a class="toc-href" href="#factors-in-finetuning-deep-model-for-object-detection" style="border-bottom: 0px" title="Factors in Finetuning Deep Model for object detection">Factors in Finetuning Deep Model for object detection</a></li><li><a class="toc-href" href="#factors-in-finetuning-deep-model-for-object-detection-with-long-tail-distribution" style="border-bottom: 0px" title="Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution">Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution</a></li><li><a class="toc-href" href="#we-dont-need-no-bounding-boxes-training-object-class-detectors-using-only-human-verification" style="border-bottom: 0px" title="We don&rsquo;t need no bounding-boxes: Training object class detectors using only human verification">We don&rsquo;t need no bounding-boxes: Training object class detectors using only human verification</a></li><li><a class="toc-href" href="#hypernet-towards-accurate-region-proposal-generation-and-joint-object-detection" style="border-bottom: 0px" title="HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection">HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection</a></li><li><a class="toc-href" href="#a-multipath-network-for-object-detection" style="border-bottom: 0px" title="A MultiPath Network for Object Detection">A MultiPath Network for Object Detection</a></li><li><a class="toc-href" href="#craft-objects-from-images" style="border-bottom: 0px" title="CRAFT Objects from Images">CRAFT Objects from Images</a></li><li><a class="toc-href" href="#ohem-training-region-based-object-detectors-with-online-hard-example-mining" style="border-bottom: 0px" title="OHEM Training Region-based Object Detectors with Online Hard Example Mining">OHEM Training Region-based Object Detectors with Online Hard Example Mining</a></li><li><a class="toc-href" href="#s-ohem-stratified-online-hard-example-mining-for-object-detection" style="border-bottom: 0px" title="S-OHEM: Stratified Online Hard Example Mining for Object Detection">S-OHEM: Stratified Online Hard Example Mining for Object Detection</a></li><li><a class="toc-href" href="#exploit-all-the-layers-fast-and-accurate-cnn-object-detector-with-scale-dependent-pooling-and-cascaded-rejection-classifiers" style="border-bottom: 0px" title="Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers">Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers</a></li><li><a class="toc-href" href="#r-fcn-object-detection-via-region-based-fully-convolutional-networks" style="border-bottom: 0px" title="R-FCN: Object Detection via Region-based Fully Convolutional Networks">R-FCN: Object Detection via Region-based Fully Convolutional Networks</a></li><li><a class="toc-href" href="#r-fcn-3000-at-30fps-decoupling-detection-and-classification" style="border-bottom: 0px" title="R-FCN-3000 at 30fps: Decoupling Detection and Classification">R-FCN-3000 at 30fps: Decoupling Detection and Classification</a></li><li><a class="toc-href" href="#recycle-deep-features-for-better-object-detection" style="border-bottom: 0px" title="Recycle deep features for better object detection">Recycle deep features for better object detection</a></li><li><a class="toc-href" href="#ms-cnn-a-unified-multi-scale-deep-convolutional-neural-network-for-fast-object-detection" style="border-bottom: 0px" title="MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection">MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection</a></li><li><a class="toc-href" href="#multi-stage-object-detection-with-group-recursive-learning" style="border-bottom: 0px" title="Multi-stage Object Detection with Group Recursive Learning">Multi-stage Object Detection with Group Recursive Learning</a></li><li><a class="toc-href" href="#subcategory-aware-convolutional-neural-networks-for-object-proposals-and-detection" style="border-bottom: 0px" title="Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection">Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection</a></li><li><a class="toc-href" href="#pvanet-lightweight-deep-neural-networks-for-real-time-object-detection" style="border-bottom: 0px" title="PVANet: Lightweight Deep Neural Networks for Real-time Object Detection">PVANet: Lightweight Deep Neural Networks for Real-time Object Detection</a></li><li><a class="toc-href" href="#gated-bi-directional-cnn-for-object-detection" style="border-bottom: 0px" title="Gated Bi-directional CNN for Object Detection">Gated Bi-directional CNN for Object Detection</a></li><li><a class="toc-href" href="#crafting-gbd-net-for-object-detection" style="border-bottom: 0px" title="Crafting GBD-Net for Object Detection">Crafting GBD-Net for Object Detection</a></li><li><a class="toc-href" href="#stuffnet-using-stuff-to-improve-object-detection" style="border-bottom: 0px" title="StuffNet: Using &lsquo;Stuff&rsquo; to Improve Object Detection">StuffNet: Using &lsquo;Stuff&rsquo; to Improve Object Detection</a></li><li><a class="toc-href" href="#generalized-haar-filter-based-deep-networks-for-real-time-object-detection-in-traffic-scene" style="border-bottom: 0px" title="Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene">Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene</a></li><li><a class="toc-href" href="#hierarchical-object-detection-with-deep-reinforcement-learning" style="border-bottom: 0px" title="Hierarchical Object Detection with Deep Reinforcement Learning">Hierarchical Object Detection with Deep Reinforcement Learning</a></li><li><a class="toc-href" href="#learning-to-detect-and-localize-many-objects-from-few-examples" style="border-bottom: 0px" title="Learning to detect and localize many objects from few examples">Learning to detect and localize many objects from few examples</a></li><li><a class="toc-href" href="#speedaccuracy-trade-offs-for-modern-convolutional-object-detectors" style="border-bottom: 0px" title="Speed/accuracy trade-offs for modern convolutional object detectors">Speed/accuracy trade-offs for modern convolutional object detectors</a></li><li><a class="toc-href" href="#squeezedet-unified-small-low-power-fully-convolutional-neural-networks-for-real-time-object-detection-for-autonomous-driving" style="border-bottom: 0px" title="SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving">SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving</a></li><li><a class="toc-href" href="#feature-pyramid-network-fpn" style="border-bottom: 0px" title="Feature Pyramid Network (FPN)">Feature Pyramid Network (FPN)</a></li><li><a class="toc-href" href="#action-driven-object-detection-with-top-down-visual-attentions" style="border-bottom: 0px" title="Action-Driven Object Detection with Top-Down Visual Attentions">Action-Driven Object Detection with Top-Down Visual Attentions</a></li><li><a class="toc-href" href="#beyond-skip-connections-top-down-modulation-for-object-detection" style="border-bottom: 0px" title="Beyond Skip Connections: Top-Down Modulation for Object Detection">Beyond Skip Connections: Top-Down Modulation for Object Detection</a></li><li><a class="toc-href" href="#wide-residual-inception-networks-for-real-time-object-detection" style="border-bottom: 0px" title="Wide-Residual-Inception Networks for Real-time Object Detection">Wide-Residual-Inception Networks for Real-time Object Detection</a></li><li><a class="toc-href" href="#attentional-network-for-visual-object-detection" style="border-bottom: 0px" title="Attentional Network for Visual Object Detection">Attentional Network for Visual Object Detection</a></li><li><a class="toc-href" href="#learning-chained-deep-features-and-classifiers-for-cascade-in-object-detection" style="border-bottom: 0px" title="Learning Chained Deep Features and Classifiers for Cascade in Object Detection">Learning Chained Deep Features and Classifiers for Cascade in Object Detection</a></li><li><a class="toc-href" href="#denet-scalable-real-time-object-detection-with-directed-sparse-sampling" style="border-bottom: 0px" title="DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling">DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling</a></li><li><a class="toc-href" href="#discriminative-bimodal-networks-for-visual-localization-and-detection-with-natural-language-queries" style="border-bottom: 0px" title="Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries">Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries</a></li><li><a class="toc-href" href="#spatial-memory-for-context-reasoning-in-object-detection" style="border-bottom: 0px" title="Spatial Memory for Context Reasoning in Object Detection">Spatial Memory for Context Reasoning in Object Detection</a></li><li><a class="toc-href" href="#accurate-single-stage-detector-using-recurrent-rolling-convolution" style="border-bottom: 0px" title="Accurate Single Stage Detector Using Recurrent Rolling Convolution">Accurate Single Stage Detector Using Recurrent Rolling Convolution</a></li><li><a class="toc-href" href="#deep-occlusion-reasoning-for-multi-camera-multi-target-detection" style="border-bottom: 0px" title="Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection">Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection</a></li><li><a class="toc-href" href="#lcdet-low-complexity-fully-convolutional-neural-networks-for-object-detection-in-embedded-systems" style="border-bottom: 0px" title="LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems">LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems</a></li><li><a class="toc-href" href="#point-linking-network-for-object-detection" style="border-bottom: 0px" title="Point Linking Network for Object Detection">Point Linking Network for Object Detection</a></li><li><a class="toc-href" href="#perceptual-generative-adversarial-networks-for-small-object-detection" style="border-bottom: 0px" title="Perceptual Generative Adversarial Networks for Small Object Detection">Perceptual Generative Adversarial Networks for Small Object Detection</a></li><li><a class="toc-href" href="#few-shot-object-detection" style="border-bottom: 0px" title="Few-shot Object Detection">Few-shot Object Detection</a></li><li><a class="toc-href" href="#yes-net-an-effective-detector-based-on-global-information" style="border-bottom: 0px" title="Yes-Net: An effective Detector Based on Global Information">Yes-Net: An effective Detector Based on Global Information</a></li><li><a class="toc-href" href="#smc-faster-r-cnn-toward-a-scene-specialized-multi-object-detector" style="border-bottom: 0px" title="SMC Faster R-CNN: Toward a scene-specialized multi-object detector">SMC Faster R-CNN: Toward a scene-specialized multi-object detector</a></li><li><a class="toc-href" href="#towards-lightweight-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="Towards lightweight convolutional neural networks for object detection">Towards lightweight convolutional neural networks for object detection</a></li><li><a class="toc-href" href="#ron-reverse-connection-with-objectness-prior-networks-for-object-detection" style="border-bottom: 0px" title="RON: Reverse Connection with Objectness Prior Networks for Object Detection">RON: Reverse Connection with Objectness Prior Networks for Object Detection</a></li><li><a class="toc-href" href="#mimicking-very-efficient-network-for-object-detection" style="border-bottom: 0px" title="Mimicking Very Efficient Network for Object Detection">Mimicking Very Efficient Network for Object Detection</a></li><li><a class="toc-href" href="#residual-features-and-unified-prediction-network-for-single-stage-detection" style="border-bottom: 0px" title="Residual Features and Unified Prediction Network for Single Stage Detection">Residual Features and Unified Prediction Network for Single Stage Detection</a></li><li><a class="toc-href" href="#deformable-part-based-fully-convolutional-network-for-object-detection" style="border-bottom: 0px" title="Deformable Part-based Fully Convolutional Network for Object Detection">Deformable Part-based Fully Convolutional Network for Object Detection</a></li><li><a class="toc-href" href="#adaptive-feeding-achieving-fast-and-accurate-detections-by-adaptively-combining-object-detectors" style="border-bottom: 0px" title="Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors">Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors</a></li><li><a class="toc-href" href="#recurrent-scale-approximation-for-object-detection-in-cnn" style="border-bottom: 0px" title="Recurrent Scale Approximation for Object Detection in CNN">Recurrent Scale Approximation for Object Detection in CNN</a></li><li><a class="toc-href" href="#dsod-learning-deeply-supervised-object-detectors-from-scratch" style="border-bottom: 0px" title="DSOD: Learning Deeply Supervised Object Detectors from Scratch">DSOD: Learning Deeply Supervised Object Detectors from Scratch</a></li><li><a class="toc-href" href="#focal-loss-for-dense-object-detection" style="border-bottom: 0px" title="Focal Loss for Dense Object Detection">Focal Loss for Dense Object Detection</a></li><li><a class="toc-href" href="#focal-loss-dense-detector-for-vehicle-surveillance" style="border-bottom: 0px" title="Focal Loss Dense Detector for Vehicle Surveillance">Focal Loss Dense Detector for Vehicle Surveillance</a></li><li><a class="toc-href" href="#couplenet-coupling-global-structure-with-local-parts-for-object-detection" style="border-bottom: 0px" title="CoupleNet: Coupling Global Structure with Local Parts for Object Detection">CoupleNet: Coupling Global Structure with Local Parts for Object Detection</a></li><li><a class="toc-href" href="#incremental-learning-of-object-detectors-without-catastrophic-forgetting" style="border-bottom: 0px" title="Incremental Learning of Object Detectors without Catastrophic Forgetting">Incremental Learning of Object Detectors without Catastrophic Forgetting</a></li><li><a class="toc-href" href="#zoom-out-and-in-network-with-map-attention-decision-for-region-proposal-and-object-detection" style="border-bottom: 0px" title="Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection">Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection</a></li><li><a class="toc-href" href="#stairnet-top-down-semantic-aggregation-for-accurate-one-shot-detection" style="border-bottom: 0px" title="StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection">StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection</a></li><li><a class="toc-href" href="#dynamic-zoom-in-network-for-fast-object-detection-in-large-images" style="border-bottom: 0px" title="Dynamic Zoom-in Network for Fast Object Detection in Large Images">Dynamic Zoom-in Network for Fast Object Detection in Large Images</a></li><li><a class="toc-href" href="#zero-annotation-object-detection-with-web-knowledge-transfer" style="border-bottom: 0px" title="Zero-Annotation Object Detection with Web Knowledge Transfer">Zero-Annotation Object Detection with Web Knowledge Transfer</a></li><li><a class="toc-href" href="#megdet-a-large-mini-batch-object-detector" style="border-bottom: 0px" title="MegDet: A Large Mini-Batch Object Detector">MegDet: A Large Mini-Batch Object Detector</a></li><li><a class="toc-href" href="#single-shot-refinement-neural-network-for-object-detection" style="border-bottom: 0px" title="Single-Shot Refinement Neural Network for Object Detection">Single-Shot Refinement Neural Network for Object Detection</a></li><li><a class="toc-href" href="#receptive-field-block-net-for-accurate-and-fast-object-detection" style="border-bottom: 0px" title="Receptive Field Block Net for Accurate and Fast Object Detection">Receptive Field Block Net for Accurate and Fast Object Detection</a></li><li><a class="toc-href" href="#an-analysis-of-scale-invariance-in-object-detection-snip" style="border-bottom: 0px" title="An Analysis of Scale Invariance in Object Detection - SNIP">An Analysis of Scale Invariance in Object Detection - SNIP</a></li><li><a class="toc-href" href="#feature-selective-networks-for-object-detection" style="border-bottom: 0px" title="Feature Selective Networks for Object Detection">Feature Selective Networks for Object Detection</a></li><li><a class="toc-href" href="#learning-a-rotation-invariant-detector-with-rotatable-bounding-box" style="border-bottom: 0px" title="Learning a Rotation Invariant Detector with Rotatable Bounding Box">Learning a Rotation Invariant Detector with Rotatable Bounding Box</a></li><li><a class="toc-href" href="#scalable-object-detection-for-stylized-objects" style="border-bottom: 0px" title="Scalable Object Detection for Stylized Objects">Scalable Object Detection for Stylized Objects</a></li><li><a class="toc-href" href="#learning-object-detectors-from-scratch-with-gated-recurrent-feature-pyramids" style="border-bottom: 0px" title="Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids">Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids</a></li><li><a class="toc-href" href="#deep-regionlets-for-object-detection" style="border-bottom: 0px" title="Deep Regionlets for Object Detection">Deep Regionlets for Object Detection</a></li><li><a class="toc-href" href="#training-and-testing-object-detectors-with-virtual-images" style="border-bottom: 0px" title="Training and Testing Object Detectors with Virtual Images">Training and Testing Object Detectors with Virtual Images</a></li><li><a class="toc-href" href="#large-scale-object-discovery-and-detector-adaptation-from-unlabeled-video" style="border-bottom: 0px" title="Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video">Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video</a></li><li><a class="toc-href" href="#spot-the-difference-by-object-detection" style="border-bottom: 0px" title="Spot the Difference by Object Detection">Spot the Difference by Object Detection</a></li><li><a class="toc-href" href="#localization-aware-active-learning-for-object-detection" style="border-bottom: 0px" title="Localization-Aware Active Learning for Object Detection">Localization-Aware Active Learning for Object Detection</a></li><li><a class="toc-href" href="#object-detection-with-mask-based-feature-encoding" style="border-bottom: 0px" title="Object Detection with Mask-based Feature Encoding">Object Detection with Mask-based Feature Encoding</a></li><li><a class="toc-href" href="#lstd-a-low-shot-transfer-detector-for-object-detection" style="border-bottom: 0px" title="LSTD: A Low-Shot Transfer Detector for Object Detection">LSTD: A Low-Shot Transfer Detector for Object Detection</a></li><li><a class="toc-href" href="#domain-adaptive-faster-r-cnn-for-object-detection-in-the-wild" style="border-bottom: 0px" title="Domain Adaptive Faster R-CNN for Object Detection in the Wild">Domain Adaptive Faster R-CNN for Object Detection in the Wild</a></li><li><a class="toc-href" href="#pseudo-mask-augmented-object-detection" style="border-bottom: 0px" title="Pseudo Mask Augmented Object Detection">Pseudo Mask Augmented Object Detection</a></li><li><a class="toc-href" href="#revisiting-rcnn-on-awakening-the-classification-power-of-faster-rcnn" style="border-bottom: 0px" title="Revisiting RCNN: On Awakening the Classification Power of Faster RCNN">Revisiting RCNN: On Awakening the Classification Power of Faster RCNN</a></li><li><a class="toc-href" href="#learning-region-features-for-object-detection" style="border-bottom: 0px" title="Learning Region Features for Object Detection">Learning Region Features for Object Detection</a></li><li><a class="toc-href" href="#single-shot-bidirectional-pyramid-networks-for-high-quality-object-detection" style="border-bottom: 0px" title="Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection">Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection</a></li><li><a class="toc-href" href="#object-detection-for-comics-using-manga109-annotations" style="border-bottom: 0px" title="Object Detection for Comics using Manga109 Annotations">Object Detection for Comics using Manga109 Annotations</a></li><li><a class="toc-href" href="#task-driven-super-resolution-object-detection-in-low-resolution-images" style="border-bottom: 0px" title="Task-Driven Super Resolution: Object Detection in Low-resolution Images">Task-Driven Super Resolution: Object Detection in Low-resolution Images</a></li><li><a class="toc-href" href="#transferring-common-sense-knowledge-for-object-detection" style="border-bottom: 0px" title="Transferring Common-Sense Knowledge for Object Detection">Transferring Common-Sense Knowledge for Object Detection</a></li><li><a class="toc-href" href="#multi-scale-location-aware-kernel-representation-for-object-detection" style="border-bottom: 0px" title="Multi-scale Location-aware Kernel Representation for Object Detection">Multi-scale Location-aware Kernel Representation for Object Detection</a></li><li><a class="toc-href" href="#loss-rank-mining-a-general-hard-example-mining-method-for-real-time-detectors" style="border-bottom: 0px" title="Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors">Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors</a></li><li><a class="toc-href" href="#detnet-a-backbone-network-for-object-detection" style="border-bottom: 0px" title="DetNet: A Backbone network for Object Detection">DetNet: A Backbone network for Object Detection</a></li><li><a class="toc-href" href="#robust-physical-adversarial-attack-on-faster-r-cnn-object-detector" style="border-bottom: 0px" title="Robust Physical Adversarial Attack on Faster R-CNN Object Detector">Robust Physical Adversarial Attack on Faster R-CNN Object Detector</a></li><li><a class="toc-href" href="#advdetpatch-attacking-object-detectors-with-adversarial-patches" style="border-bottom: 0px" title="AdvDetPatch: Attacking Object Detectors with Adversarial Patches">AdvDetPatch: Attacking Object Detectors with Adversarial Patches</a></li><li><a class="toc-href" href="#quantization-mimic-towards-very-tiny-cnn-for-object-detection" style="border-bottom: 0px" title="Quantization Mimic: Towards Very Tiny CNN for Object Detection">Quantization Mimic: Towards Very Tiny CNN for Object Detection</a></li><li><a class="toc-href" href="#object-detection-at-200-frames-per-second" style="border-bottom: 0px" title="Object detection at 200 Frames Per Second">Object detection at 200 Frames Per Second</a></li><li><a class="toc-href" href="#object-detection-using-domain-randomization-and-generative-adversarial-refinement-of-synthetic-images" style="border-bottom: 0px" title="Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images">Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images</a></li><li><a class="toc-href" href="#non-maximum-suppression-nms-end-to-end-integration-of-a-convolutional-network-deformable-parts-model-and-non-maximum-suppression" style="border-bottom: 0px" title="Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression">Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression</a></li><li><a class="toc-href" href="#a-convnet-for-non-maximum-suppression" style="border-bottom: 0px" title="A convnet for non-maximum suppression">A convnet for non-maximum suppression</a></li><li><a class="toc-href" href="#improving-object-detection-with-one-line-of-code" style="border-bottom: 0px" title="Improving Object Detection With One Line of Code">Improving Object Detection With One Line of Code</a></li><li><a class="toc-href" href="#soft-nms-improving-object-detection-with-one-line-of-code" style="border-bottom: 0px" title="Soft-NMS &ndash; Improving Object Detection With One Line of Code">Soft-NMS &ndash; Improving Object Detection With One Line of Code</a></li><li><a class="toc-href" href="#learning-non-maximum-suppression" style="border-bottom: 0px" title="Learning non-maximum suppression">Learning non-maximum suppression</a></li><li><a class="toc-href" href="#relation-networks-for-object-detection" style="border-bottom: 0px" title="Relation Networks for Object Detection">Relation Networks for Object Detection</a></li><li><a class="toc-href" href="#adversarial-examples-that-fool-detectors" style="border-bottom: 0px" title="Adversarial Examples that Fool Detectors">Adversarial Examples that Fool Detectors</a></li><li><a class="toc-href" href="#adversarial-examples-are-not-easily-detected-bypassing-ten-detection-methods" style="border-bottom: 0px" title="Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods">Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods</a></li><li><a class="toc-href" href="#weakly-supervised-object-detection-track-and-transfer-watching-videos-to-simulate-strong-human-supervision-for-weakly-supervised-object-detection" style="border-bottom: 0px" title="Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection">Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection</a></li><li><a class="toc-href" href="#weakly-supervised-object-detection-using-pseudo-strong-labels" style="border-bottom: 0px" title="Weakly supervised object detection using pseudo-strong labels">Weakly supervised object detection using pseudo-strong labels</a></li><li><a class="toc-href" href="#saliency-guided-end-to-end-learning-for-weakly-supervised-object-detection" style="border-bottom: 0px" title="Saliency Guided End-to-End Learning for Weakly Supervised Object Detection">Saliency Guided End-to-End Learning for Weakly Supervised Object Detection</a></li><li><a class="toc-href" href="#visual-and-semantic-knowledge-transfer-for-large-scale-semi-supervised-object-detection" style="border-bottom: 0px" title="Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection">Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection</a></li><li><a class="toc-href" href="#video-object-detection-learning-object-class-detectors-from-weakly-annotated-video" style="border-bottom: 0px" title="Video Object Detection Learning Object Class Detectors from Weakly Annotated Video">Video Object Detection Learning Object Class Detectors from Weakly Annotated Video</a></li><li><a class="toc-href" href="#analysing-domain-shift-factors-between-videos-and-images-for-object-detection" style="border-bottom: 0px" title="Analysing domain shift factors between videos and images for object detection">Analysing domain shift factors between videos and images for object detection</a></li><li><a class="toc-href" href="#video-object-recognition" style="border-bottom: 0px" title="Video Object Recognition">Video Object Recognition</a></li><li><a class="toc-href" href="#deep-learning-for-saliency-prediction-in-natural-video" style="border-bottom: 0px" title="Deep Learning for Saliency Prediction in Natural Video">Deep Learning for Saliency Prediction in Natural Video</a></li><li><a class="toc-href" href="#t-cnn-tubelets-with-convolutional-neural-networks-for-object-detection-from-videos" style="border-bottom: 0px" title="T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos">T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos</a></li><li><a class="toc-href" href="#object-detection-from-video-tubelets-with-convolutional-neural-networks" style="border-bottom: 0px" title="Object Detection from Video Tubelets with Convolutional Neural Networks">Object Detection from Video Tubelets with Convolutional Neural Networks</a></li><li><a class="toc-href" href="#object-detection-in-videos-with-tubelets-and-multi-context-cues" style="border-bottom: 0px" title="Object Detection in Videos with Tubelets and Multi-context Cues">Object Detection in Videos with Tubelets and Multi-context Cues</a></li><li><a class="toc-href" href="#context-matters-refining-object-detection-in-video-with-recurrent-neural-networks" style="border-bottom: 0px" title="Context Matters: Refining Object Detection in Video with Recurrent Neural Networks">Context Matters: Refining Object Detection in Video with Recurrent Neural Networks</a></li><li><a class="toc-href" href="#cnn-based-object-detection-in-large-video-images" style="border-bottom: 0px" title="CNN Based Object Detection in Large Video Images">CNN Based Object Detection in Large Video Images</a></li><li><a class="toc-href" href="#object-detection-in-videos-with-tubelet-proposal-networks" style="border-bottom: 0px" title="Object Detection in Videos with Tubelet Proposal Networks">Object Detection in Videos with Tubelet Proposal Networks</a></li><li><a class="toc-href" href="#flow-guided-feature-aggregation-for-video-object-detection" style="border-bottom: 0px" title="Flow-Guided Feature Aggregation for Video Object Detection">Flow-Guided Feature Aggregation for Video Object Detection</a></li><li><a class="toc-href" href="#video-object-detection-using-faster-r-cnn" style="border-bottom: 0px" title="Video Object Detection using Faster R-CNN">Video Object Detection using Faster R-CNN</a></li><li><a class="toc-href" href="#improving-context-modeling-for-video-object-detection-and-tracking" style="border-bottom: 0px" title="Improving Context Modeling for Video Object Detection and Tracking">Improving Context Modeling for Video Object Detection and Tracking</a></li><li><a class="toc-href" href="#temporal-dynamic-graph-lstm-for-action-driven-video-object-detection" style="border-bottom: 0px" title="Temporal Dynamic Graph LSTM for Action-driven Video Object Detection">Temporal Dynamic Graph LSTM for Action-driven Video Object Detection</a></li><li><a class="toc-href" href="#mobile-video-object-detection-with-temporally-aware-feature-maps" style="border-bottom: 0px" title="Mobile Video Object Detection with Temporally-Aware Feature Maps">Mobile Video Object Detection with Temporally-Aware Feature Maps</a></li><li><a class="toc-href" href="#towards-high-performance-video-object-detection" style="border-bottom: 0px" title="Towards High Performance Video Object Detection">Towards High Performance Video Object Detection</a></li><li><a class="toc-href" href="#impression-network-for-video-object-detection" style="border-bottom: 0px" title="Impression Network for Video Object Detection">Impression Network for Video Object Detection</a></li><li><a class="toc-href" href="#spatial-temporal-memory-networks-for-video-object-detection" style="border-bottom: 0px" title="Spatial-Temporal Memory Networks for Video Object Detection">Spatial-Temporal Memory Networks for Video Object Detection</a></li><li><a class="toc-href" href="#3d-detnet-a-single-stage-video-based-vehicle-detector" style="border-bottom: 0px" title="3D-DETNet: a Single Stage Video-Based Vehicle Detector">3D-DETNet: a Single Stage Video-Based Vehicle Detector</a></li><li><a class="toc-href" href="#object-detection-in-videos-by-short-and-long-range-object-linking" style="border-bottom: 0px" title="Object Detection in Videos by Short and Long Range Object Linking">Object Detection in Videos by Short and Long Range Object Linking</a></li><li><a class="toc-href" href="#object-detection-in-video-with-spatiotemporal-sampling-networks" style="border-bottom: 0px" title="Object Detection in Video with Spatiotemporal Sampling Networks">Object Detection in Video with Spatiotemporal Sampling Networks</a></li><li><a class="toc-href" href="#towards-high-performance-video-object-detection-for-mobiles" style="border-bottom: 0px" title="Towards High Performance Video Object Detection for Mobiles">Towards High Performance Video Object Detection for Mobiles</a></li><li><a class="toc-href" href="#object-detection-on-mobile-devices" style="border-bottom: 0px" title="Object Detection on Mobile Devices">Object Detection on Mobile Devices</a></li><li><a class="toc-href" href="#pelee-a-real-time-object-detection-system-on-mobile-devices" style="border-bottom: 0px" title="Pelee: A Real-Time Object Detection System on Mobile Devices">Pelee: A Real-Time Object Detection System on Mobile Devices</a></li><li><a class="toc-href" href="#object-detection-in-3d" style="border-bottom: 0px" title="Object Detection in 3D">Object Detection in 3D</a></li><li><a class="toc-href" href="#vote3deep-fast-object-detection-in-3d-point-clouds-using-efficient-convolutional-neural-networks" style="border-bottom: 0px" title="Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks">Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks</a></li><li><a class="toc-href" href="#complex-yolo-real-time-3d-object-detection-on-point-clouds" style="border-bottom: 0px" title="Complex-YOLO: Real-time 3D Object Detection on Point Clouds">Complex-YOLO: Real-time 3D Object Detection on Point Clouds</a></li><li><a class="toc-href" href="#object-detection-on-rgb-d" style="border-bottom: 0px" title="Object Detection on RGB-D">Object Detection on RGB-D</a></li><li><a class="toc-href" href="#learning-rich-features-from-rgb-d-images-for-object-detection-and-segmentation" style="border-bottom: 0px" title="Learning Rich Features from RGB-D Images for Object Detection and Segmentation">Learning Rich Features from RGB-D Images for Object Detection and Segmentation</a></li><li><a class="toc-href" href="#differential-geometry-boosts-convolutional-neural-networks-for-object-detection" style="border-bottom: 0px" title="Differential Geometry Boosts Convolutional Neural Networks for Object Detection">Differential Geometry Boosts Convolutional Neural Networks for Object Detection</a></li><li><a class="toc-href" href="#a-self-supervised-learning-system-for-object-detection-using-physics-simulation-and-multi-view-pose-estimation" style="border-bottom: 0px" title="A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation">A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation</a></li><li><a class="toc-href" href="#zero-shot-object-detection" style="border-bottom: 0px" title="Zero-Shot Object Detection">Zero-Shot Object Detection</a></li><li><a class="toc-href" href="#zero-shot-object-detection_1" style="border-bottom: 0px" title="Zero-Shot Object Detection">Zero-Shot Object Detection</a></li><li><a class="toc-href" href="#zero-shot-object-detection-learning-to-simultaneously-recognize-and-localize-novel-concepts" style="border-bottom: 0px" title="Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts">Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts</a></li><li><a class="toc-href" href="#zero-shot-object-detection-by-hybrid-region-embedding" style="border-bottom: 0px" title="Zero-Shot Object Detection by Hybrid Region Embedding">Zero-Shot Object Detection by Hybrid Region Embedding</a></li><li><a class="toc-href" href="#salient-object-detection" style="border-bottom: 0px" title="Salient Object Detection">Salient Object Detection</a></li><li><a class="toc-href" href="#best-deep-saliency-detection-models-cvpr-2016-2015" style="border-bottom: 0px" title="Best Deep Saliency Detection Models (CVPR 2016 &amp; 2015)">Best Deep Saliency Detection Models (CVPR 2016 &amp; 2015)</a></li><li><a class="toc-href" href="#large-scale-optimization-of-hierarchical-features-for-saliency-prediction-in-natural-images" style="border-bottom: 0px" title="Large-scale optimization of hierarchical features for saliency prediction in natural images">Large-scale optimization of hierarchical features for saliency prediction in natural images</a></li><li><a class="toc-href" href="#predicting-eye-fixations-using-convolutional-neural-networks" style="border-bottom: 0px" title="Predicting Eye Fixations using Convolutional Neural Networks">Predicting Eye Fixations using Convolutional Neural Networks</a></li><li><a class="toc-href" href="#saliency-detection-by-multi-context-deep-learning" style="border-bottom: 0px" title="Saliency Detection by Multi-Context Deep Learning">Saliency Detection by Multi-Context Deep Learning</a></li><li><a class="toc-href" href="#deepsaliency-multi-task-deep-neural-network-model-for-salient-object-detection" style="border-bottom: 0px" title="DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection">DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection</a></li><li><a class="toc-href" href="#supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection" style="border-bottom: 0px" title="SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection">SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection</a></li><li><a class="toc-href" href="#shallow-and-deep-convolutional-networks-for-saliency-prediction" style="border-bottom: 0px" title="Shallow and Deep Convolutional Networks for Saliency Prediction">Shallow and Deep Convolutional Networks for Saliency Prediction</a></li><li><a class="toc-href" href="#recurrent-attentional-networks-for-saliency-detection" style="border-bottom: 0px" title="Recurrent Attentional Networks for Saliency Detection">Recurrent Attentional Networks for Saliency Detection</a></li><li><a class="toc-href" href="#two-stream-convolutional-networks-for-dynamic-saliency-prediction" style="border-bottom: 0px" title="Two-Stream Convolutional Networks for Dynamic Saliency Prediction">Two-Stream Convolutional Networks for Dynamic Saliency Prediction</a></li><li><a class="toc-href" href="#unconstrained-salient-object-detection-via-proposal-subset-optimization" style="border-bottom: 0px" title="Unconstrained Salient Object Detection via Proposal Subset Optimization">Unconstrained Salient Object Detection via Proposal Subset Optimization</a></li><li><a class="toc-href" href="#dhsnet-deep-hierarchical-saliency-network-for-salient-object-detection" style="border-bottom: 0px" title="DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection">DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection</a></li><li><a class="toc-href" href="#salient-object-subitizingbject-detection-cv-cnn-tutorial" style="border-bottom: 0px" title="Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL">Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="object-detection-papers">Object Detection Papers</h1>
+<p>There are a list of papers in Computer Vision in general which provides some short summary of each paper. The link on github can be found <a href="https://github.com/sunshineatnoon/Paper-Collection/">here</a>.</p>
+<h2 id="deep-neural-networks-for-object-detection">Deep Neural Networks for Object Detection</h2>
+<ul>
+<li>paper: http://papers.nips.cc/paper/5207-deep-neural-networks-for-object-detection.pdf</li>
+</ul>
+<h2 id="overfeat-integrated-recognition-localization-and-detection-using-convolutional-networks">OverFeat: Integrated Recognition, Localization and Detection using Convolutional Networks</h2>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1312.6229</li>
+<li>github: https://github.com/sermanet/OverFeat</li>
+<li>code: http://cilvr.nyu.edu/doku.php?id=software:overfeat:start</li>
+</ul>
+<h1 id="r-cnn_1">R-CNN</h1>
+<h2 id="rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation">Rich feature hierarchies for accurate object detection and semantic segmentation</h2>
+<ul>
+<li>intro: R-CNN</li>
+<li>arxiv: http://arxiv.org/abs/1311.2524</li>
+<li>supp: http://people.eecs.berkeley.edu/~rbg/papers/r-cnn-cvpr-supp.pdf</li>
+<li>slides: http://www.image-net.org/challenges/LSVRC/2013/slides/r-cnn-ilsvrc2013-workshop.pdf</li>
+<li>slides: http://www.cs.berkeley.edu/~rbg/slides/rcnn-cvpr14-slides.pdf</li>
+<li>github: https://github.com/rbgirshick/rcnn</li>
+<li>notes: http://zhangliliang.com/2014/07/23/paper-note-rcnn/</li>
+<li>caffe-pr(&ldquo;Make R-CNN the Caffe detection example&rdquo;): https://github.com/BVLC/caffe/pull/482</li>
+</ul>
+<h1 id="fast-r-cnn_1">Fast R-CNN</h1>
+<h2 id="fast-r-cnn_2">Fast R-CNN</h2>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1504.08083</li>
+<li>slides: http://tutorial.caffe.berkeleyvision.org/caffe-cvpr15-detection.pdf</li>
+<li>github: https://github.com/rbgirshick/fast-rcnn</li>
+<li>github(COCO-branch): https://github.com/rbgirshick/fast-rcnn/tree/coco</li>
+<li>webcam demo: https://github.com/rbgirshick/fast-rcnn/pull/29</li>
+<li>notes: http://zhangliliang.com/2015/05/17/paper-note-fast-rcnn/</li>
+<li>notes: http://blog.csdn.net/linj_m/article/details/48930179</li>
+<li>github(&ldquo;Fast R-CNN in MXNet&rdquo;): https://github.com/precedenceguo/mx-rcnn</li>
+<li>github: https://github.com/mahyarnajibi/fast-rcnn-torch</li>
+<li>github: https://github.com/apple2373/chainer-simple-fast-rnn</li>
+<li>github: https://github.com/zplizzi/tensorflow-fast-rcnn</li>
+</ul>
+<h2 id="a-fast-rcnn-hard-positive-generation-via-adversary-for-object-detection">A-Fast-RCNN: Hard Positive Generation via Adversary for Object Detection</h2>
+<ul>
+<li>intro: CVPR 2017</li>
+<li>arxiv: https://arxiv.org/abs/1704.03414</li>
+<li>paper: http://abhinavsh.info/papers/pdfs/adversarial_object_detection.pdf</li>
+<li>github(Caffe): https://github.com/xiaolonw/adversarial-frcnn</li>
+</ul>
+<h1 id="faster-r-cnn_1">Faster R-CNN</h1>
+<h2 id="faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</h2>
+<ul>
+<li>intro: NIPS 2015</li>
+<li>arxiv: http://arxiv.org/abs/1506.01497</li>
+<li>gitxiv: http://www.gitxiv.com/posts/8pfpcvefDYn2gSgXk/faster-r-cnn-towards-real-time-object-detection-with-region</li>
+<li>slides: http://web.cs.hacettepe.edu.tr/~aykut/classes/spring2016/bil722/slides/w05-FasterR-CNN.pdf</li>
+<li>github(official, Matlab): https://github.com/ShaoqingRen/faster_rcnn</li>
+<li>github: https://github.com/rbgirshick/py-faster-rcnn</li>
+<li>github(MXNet): https://github.com/msracver/Deformable-ConvNets/tree/master/faster_rcnn</li>
+<li>github: https://github.com//jwyang/faster-rcnn.pytorch</li>
+<li>github: https://github.com/mitmul/chainer-faster-rcnn</li>
+<li>github: https://github.com/andreaskoepf/faster-rcnn.torch</li>
+<li>github: https://github.com/ruotianluo/Faster-RCNN-Densecap-torch</li>
+<li>github: https://github.com/smallcorgi/Faster-RCNN_TF</li>
+<li>github: https://github.com/CharlesShang/TFFRCNN</li>
+<li>github(C++ demo): https://github.com/YihangLou/FasterRCNN-Encapsulation-Cplusplus</li>
+<li>github: https://github.com/yhenon/keras-frcnn</li>
+<li>github: https://github.com/Eniac-Xie/faster-rcnn-resnet</li>
+<li>github(C++): https://github.com/D-X-Y/caffe-faster-rcnn/tree/dev</li>
+</ul>
+<h2 id="r-cnn-minus-r">R-CNN minus R</h2>
+<ul>
+<li>intro: BMVC 2015</li>
+<li>arxiv: http://arxiv.org/abs/1506.06981</li>
+<li>
+<h2 id="faster-r-cnn-in-mxnet-with-distributed-implementation-and-data-parallelization">Faster R-CNN in MXNet with distributed implementation and data parallelization</h2>
+</li>
+<li>
+<p>github: https://github.com/dmlc/mxnet/tree/master/example/rcnn</p>
+</li>
+</ul>
+<h1 id="contextual-priming-and-feedback-for-faster-r-cnn_1">Contextual Priming and Feedback for Faster R-CNN</h1>
+<ul>
+<li>intro: ECCV 2016. Carnegie Mellon University</li>
+<li>paper: http://abhinavsh.info/context_priming_feedback.pdf</li>
+<li>poster: http://www.eccv2016.org/files/posters/P-1A-20.pdf</li>
+</ul>
+<h2 id="an-implementation-of-faster-rcnn-with-study-for-region-sampling">An Implementation of Faster RCNN with Study for Region Sampling</h2>
+<ul>
+<li>intro: Technical Report, 3 pages. CMU</li>
+<li>arxiv: https://arxiv.org/abs/1702.02138</li>
+<li>github: https://github.com/endernewton/tf-faster-rcnn</li>
+</ul>
+<h2 id="interpretable-r-cnn">Interpretable R-CNN</h2>
+<ul>
+<li>intro: North Carolina State University &amp; Alibaba</li>
+<li>keywords: AND-OR Graph (AOG)</li>
+<li>arxiv: https://arxiv.org/abs/1711.05226</li>
+</ul>
+<h1 id="light-head-r-cnn_1">Light-Head R-CNN</h1>
+<h2 id="light-head-r-cnn-in-defense-of-two-stage-object-detector">Light-Head R-CNN: In Defense of Two-Stage Object Detector</h2>
+<ul>
+<li>intro: Tsinghua University &amp; Megvii Inc</li>
+<li>arxiv: https://arxiv.org/abs/1711.07264</li>
+<li>github(official, Tensorflow): https://github.com/zengarden/light_head_rcnn</li>
+<li>github: https://github.com/terrychenism/Deformable-ConvNets/blob/master/rfcn/symbols/resnet_v1_101_rfcn_light.py#L784</li>
+</ul>
+<h1 id="cascade-r-cnn_1">Cascade R-CNN</h1>
+<h2 id="cascade-r-cnn-delving-into-high-quality-object-detection">Cascade R-CNN: Delving into High Quality Object Detection</h2>
+<ul>
+<li>intro: CVPR 2018. UC San Diego</li>
+<li>arxiv: https://arxiv.org/abs/1712.00726</li>
+<li>github(Caffe, official): https://github.com/zhaoweicai/cascade-rcnn</li>
+</ul>
+<h1 id="multibox-scalable-object-detection-using-deep-neural-networks_1">MultiBox Scalable Object Detection using Deep Neural Networks</h1>
+<ul>
+<li>intro: first MultiBox. Train a CNN to predict Region of Interest.</li>
+<li>arxiv: http://arxiv.org/abs/1312.2249</li>
+<li>github: https://github.com/google/multibox</li>
+<li>blog: https://research.googleblog.com/2014/12/high-quality-object-detection-at-scale.html</li>
+</ul>
+<h1 id="scalable-high-quality-object-detection">Scalable, High-Quality Object Detection</h1>
+<ul>
+<li>intro: second MultiBox</li>
+<li>arxiv: http://arxiv.org/abs/1412.1441</li>
+<li>github: https://github.com/google/multibox</li>
+</ul>
+<h1 id="spp-net-spatial-pyramid-pooling-in-deep-convolutional-networks-for-visual-recognition">SPP-Net Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</h1>
+<ul>
+<li>intro: ECCV 2014 / TPAMI 2015</li>
+<li>arxiv: http://arxiv.org/abs/1406.4729</li>
+<li>github: https://github.com/ShaoqingRen/SPP_net</li>
+<li>notes: http://zhangliliang.com/2014/09/13/paper-note-sppnet/</li>
+</ul>
+<h1 id="deepid-net-deformable-deep-convolutional-neural-networks-for-object-detection">DeepID-Net: Deformable Deep Convolutional Neural Networks for Object Detection</h1>
+<ul>
+<li>intro: PAMI 2016</li>
+<li>intro: an extension of R-CNN. box pre-training, cascade on region proposals, deformation layers and context representations</li>
+<li>project page: http://www.ee.cuhk.edu.hk/%CB%9Cwlouyang/projects/imagenetDeepId/index.html</li>
+<li>arxiv: http://arxiv.org/abs/1412.5661</li>
+</ul>
+<h1 id="object-detectors-emerge-in-deep-scene-cnns">Object Detectors Emerge in Deep Scene CNNs</h1>
+<ul>
+<li>intro: ICLR 2015</li>
+<li>arxiv: http://arxiv.org/abs/1412.6856</li>
+<li>paper: https://www.robots.ox.ac.uk/~vgg/rg/papers/zhou_iclr15.pdf</li>
+<li>paper: https://people.csail.mit.edu/khosla/papers/iclr2015_zhou.pdf</li>
+<li>slides: http://places.csail.mit.edu/slide_iclr2015.pdf</li>
+</ul>
+<h1 id="segdeepm-exploiting-segmentation-and-context-in-deep-neural-networks-for-object-detection">segDeepM: Exploiting Segmentation and Context in Deep Neural Networks for Object Detection</h1>
+<ul>
+<li>intro: CVPR 2015</li>
+<li>project(code+data): https://www.cs.toronto.edu/~yukun/segdeepm.html</li>
+<li>arxiv: https://arxiv.org/abs/1502.04275</li>
+<li>github: https://github.com/YknZhu/segDeepM</li>
+</ul>
+<h1 id="object-detection-networks-on-convolutional-feature-maps">Object Detection Networks on Convolutional Feature Maps</h1>
+<ul>
+<li>intro: TPAMI 2015</li>
+<li>keywords: NoC</li>
+<li>arxiv: http://arxiv.org/abs/1504.06066</li>
+</ul>
+<h1 id="improving-object-detection-with-deep-convolutional-networks-via-bayesian-optimization-and-structured-prediction">Improving Object Detection with Deep Convolutional Networks via Bayesian Optimization and Structured Prediction</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1504.03293</li>
+<li>slides: http://www.ytzhang.net/files/publications/2015-cvpr-det-slides.pdf</li>
+<li>github: https://github.com/YutingZhang/fgs-obj</li>
+</ul>
+<h1 id="deepbox-learning-objectness-with-convolutional-networks">DeepBox: Learning Objectness with Convolutional Networks</h1>
+<ul>
+<li>keywords: DeepBox</li>
+<li>arxiv: http://arxiv.org/abs/1505.02146</li>
+<li>github: https://github.com/weichengkuo/DeepBox</li>
+</ul>
+<h1 id="mr-cnn-object-detection-via-a-multi-region-semantic-segmentation-aware-cnn-model">MR-CNN Object detection via a multi-region &amp; semantic segmentation-aware CNN model</h1>
+<ul>
+<li>intro: ICCV 2015. MR-CNN</li>
+<li>arxiv: http://arxiv.org/abs/1505.01749</li>
+<li>github: https://github.com/gidariss/mrcnn-object-detection</li>
+<li>notes: http://zhangliliang.com/2015/05/17/paper-note-ms-cnn/</li>
+<li>notes: http://blog.cvmarcher.com/posts/2015/05/17/multi-region-semantic-segmentation-aware-cnn/</li>
+</ul>
+<h1 id="yolo-you-only-look-once-unified-real-time-object-detection">YOLO You Only Look Once: Unified, Real-Time Object Detection</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1506.02640</li>
+<li>code: http://pjreddie.com/darknet/yolo/</li>
+<li>github: https://github.com/pjreddie/darknet</li>
+<li>blog: https://pjreddie.com/publications/yolo/</li>
+<li>slides: https://docs.google.com/presentation/d/1aeRvtKG21KHdD5lg6Hgyhx5rPq_ZOsGjG5rJ1HP7BbA/pub?start=false&amp;loop=false&amp;delayms=3000&amp;slide=id.p</li>
+<li>reddit: https://www.reddit.com/r/MachineLearning/comments/3a3m0o/realtime_object_detection_with_yolo/</li>
+<li>github: https://github.com/gliese581gg/YOLO_tensorflow</li>
+<li>github: https://github.com/xingwangsfu/caffe-yolo</li>
+<li>github: https://github.com/frankzhangrui/Darknet-Yolo</li>
+<li>github: https://github.com/BriSkyHekun/py-darknet-yolo</li>
+<li>github: https://github.com/tommy-qichang/yolo.torch</li>
+<li>github: https://github.com/frischzenger/yolo-windows</li>
+<li>github: https://github.com/AlexeyAB/yolo-windows</li>
+<li>github: https://github.com/nilboy/tensorflow-yolo</li>
+<li>
+<p>darkflow - translate darknet to tensorflow. Load trained weights, retrain/fine-tune them using tensorflow, export constant graph def to C++</p>
+</li>
+<li>
+<p>blog: https://thtrieu.github.io/notes/yolo-tensorflow-graph-buffer-cpp</p>
+</li>
+<li>github: https://github.com/thtrieu/darkflow</li>
+</ul>
+<h1 id="start-training-yolo-with-our-own-data">Start Training YOLO with Our Own Data</h1>
+<ul>
+<li>intro: train with customized data and class numbers/labels. Linux / Windows version for darknet.</li>
+<li>blog: http://guanghan.info/blog/en/my-works/train-yolo/</li>
+<li>github: https://github.com/Guanghan/darknet</li>
+</ul>
+<h1 id="yolo-core-ml-versus-mpsnngraph">YOLO: Core ML versus MPSNNGraph</h1>
+<ul>
+<li>intro: Tiny YOLO for iOS implemented using CoreML but also using the new MPS graph API.</li>
+<li>blog: http://machinethink.net/blog/yolo-coreml-versus-mps-graph/</li>
+<li>github: https://github.com/hollance/YOLO-CoreML-MPSNNGraph</li>
+</ul>
+<h1 id="tensorflow-yolo-object-detection-on-android">TensorFlow YOLO object detection on Android</h1>
+<ul>
+<li>intro: Real-time object detection on Android using the YOLO network with TensorFlow</li>
+<li>github: https://github.com/natanielruiz/android-yolo</li>
+</ul>
+<h1 id="computer-vision-in-ios-object-detection">Computer Vision in iOS &ndash; Object Detection</h1>
+<ul>
+<li>blog: https://sriraghu.com/2017/07/12/computer-vision-in-ios-object-detection/</li>
+<li>github:https://github.com/r4ghu/iOS-CoreML-Yolo</li>
+</ul>
+<h1 id="yolov2">YOLOv2</h1>
+<h1 id="yolo9000-better-faster-stronger">YOLO9000: Better, Faster, Stronger</h1>
+<ul>
+<li>arxiv: https://arxiv.org/abs/1612.08242</li>
+<li>code: http://pjreddie.com/yolo9000/</li>
+<li>github(Chainer): https://github.com/leetenki/YOLOv2</li>
+<li>github(Keras): https://github.com/allanzelener/YAD2K</li>
+<li>github(PyTorch): https://github.com/longcw/yolo2-pytorch</li>
+<li>github(Tensorflow): https://github.com/hizhangp/yolo_tensorflow</li>
+<li>github(Windows): https://github.com/AlexeyAB/darknet</li>
+<li>github: https://github.com/choasUp/caffe-yolo9000</li>
+<li>github: https://github.com/philipperemy/yolo-9000</li>
+<li>
+<p>darknet_scripts</p>
+</li>
+<li>
+<p>intro: Auxilary scripts to work with (YOLO) darknet deep learning famework. AKA -&gt; How to generate YOLO anchors?</p>
+</li>
+<li>github: https://github.com/Jumabek/darknet_scripts</li>
+</ul>
+<h1 id="yolo_mark-gui-for-marking-bounded-boxes-of-objects-in-images-for-training-yolo-v2">Yolo_mark: GUI for marking bounded boxes of objects in images for training Yolo v2</h1>
+<ul>
+<li>github: https://github.com/AlexeyAB/Yolo_mark</li>
+</ul>
+<h1 id="lightnet-bringing-pjreddies-darknet-out-of-the-shadows">LightNet: Bringing pjreddie&rsquo;s DarkNet out of the shadows</h1>
+<ul>
+<li>https://github.com//explosion/lightnet</li>
+</ul>
+<h1 id="yolo-v2-bounding-box-tool">YOLO v2 Bounding Box Tool</h1>
+<ul>
+<li>intro: Bounding box labeler tool to generate the training data in the format YOLO v2 requires.</li>
+<li>github: https://github.com/Cartucho/yolo-boundingbox-labeler-GUI</li>
+</ul>
+<h1 id="yolov3-yolov3-an-incremental-improvement">YOLOv3 YOLOv3: An Incremental Improvement</h1>
+<ul>
+<li>project page: https://pjreddie.com/darknet/yolo/</li>
+<li>arxiv: https://arxiv.org/abs/1804.02767</li>
+</ul>
+<h1 id="attentionnet-aggregating-weak-directions-for-accurate-object-detection">AttentionNet: Aggregating Weak Directions for Accurate Object Detection</h1>
+<ul>
+<li>intro: ICCV 2015</li>
+<li>intro: state-of-the-art performance of 65% (AP) on PASCAL VOC 2007&frasl;2012 human detection task</li>
+<li>arxiv: http://arxiv.org/abs/1506.07704</li>
+<li>slides: https://www.robots.ox.ac.uk/~vgg/rg/slides/AttentionNet.pdf</li>
+<li>slides: http://image-net.org/challenges/talks/lunit-kaist-slide.pdf</li>
+</ul>
+<h1 id="densebox-unifying-landmark-localization-with-end-to-end-object-detection">DenseBox: Unifying Landmark Localization with End to End Object Detection</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1509.04874</li>
+<li>demo: http://pan.baidu.com/s/1mgoWWsS</li>
+<li>KITTI result: http://www.cvlibs.net/datasets/kitti/eval_object.php</li>
+</ul>
+<h1 id="ssd-single-shot-multibox-detector">SSD: Single Shot MultiBox Detector</h1>
+<ul>
+<li>intro: ECCV 2016 Oral</li>
+<li>arxiv: http://arxiv.org/abs/1512.02325</li>
+<li>paper: http://www.cs.unc.edu/~wliu/papers/ssd.pdf</li>
+<li>slides: http://www.cs.unc.edu/%7Ewliu/papers/ssd_eccv2016_slide.pdf</li>
+<li>github(Official): https://github.com/weiliu89/caffe/tree/ssd</li>
+<li>video: http://weibo.com/p/2304447a2326da963254c963c97fb05dd3a973</li>
+<li>github: https://github.com/zhreshold/mxnet-ssd</li>
+<li>github: https://github.com/zhreshold/mxnet-ssd.cpp</li>
+<li>github: https://github.com/rykov8/ssd_keras</li>
+<li>github: https://github.com/balancap/SSD-Tensorflow</li>
+<li>github: https://github.com/amdegroot/ssd.pytorch</li>
+<li>
+<p>github(Caffe): https://github.com/chuanqi305/MobileNet-SSD</p>
+</li>
+<li>
+<p>What&rsquo;s the diffience in performance between this new code you pushed and the previous code? #327</p>
+</li>
+<li>
+<p>https://github.com/weiliu89/caffe/issues/327</p>
+</li>
+</ul>
+<h1 id="dssd-deconvolutional-single-shot-detector">DSSD : Deconvolutional Single Shot Detector</h1>
+<ul>
+<li>intro: UNC Chapel Hill &amp; Amazon Inc</li>
+<li>arxiv: https://arxiv.org/abs/1701.06659</li>
+<li>github: https://github.com/chengyangfu/caffe/tree/dssd</li>
+<li>github: https://github.com/MTCloudVision/mxnet-dssd</li>
+<li>demo: http://120.52.72.53/www.cs.unc.edu/c3pr90ntc0td/~cyfu/dssd_lalaland.mp4</li>
+</ul>
+<h1 id="enhancement-of-ssd-by-concatenating-feature-maps-for-object-detection">Enhancement of SSD by concatenating feature maps for object detection</h1>
+<ul>
+<li>intro: rainbow SSD (R-SSD)</li>
+<li>arxiv: https://arxiv.org/abs/1705.09587</li>
+</ul>
+<h1 id="context-aware-single-shot-detector">Context-aware Single-Shot Detector</h1>
+<ul>
+<li>keywords: CSSD, DiCSSD, DeCSSD, effective receptive fields (ERFs), theoretical receptive fields (TRFs)</li>
+<li>arxiv: https://arxiv.org/abs/1707.08682</li>
+</ul>
+<h1 id="feature-fused-ssd-fast-detection-for-small-objects">Feature-Fused SSD: Fast Detection for Small Objects</h1>
+<ul>
+<li>https://arxiv.org/abs/1709.05054</li>
+</ul>
+<h1 id="fssd-feature-fusion-single-shot-multibox-detector">FSSD: Feature Fusion Single Shot Multibox Detector</h1>
+<ul>
+<li>https://arxiv.org/abs/1712.00960</li>
+</ul>
+<h1 id="weaving-multi-scale-context-for-single-shot-detector">Weaving Multi-scale Context for Single Shot Detector</h1>
+<ul>
+<li>intro: WeaveNet</li>
+<li>keywords: fuse multi-scale information</li>
+<li>arxiv: https://arxiv.org/abs/1712.03149</li>
+</ul>
+<h1 id="essd-extend-the-shallow-part-of-single-shot-multibox-detector-via-convolutional-neural-network">ESSD Extend the shallow part of Single Shot MultiBox Detector via Convolutional Neural Network</h1>
+<ul>
+<li>https://arxiv.org/abs/1801.05918</li>
+</ul>
+<h1 id="tiny-ssd-a-tiny-single-shot-detection-deep-convolutional-neural-network-for-real-time-embedded-object-detection">Tiny SSD: A Tiny Single-shot Detection Deep Convolutional Neural Network for Real-time Embedded Object Detection</h1>
+<ul>
+<li>https://arxiv.org/abs/1802.06488</li>
+</ul>
+<h1 id="mdssd-multi-scale-deconvolutional-single-shot-detector-for-small-objects">MDSSD: Multi-scale Deconvolutional Single Shot Detector for small objects</h1>
+<ul>
+<li>intro: Zhengzhou University</li>
+<li>arxiv: https://arxiv.org/abs/1805.07009</li>
+</ul>
+<h1 id="inside-outside-net-detecting-objects-in-context-with-skip-pooling-and-recurrent-neural-networks">Inside-Outside Net: Detecting Objects in Context with Skip Pooling and Recurrent Neural Networks</h1>
+<ul>
+<li>intro: &ldquo;0.8s per image on a Titan X GPU (excluding proposal generation) without two-stage bounding-box regression and 1.15s per image with it&rdquo;.</li>
+<li>arxiv: http://arxiv.org/abs/1512.04143</li>
+<li>slides: http://www.seanbell.ca/tmp/ion-coco-talk-bell2015.pdf</li>
+<li>coco-leaderboard: http://mscoco.org/dataset/#detections-leaderboard</li>
+</ul>
+<h1 id="adaptive-object-detection-using-adjacency-and-zoom-prediction">Adaptive Object Detection Using Adjacency and Zoom Prediction</h1>
+<ul>
+<li>intro: CVPR 2016. AZ-Net</li>
+<li>arxiv: http://arxiv.org/abs/1512.07711</li>
+<li>github: https://github.com/luyongxi/az-net</li>
+<li>youtube: https://www.youtube.com/watch?v=YmFtuNwxaNM</li>
+<li>
+<p>G-CNN: an Iterative Grid Based Object Detector</p>
+</li>
+<li>
+<p>arxiv: http://arxiv.org/abs/1512.07729</p>
+</li>
+</ul>
+<h1 id="factors-in-finetuning-deep-model-for-object-detection">Factors in Finetuning Deep Model for object detection</h1>
+<h1 id="factors-in-finetuning-deep-model-for-object-detection-with-long-tail-distribution">Factors in Finetuning Deep Model for Object Detection with Long-tail Distribution</h1>
+<p>intro: CVPR 2016.rank 3rd for provided data and 2nd for external data on ILSVRC 2015 object detection
+project page: http://www.ee.cuhk.edu.hk/~wlouyang/projects/ImageNetFactors/CVPR16.html
+arxiv: http://arxiv.org/abs/1601.05150</p>
+<h1 id="we-dont-need-no-bounding-boxes-training-object-class-detectors-using-only-human-verification">We don&rsquo;t need no bounding-boxes: Training object class detectors using only human verification</h1>
+<p>arxiv: http://arxiv.org/abs/1602.08405</p>
+<h1 id="hypernet-towards-accurate-region-proposal-generation-and-joint-object-detection">HyperNet: Towards Accurate Region Proposal Generation and Joint Object Detection</h1>
+<p>arxiv: http://arxiv.org/abs/1604.00600</p>
+<h1 id="a-multipath-network-for-object-detection">A MultiPath Network for Object Detection</h1>
+<p>intro: BMVC 2016. Facebook AI Research (FAIR)
+arxiv: http://arxiv.org/abs/1604.02135
+github: https://github.com/facebookresearch/multipathnet</p>
+<h1 id="craft-objects-from-images">CRAFT Objects from Images</h1>
+<p>intro: CVPR 2016. Cascade Region-proposal-network And FasT-rcnn. an extension of Faster R-CNN
+project page: http://byangderek.github.io/projects/craft.html
+arxiv: https://arxiv.org/abs/1604.03239
+paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yang_CRAFT_Objects_From_CVPR_2016_paper.pdf
+github: https://github.com/byangderek/CRAFT</p>
+<h1 id="ohem-training-region-based-object-detectors-with-online-hard-example-mining">OHEM Training Region-based Object Detectors with Online Hard Example Mining</h1>
+<p>intro: CVPR 2016 Oral. Online hard example mining (OHEM)
+arxiv: http://arxiv.org/abs/1604.03540
+paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shrivastava_Training_Region-Based_Object_CVPR_2016_paper.pdf
+github(Official): https://github.com/abhi2610/ohem
+author page: http://abhinav-shrivastava.info/</p>
+<h1 id="s-ohem-stratified-online-hard-example-mining-for-object-detection">S-OHEM: Stratified Online Hard Example Mining for Object Detection</h1>
+<p>https://arxiv.org/abs/1705.02233</p>
+<h1 id="exploit-all-the-layers-fast-and-accurate-cnn-object-detector-with-scale-dependent-pooling-and-cascaded-rejection-classifiers">Exploit All the Layers: Fast and Accurate CNN Object Detector with Scale Dependent Pooling and Cascaded Rejection Classifiers</h1>
+<p>intro: CVPR 2016
+keywords: scale-dependent pooling (SDP), cascaded rejection classifiers (CRC)
+paper: http://www-personal.umich.edu/~wgchoi/SDP-CRC_camready.pdf</p>
+<h1 id="r-fcn-object-detection-via-region-based-fully-convolutional-networks">R-FCN: Object Detection via Region-based Fully Convolutional Networks</h1>
+<p>arxiv: http://arxiv.org/abs/1605.06409
+github: https://github.com/daijifeng001/R-FCN
+github(MXNet): https://github.com/msracver/Deformable-ConvNets/tree/master/rfcn
+github: https://github.com/Orpine/py-R-FCN
+github: https://github.com/PureDiors/pytorch_RFCN
+github: https://github.com/bharatsingh430/py-R-FCN-multiGPU
+github: https://github.com/xdever/RFCN-tensorflow</p>
+<h1 id="r-fcn-3000-at-30fps-decoupling-detection-and-classification">R-FCN-3000 at 30fps: Decoupling Detection and Classification</h1>
+<p>https://arxiv.org/abs/1712.01802</p>
+<h1 id="recycle-deep-features-for-better-object-detection">Recycle deep features for better object detection</h1>
+<p>arxiv: http://arxiv.org/abs/1607.05066</p>
+<h1 id="ms-cnn-a-unified-multi-scale-deep-convolutional-neural-network-for-fast-object-detection">MS-CNN A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection</h1>
+<p>intro: ECCV 2016
+intro: 640&times;480: 15 fps, 960&times;720: 8 fps
+arxiv: http://arxiv.org/abs/1607.07155
+github: https://github.com/zhaoweicai/mscnn
+poster: http://www.eccv2016.org/files/posters/P-2B-38.pdf</p>
+<h1 id="multi-stage-object-detection-with-group-recursive-learning">Multi-stage Object Detection with Group Recursive Learning</h1>
+<p>intro: VOC2007: 78.6%, VOC2012: 74.9%
+arxiv: http://arxiv.org/abs/1608.05159</p>
+<h1 id="subcategory-aware-convolutional-neural-networks-for-object-proposals-and-detection">Subcategory-aware Convolutional Neural Networks for Object Proposals and Detection</h1>
+<p>intro: WACV 2017. SubCNN
+arxiv: http://arxiv.org/abs/1604.04693
+github: https://github.com/tanshen/SubCNN</p>
+<h1 id="pvanet-lightweight-deep-neural-networks-for-real-time-object-detection">PVANet: Lightweight Deep Neural Networks for Real-time Object Detection</h1>
+<p>intro: Presented at NIPS 2016 Workshop on Efficient Methods for Deep Neural Networks (EMDNN). Continuation of arXiv:1608.08021
+arxiv: https://arxiv.org/abs/1611.08588
+github: https://github.com/sanghoon/pva-faster-rcnn
+leaderboard(PVANet 9.0): http://host.robots.ox.ac.uk:8080/leaderboard/displaylb.php?challengeid=11&amp;compid=4</p>
+<h1 id="gated-bi-directional-cnn-for-object-detection">Gated Bi-directional CNN for Object Detection</h1>
+<p>intro: The Chinese University of Hong Kong &amp; Sensetime Group Limited
+paper: http://link.springer.com/chapter/10.1007&frasl;978-3-319-46478-7_22
+mirror: https://pan.baidu.com/s/1dFohO7v</p>
+<h1 id="crafting-gbd-net-for-object-detection">Crafting GBD-Net for Object Detection</h1>
+<p>intro: winner of the ImageNet object detection challenge of 2016. CUImage and CUVideo
+intro: gated bi-directional CNN (GBD-Net)
+arxiv: https://arxiv.org/abs/1610.02579
+github: https://github.com/craftGBD/craftGBD</p>
+<h1 id="stuffnet-using-stuff-to-improve-object-detection">StuffNet: Using &lsquo;Stuff&rsquo; to Improve Object Detection</h1>
+<p>arxiv: https://arxiv.org/abs/1610.05861</p>
+<h1 id="generalized-haar-filter-based-deep-networks-for-real-time-object-detection-in-traffic-scene">Generalized Haar Filter based Deep Networks for Real-Time Object Detection in Traffic Scene</h1>
+<p>arxiv: https://arxiv.org/abs/1610.09609</p>
+<h1 id="hierarchical-object-detection-with-deep-reinforcement-learning">Hierarchical Object Detection with Deep Reinforcement Learning</h1>
+<p>intro: Deep Reinforcement Learning Workshop (NIPS 2016)
+project page: https://imatge-upc.github.io/detection-2016-nipsws/
+arxiv: https://arxiv.org/abs/1611.03718
+slides: http://www.slideshare.net/xavigiro/hierarchical-object-detection-with-deep-reinforcement-learning
+github: https://github.com/imatge-upc/detection-2016-nipsws
+blog: http://jorditorres.org/nips/</p>
+<h1 id="learning-to-detect-and-localize-many-objects-from-few-examples">Learning to detect and localize many objects from few examples</h1>
+<p>arxiv: https://arxiv.org/abs/1611.05664</p>
+<h1 id="speedaccuracy-trade-offs-for-modern-convolutional-object-detectors">Speed/accuracy trade-offs for modern convolutional object detectors</h1>
+<p>intro: CVPR 2017. Google Research
+arxiv: https://arxiv.org/abs/1611.10012</p>
+<h1 id="squeezedet-unified-small-low-power-fully-convolutional-neural-networks-for-real-time-object-detection-for-autonomous-driving">SqueezeDet: Unified, Small, Low Power Fully Convolutional Neural Networks for Real-Time Object Detection for Autonomous Driving</h1>
+<p>arxiv: https://arxiv.org/abs/1612.01051
+github: https://github.com/BichenWuUCB/squeezeDet
+github: https://github.com/fregu856/2D_detection</p>
+<h1 id="feature-pyramid-network-fpn">Feature Pyramid Network (FPN)</h1>
+<p>Feature Pyramid Networks for Object Detection</p>
+<p>intro: Facebook AI Research
+arxiv: https://arxiv.org/abs/1612.03144</p>
+<h1 id="action-driven-object-detection-with-top-down-visual-attentions">Action-Driven Object Detection with Top-Down Visual Attentions</h1>
+<p>arxiv: https://arxiv.org/abs/1612.06704</p>
+<h1 id="beyond-skip-connections-top-down-modulation-for-object-detection">Beyond Skip Connections: Top-Down Modulation for Object Detection</h1>
+<p>intro: CMU &amp; UC Berkeley &amp; Google Research
+arxiv: https://arxiv.org/abs/1612.06851</p>
+<h1 id="wide-residual-inception-networks-for-real-time-object-detection">Wide-Residual-Inception Networks for Real-time Object Detection</h1>
+<p>intro: Inha University
+arxiv: https://arxiv.org/abs/1702.01243</p>
+<h1 id="attentional-network-for-visual-object-detection">Attentional Network for Visual Object Detection</h1>
+<p>intro: University of Maryland &amp; Mitsubishi Electric Research Laboratories
+arxiv: https://arxiv.org/abs/1702.01478</p>
+<h1 id="learning-chained-deep-features-and-classifiers-for-cascade-in-object-detection">Learning Chained Deep Features and Classifiers for Cascade in Object Detection</h1>
+<p>keykwords: CC-Net
+intro: chained cascade network (CC-Net). 81.1% mAP on PASCAL VOC 2007
+arxiv: https://arxiv.org/abs/1702.07054</p>
+<h1 id="denet-scalable-real-time-object-detection-with-directed-sparse-sampling">DeNet: Scalable Real-time Object Detection with Directed Sparse Sampling</h1>
+<p>intro: ICCV 2017 (poster)
+arxiv: https://arxiv.org/abs/1703.10295</p>
+<h1 id="discriminative-bimodal-networks-for-visual-localization-and-detection-with-natural-language-queries">Discriminative Bimodal Networks for Visual Localization and Detection with Natural Language Queries</h1>
+<p>intro: CVPR 2017
+arxiv: https://arxiv.org/abs/1704.03944</p>
+<h1 id="spatial-memory-for-context-reasoning-in-object-detection">Spatial Memory for Context Reasoning in Object Detection</h1>
+<p>arxiv: https://arxiv.org/abs/1704.04224</p>
+<h1 id="accurate-single-stage-detector-using-recurrent-rolling-convolution">Accurate Single Stage Detector Using Recurrent Rolling Convolution</h1>
+<p>intro: CVPR 2017. SenseTime
+keywords: Recurrent Rolling Convolution (RRC)
+arxiv: https://arxiv.org/abs/1704.05776
+github: https://github.com/xiaohaoChen/rrc_detection</p>
+<h1 id="deep-occlusion-reasoning-for-multi-camera-multi-target-detection">Deep Occlusion Reasoning for Multi-Camera Multi-Target Detection</h1>
+<p>https://arxiv.org/abs/1704.05775</p>
+<h1 id="lcdet-low-complexity-fully-convolutional-neural-networks-for-object-detection-in-embedded-systems">LCDet: Low-Complexity Fully-Convolutional Neural Networks for Object Detection in Embedded Systems</h1>
+<p>intro: Embedded Vision Workshop in CVPR. UC San Diego &amp; Qualcomm Inc
+arxiv: https://arxiv.org/abs/1705.05922</p>
+<h1 id="point-linking-network-for-object-detection">Point Linking Network for Object Detection</h1>
+<p>intro: Point Linking Network (PLN)
+arxiv: https://arxiv.org/abs/1706.03646</p>
+<h1 id="perceptual-generative-adversarial-networks-for-small-object-detection">Perceptual Generative Adversarial Networks for Small Object Detection</h1>
+<p>https://arxiv.org/abs/1706.05274</p>
+<h1 id="few-shot-object-detection">Few-shot Object Detection</h1>
+<p>https://arxiv.org/abs/1706.08249</p>
+<h1 id="yes-net-an-effective-detector-based-on-global-information">Yes-Net: An effective Detector Based on Global Information</h1>
+<p>https://arxiv.org/abs/1706.09180</p>
+<h1 id="smc-faster-r-cnn-toward-a-scene-specialized-multi-object-detector">SMC Faster R-CNN: Toward a scene-specialized multi-object detector</h1>
+<p>https://arxiv.org/abs/1706.10217</p>
+<h1 id="towards-lightweight-convolutional-neural-networks-for-object-detection">Towards lightweight convolutional neural networks for object detection</h1>
+<p>https://arxiv.org/abs/1707.01395</p>
+<h1 id="ron-reverse-connection-with-objectness-prior-networks-for-object-detection">RON: Reverse Connection with Objectness Prior Networks for Object Detection</h1>
+<p>intro: CVPR 2017
+arxiv: https://arxiv.org/abs/1707.01691
+github: https://github.com/taokong/RON</p>
+<h1 id="mimicking-very-efficient-network-for-object-detection">Mimicking Very Efficient Network for Object Detection</h1>
+<p>intro: CVPR 2017. SenseTime &amp; Beihang University
+paper: http://openaccess.thecvf.com/content_cvpr_2017/papers/Li_Mimicking_Very_Efficient_CVPR_2017_paper.pdf</p>
+<h1 id="residual-features-and-unified-prediction-network-for-single-stage-detection">Residual Features and Unified Prediction Network for Single Stage Detection</h1>
+<p>https://arxiv.org/abs/1707.05031</p>
+<h1 id="deformable-part-based-fully-convolutional-network-for-object-detection">Deformable Part-based Fully Convolutional Network for Object Detection</h1>
+<p>intro: BMVC 2017 (oral). Sorbonne Universit&eacute;s &amp; CEDRIC
+arxiv: https://arxiv.org/abs/1707.06175</p>
+<h1 id="adaptive-feeding-achieving-fast-and-accurate-detections-by-adaptively-combining-object-detectors">Adaptive Feeding: Achieving Fast and Accurate Detections by Adaptively Combining Object Detectors</h1>
+<p>intro: ICCV 2017
+arxiv: https://arxiv.org/abs/1707.06399</p>
+<h1 id="recurrent-scale-approximation-for-object-detection-in-cnn">Recurrent Scale Approximation for Object Detection in CNN</h1>
+<p>intro: ICCV 2017
+keywords: Recurrent Scale Approximation (RSA)
+arxiv: https://arxiv.org/abs/1707.09531
+github: https://github.com/sciencefans/RSA-for-object-detection</p>
+<h1 id="dsod-learning-deeply-supervised-object-detectors-from-scratch">DSOD: Learning Deeply Supervised Object Detectors from Scratch</h1>
+<p>intro: ICCV 2017. Fudan University &amp; Tsinghua University &amp; Intel Labs China
+arxiv: https://arxiv.org/abs/1708.01241
+github: https://github.com/szq0214/DSOD</p>
+<h1 id="focal-loss-for-dense-object-detection">Focal Loss for Dense Object Detection</h1>
+<p>intro: ICCV 2017 Best student paper award. Facebook AI Research
+keywords: RetinaNet
+arxiv: https://arxiv.org/abs/1708.02002</p>
+<h1 id="focal-loss-dense-detector-for-vehicle-surveillance">Focal Loss Dense Detector for Vehicle Surveillance</h1>
+<p>https://arxiv.org/abs/1803.01114</p>
+<h1 id="couplenet-coupling-global-structure-with-local-parts-for-object-detection">CoupleNet: Coupling Global Structure with Local Parts for Object Detection</h1>
+<p>intro: ICCV 2017
+arxiv: https://arxiv.org/abs/1708.02863</p>
+<h1 id="incremental-learning-of-object-detectors-without-catastrophic-forgetting">Incremental Learning of Object Detectors without Catastrophic Forgetting</h1>
+<p>intro: ICCV 2017. Inria
+arxiv: https://arxiv.org/abs/1708.06977</p>
+<h1 id="zoom-out-and-in-network-with-map-attention-decision-for-region-proposal-and-object-detection">Zoom Out-and-In Network with Map Attention Decision for Region Proposal and Object Detection</h1>
+<p>https://arxiv.org/abs/1709.04347</p>
+<h1 id="stairnet-top-down-semantic-aggregation-for-accurate-one-shot-detection">StairNet: Top-Down Semantic Aggregation for Accurate One Shot Detection</h1>
+<p>https://arxiv.org/abs/1709.05788</p>
+<h1 id="dynamic-zoom-in-network-for-fast-object-detection-in-large-images">Dynamic Zoom-in Network for Fast Object Detection in Large Images</h1>
+<p>https://arxiv.org/abs/1711.05187</p>
+<h1 id="zero-annotation-object-detection-with-web-knowledge-transfer">Zero-Annotation Object Detection with Web Knowledge Transfer</h1>
+<p>intro: NTU, Singapore &amp; Amazon
+keywords: multi-instance multi-label domain adaption learning framework
+arxiv: https://arxiv.org/abs/1711.05954</p>
+<h1 id="megdet-a-large-mini-batch-object-detector">MegDet: A Large Mini-Batch Object Detector</h1>
+<p>intro: Peking University &amp; Tsinghua University &amp; Megvii Inc
+arxiv: https://arxiv.org/abs/1711.07240</p>
+<h1 id="single-shot-refinement-neural-network-for-object-detection">Single-Shot Refinement Neural Network for Object Detection</h1>
+<p>arxiv: https://arxiv.org/abs/1711.06897
+github: https://github.com/sfzhang15/RefineDet</p>
+<h1 id="receptive-field-block-net-for-accurate-and-fast-object-detection">Receptive Field Block Net for Accurate and Fast Object Detection</h1>
+<p>intro: RFBNet
+arxiv: https://arxiv.org/abs/1711.07767
+github: https://github.com//ruinmessi/RFBNet</p>
+<h1 id="an-analysis-of-scale-invariance-in-object-detection-snip">An Analysis of Scale Invariance in Object Detection - SNIP</h1>
+<p>arxiv: https://arxiv.org/abs/1711.08189
+github: https://github.com/bharatsingh430/snip</p>
+<h1 id="feature-selective-networks-for-object-detection">Feature Selective Networks for Object Detection</h1>
+<p>https://arxiv.org/abs/1711.08879</p>
+<h1 id="learning-a-rotation-invariant-detector-with-rotatable-bounding-box">Learning a Rotation Invariant Detector with Rotatable Bounding Box</h1>
+<p>arxiv: https://arxiv.org/abs/1711.09405
+github(official, Caffe): https://github.com/liulei01/DRBox</p>
+<h1 id="scalable-object-detection-for-stylized-objects">Scalable Object Detection for Stylized Objects</h1>
+<p>intro: Microsoft AI &amp; Research Munich
+arxiv: https://arxiv.org/abs/1711.09822</p>
+<h1 id="learning-object-detectors-from-scratch-with-gated-recurrent-feature-pyramids">Learning Object Detectors from Scratch with Gated Recurrent Feature Pyramids</h1>
+<p>arxiv: https://arxiv.org/abs/1712.00886
+github: https://github.com/szq0214/GRP-DSOD</p>
+<h1 id="deep-regionlets-for-object-detection">Deep Regionlets for Object Detection</h1>
+<p>keywords: region selection network, gating network
+arxiv: https://arxiv.org/abs/1712.02408</p>
+<h1 id="training-and-testing-object-detectors-with-virtual-images">Training and Testing Object Detectors with Virtual Images</h1>
+<p>intro: IEEE/CAA Journal of Automatica Sinica
+arxiv: https://arxiv.org/abs/1712.08470</p>
+<h1 id="large-scale-object-discovery-and-detector-adaptation-from-unlabeled-video">Large-Scale Object Discovery and Detector Adaptation from Unlabeled Video</h1>
+<p>keywords: object mining, object tracking, unsupervised object discovery by appearance-based clustering, self-supervised detector adaptation
+arxiv: https://arxiv.org/abs/1712.08832</p>
+<h1 id="spot-the-difference-by-object-detection">Spot the Difference by Object Detection</h1>
+<p>intro: Tsinghua University &amp; JD Group
+arxiv: https://arxiv.org/abs/1801.01051</p>
+<h1 id="localization-aware-active-learning-for-object-detection">Localization-Aware Active Learning for Object Detection</h1>
+<p>arxiv: https://arxiv.org/abs/1801.05124</p>
+<h1 id="object-detection-with-mask-based-feature-encoding">Object Detection with Mask-based Feature Encoding</h1>
+<p>https://arxiv.org/abs/1802.03934</p>
+<h1 id="lstd-a-low-shot-transfer-detector-for-object-detection">LSTD: A Low-Shot Transfer Detector for Object Detection</h1>
+<p>intro: AAAI 2018
+arxiv: https://arxiv.org/abs/1803.01529</p>
+<h1 id="domain-adaptive-faster-r-cnn-for-object-detection-in-the-wild">Domain Adaptive Faster R-CNN for Object Detection in the Wild</h1>
+<p>intro: CVPR 2018. ETH Zurich &amp; ESAT/PSI
+arxiv: https://arxiv.org/abs/1803.03243</p>
+<h1 id="pseudo-mask-augmented-object-detection">Pseudo Mask Augmented Object Detection</h1>
+<p>https://arxiv.org/abs/1803.05858</p>
+<h1 id="revisiting-rcnn-on-awakening-the-classification-power-of-faster-rcnn">Revisiting RCNN: On Awakening the Classification Power of Faster RCNN</h1>
+<p>https://arxiv.org/abs/1803.06799</p>
+<h1 id="learning-region-features-for-object-detection">Learning Region Features for Object Detection</h1>
+<p>intro: Peking University &amp; MSRA
+arxiv: https://arxiv.org/abs/1803.07066</p>
+<h1 id="single-shot-bidirectional-pyramid-networks-for-high-quality-object-detection">Single-Shot Bidirectional Pyramid Networks for High-Quality Object Detection</h1>
+<p>intro: Singapore Management University &amp; Zhejiang University
+arxiv: https://arxiv.org/abs/1803.08208</p>
+<h1 id="object-detection-for-comics-using-manga109-annotations">Object Detection for Comics using Manga109 Annotations</h1>
+<p>intro: University of Tokyo &amp; National Institute of Informatics, Japan
+arxiv: https://arxiv.org/abs/1803.08670</p>
+<h1 id="task-driven-super-resolution-object-detection-in-low-resolution-images">Task-Driven Super Resolution: Object Detection in Low-resolution Images</h1>
+<p>https://arxiv.org/abs/1803.11316</p>
+<h1 id="transferring-common-sense-knowledge-for-object-detection">Transferring Common-Sense Knowledge for Object Detection</h1>
+<p>https://arxiv.org/abs/1804.01077</p>
+<h1 id="multi-scale-location-aware-kernel-representation-for-object-detection">Multi-scale Location-aware Kernel Representation for Object Detection</h1>
+<p>intro: CVPR 2018
+arxiv: https://arxiv.org/abs/1804.00428
+github: https://github.com/Hwang64/MLKP</p>
+<h1 id="loss-rank-mining-a-general-hard-example-mining-method-for-real-time-detectors">Loss Rank Mining: A General Hard Example Mining Method for Real-time Detectors</h1>
+<p>intro: National University of Defense Technology
+arxiv: https://arxiv.org/abs/1804.04606</p>
+<h1 id="detnet-a-backbone-network-for-object-detection">DetNet: A Backbone network for Object Detection</h1>
+<p>intro: Tsinghua University &amp; Megvii Inc
+arxiv: https://arxiv.org/abs/1804.06215</p>
+<h1 id="robust-physical-adversarial-attack-on-faster-r-cnn-object-detector">Robust Physical Adversarial Attack on Faster R-CNN Object Detector</h1>
+<p>https://arxiv.org/abs/1804.05810</p>
+<h1 id="advdetpatch-attacking-object-detectors-with-adversarial-patches">AdvDetPatch: Attacking Object Detectors with Adversarial Patches</h1>
+<p>https://arxiv.org/abs/1806.02299</p>
+<h1 id="quantization-mimic-towards-very-tiny-cnn-for-object-detection">Quantization Mimic: Towards Very Tiny CNN for Object Detection</h1>
+<p>https://arxiv.org/abs/1805.02152</p>
+<h1 id="object-detection-at-200-frames-per-second">Object detection at 200 Frames Per Second</h1>
+<p>intro: United Technologies Research Center-Ireland
+arxiv: https://arxiv.org/abs/1805.06361</p>
+<h1 id="object-detection-using-domain-randomization-and-generative-adversarial-refinement-of-synthetic-images">Object Detection using Domain Randomization and Generative Adversarial Refinement of Synthetic Images</h1>
+<p>intro: CVPR 2018 Deep Vision Workshop
+arxiv: https://arxiv.org/abs/1805.11778</p>
+<h1 id="non-maximum-suppression-nms-end-to-end-integration-of-a-convolutional-network-deformable-parts-model-and-non-maximum-suppression">Non-Maximum Suppression (NMS) End-to-End Integration of a Convolutional Network, Deformable Parts Model and Non-Maximum Suppression</h1>
+<p>intro: CVPR 2015
+arxiv: http://arxiv.org/abs/1411.5309
+paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Wan_End-to-End_Integration_of_2015_CVPR_paper.pdf</p>
+<h1 id="a-convnet-for-non-maximum-suppression">A convnet for non-maximum suppression</h1>
+<p>arxiv: http://arxiv.org/abs/1511.06437</p>
+<h1 id="improving-object-detection-with-one-line-of-code">Improving Object Detection With One Line of Code</h1>
+<h1 id="soft-nms-improving-object-detection-with-one-line-of-code">Soft-NMS &ndash; Improving Object Detection With One Line of Code</h1>
+<p>intro: ICCV 2017. University of Maryland
+keywords: Soft-NMS
+arxiv: https://arxiv.org/abs/1704.04503
+github: https://github.com/bharatsingh430/soft-nms</p>
+<h1 id="learning-non-maximum-suppression">Learning non-maximum suppression</h1>
+<p>intro: CVPR 2017
+project page: https://www.mpi-inf.mpg.de/departments/computer-vision-and-multimodal-computing/research/object-recognition-and-scene-understanding/learning-nms/
+arxiv: https://arxiv.org/abs/1705.02950
+github: https://github.com/hosang/gossipnet</p>
+<h1 id="relation-networks-for-object-detection">Relation Networks for Object Detection</h1>
+<p>intro: CVPR 2018
+arxiv: https://arxiv.org/abs/1711.11575
+Adversarial Examples</p>
+<h1 id="adversarial-examples-that-fool-detectors">Adversarial Examples that Fool Detectors</h1>
+<p>intro: University of Illinois
+arxiv: https://arxiv.org/abs/1712.02494</p>
+<h1 id="adversarial-examples-are-not-easily-detected-bypassing-ten-detection-methods">Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods</h1>
+<p>project page: http://nicholas.carlini.com/code/nn_breaking_detection/
+arxiv: https://arxiv.org/abs/1705.07263
+github: https://github.com/carlini/nn_breaking_detection</p>
+<h1 id="weakly-supervised-object-detection-track-and-transfer-watching-videos-to-simulate-strong-human-supervision-for-weakly-supervised-object-detection">Weakly Supervised Object Detection Track and Transfer: Watching Videos to Simulate Strong Human Supervision for Weakly-Supervised Object Detection</h1>
+<p>intro: CVPR 2016
+arxiv: http://arxiv.org/abs/1604.05766</p>
+<h1 id="weakly-supervised-object-detection-using-pseudo-strong-labels">Weakly supervised object detection using pseudo-strong labels</h1>
+<p>arxiv: http://arxiv.org/abs/1607.04731</p>
+<h1 id="saliency-guided-end-to-end-learning-for-weakly-supervised-object-detection">Saliency Guided End-to-End Learning for Weakly Supervised Object Detection</h1>
+<p>intro: IJCAI 2017
+arxiv: https://arxiv.org/abs/1706.06768</p>
+<h1 id="visual-and-semantic-knowledge-transfer-for-large-scale-semi-supervised-object-detection">Visual and Semantic Knowledge Transfer for Large Scale Semi-supervised Object Detection</h1>
+<p>intro: TPAMI 2017. National Institutes of Health (NIH) Clinical Center
+arxiv: https://arxiv.org/abs/1801.03145</p>
+<h1 id="video-object-detection-learning-object-class-detectors-from-weakly-annotated-video">Video Object Detection Learning Object Class Detectors from Weakly Annotated Video</h1>
+<p>intro: CVPR 2012
+paper: https://www.vision.ee.ethz.ch/publications/papers/proceedings/eth_biwi_00905.pdf</p>
+<h1 id="analysing-domain-shift-factors-between-videos-and-images-for-object-detection">Analysing domain shift factors between videos and images for object detection</h1>
+<p>arxiv: https://arxiv.org/abs/1501.01186</p>
+<h1 id="video-object-recognition">Video Object Recognition</h1>
+<p>slides: http://vision.princeton.edu/courses/COS598/2015sp/slides/VideoRecog/Video%20Object%20Recognition.pptx</p>
+<h1 id="deep-learning-for-saliency-prediction-in-natural-video">Deep Learning for Saliency Prediction in Natural Video</h1>
+<p>intro: Submitted on 12 Jan 2016
+keywords: Deep learning, saliency map, optical flow, convolution network, contrast features
+paper: https://hal.archives-ouvertes.fr/hal-01251614/document</p>
+<h1 id="t-cnn-tubelets-with-convolutional-neural-networks-for-object-detection-from-videos">T-CNN: Tubelets with Convolutional Neural Networks for Object Detection from Videos</h1>
+<p>intro: Winning solution in ILSVRC2015 Object Detection from Video(VID) Task
+arxiv: http://arxiv.org/abs/1604.02532
+github: https://github.com/myfavouritekk/T-CNN</p>
+<h1 id="object-detection-from-video-tubelets-with-convolutional-neural-networks">Object Detection from Video Tubelets with Convolutional Neural Networks</h1>
+<p>intro: CVPR 2016 Spotlight paper
+arxiv: https://arxiv.org/abs/1604.04053
+paper: http://www.ee.cuhk.edu.hk/~wlouyang/Papers/KangVideoDet_CVPR16.pdf
+gihtub: https://github.com/myfavouritekk/vdetlib</p>
+<h1 id="object-detection-in-videos-with-tubelets-and-multi-context-cues">Object Detection in Videos with Tubelets and Multi-context Cues</h1>
+<p>intro: SenseTime Group
+slides: http://www.ee.cuhk.edu.hk/~xgwang/CUvideo.pdf
+slides: http://image-net.org/challenges/talks/Object%20Detection%20in%20Videos%20with%20Tubelets%20and%20Multi-context%20Cues%20-%20Final.pdf</p>
+<h1 id="context-matters-refining-object-detection-in-video-with-recurrent-neural-networks">Context Matters: Refining Object Detection in Video with Recurrent Neural Networks</h1>
+<p>intro: BMVC 2016
+keywords: pseudo-labeler
+arxiv: http://arxiv.org/abs/1607.04648
+paper: http://vision.cornell.edu/se3/wp-content/uploads/2016/07/video_object_detection_BMVC.pdf</p>
+<h1 id="cnn-based-object-detection-in-large-video-images">CNN Based Object Detection in Large Video Images</h1>
+<p>intro: WangTao @ 爱奇艺
+keywords: object retrieval, object detection, scene classification
+slides: http://on-demand.gputechconf.com/gtc/2016/presentation/s6362-wang-tao-cnn-based-object-detection-large-video-images.pdf</p>
+<h1 id="object-detection-in-videos-with-tubelet-proposal-networks">Object Detection in Videos with Tubelet Proposal Networks</h1>
+<p>arxiv: https://arxiv.org/abs/1702.06355</p>
+<h1 id="flow-guided-feature-aggregation-for-video-object-detection">Flow-Guided Feature Aggregation for Video Object Detection</h1>
+<p>intro: MSRA
+arxiv: https://arxiv.org/abs/1703.10025</p>
+<h1 id="video-object-detection-using-faster-r-cnn">Video Object Detection using Faster R-CNN</h1>
+<p>blog: http://andrewliao11.github.io/object_detection/faster_rcnn/
+github: https://github.com/andrewliao11/py-faster-rcnn-imagenet</p>
+<h1 id="improving-context-modeling-for-video-object-detection-and-tracking">Improving Context Modeling for Video Object Detection and Tracking</h1>
+<p>http://image-net.org/challenges/talks_2017/ilsvrc2017_short(poster).pdf</p>
+<h1 id="temporal-dynamic-graph-lstm-for-action-driven-video-object-detection">Temporal Dynamic Graph LSTM for Action-driven Video Object Detection</h1>
+<p>intro: ICCV 2017
+arxiv: https://arxiv.org/abs/1708.00666</p>
+<h1 id="mobile-video-object-detection-with-temporally-aware-feature-maps">Mobile Video Object Detection with Temporally-Aware Feature Maps</h1>
+<p>https://arxiv.org/abs/1711.06368</p>
+<h1 id="towards-high-performance-video-object-detection">Towards High Performance Video Object Detection</h1>
+<p>https://arxiv.org/abs/1711.11577</p>
+<h1 id="impression-network-for-video-object-detection">Impression Network for Video Object Detection</h1>
+<p>https://arxiv.org/abs/1712.05896</p>
+<h1 id="spatial-temporal-memory-networks-for-video-object-detection">Spatial-Temporal Memory Networks for Video Object Detection</h1>
+<p>https://arxiv.org/abs/1712.06317</p>
+<h1 id="3d-detnet-a-single-stage-video-based-vehicle-detector">3D-DETNet: a Single Stage Video-Based Vehicle Detector</h1>
+<p>https://arxiv.org/abs/1801.01769</p>
+<h1 id="object-detection-in-videos-by-short-and-long-range-object-linking">Object Detection in Videos by Short and Long Range Object Linking</h1>
+<p>https://arxiv.org/abs/1801.09823</p>
+<h1 id="object-detection-in-video-with-spatiotemporal-sampling-networks">Object Detection in Video with Spatiotemporal Sampling Networks</h1>
+<p>intro: University of Pennsylvania, 2Dartmouth College
+arxiv: https://arxiv.org/abs/1803.05549</p>
+<h1 id="towards-high-performance-video-object-detection-for-mobiles">Towards High Performance Video Object Detection for Mobiles</h1>
+<p>intro: Microsoft Research Asia
+arxiv: https://arxiv.org/abs/1804.05830</p>
+<h1 id="object-detection-on-mobile-devices">Object Detection on Mobile Devices</h1>
+<h1 id="pelee-a-real-time-object-detection-system-on-mobile-devices">Pelee: A Real-Time Object Detection System on Mobile Devices</h1>
+<p>intro: ICLR 2018 workshop track
+intro: based on the SSD
+arxiv: https://arxiv.org/abs/1804.06882
+github: https://github.com/Robert-JunWang/Pelee</p>
+<h1 id="object-detection-in-3d">Object Detection in 3D</h1>
+<h1 id="vote3deep-fast-object-detection-in-3d-point-clouds-using-efficient-convolutional-neural-networks">Vote3Deep: Fast Object Detection in 3D Point Clouds Using Efficient Convolutional Neural Networks</h1>
+<p>arxiv: https://arxiv.org/abs/1609.06666</p>
+<h1 id="complex-yolo-real-time-3d-object-detection-on-point-clouds">Complex-YOLO: Real-time 3D Object Detection on Point Clouds</h1>
+<ul>
+<li>intro: Valeo Schalter und Sensoren GmbH &amp; Ilmenau University of Technology</li>
+<li>arxiv: https://arxiv.org/abs/1803.06199</li>
+</ul>
+<h1 id="object-detection-on-rgb-d">Object Detection on RGB-D</h1>
+<h1 id="learning-rich-features-from-rgb-d-images-for-object-detection-and-segmentation">Learning Rich Features from RGB-D Images for Object Detection and Segmentation</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1407.5736</li>
+</ul>
+<h1 id="differential-geometry-boosts-convolutional-neural-networks-for-object-detection">Differential Geometry Boosts Convolutional Neural Networks for Object Detection</h1>
+<ul>
+<li>intro: CVPR 2016</li>
+<li>paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016_workshops/w23/html/Wang_Differential_Geometry_Boosts_CVPR_2016_paper.html</li>
+</ul>
+<h1 id="a-self-supervised-learning-system-for-object-detection-using-physics-simulation-and-multi-view-pose-estimation">A Self-supervised Learning System for Object Detection using Physics Simulation and Multi-view Pose Estimation</h1>
+<ul>
+<li>https://arxiv.org/abs/1703.03347</li>
+</ul>
+<h1 id="zero-shot-object-detection">Zero-Shot Object Detection</h1>
+<ul>
+<li>intro: Australian National University</li>
+<li>keywords: YOLO</li>
+<li>arxiv: https://arxiv.org/abs/1803.07113</li>
+<li>
+<h1 id="zero-shot-object-detection_1">Zero-Shot Object Detection</h1>
+</li>
+<li>
+<p>https://arxiv.org/abs/1804.04340</p>
+</li>
+</ul>
+<h1 id="zero-shot-object-detection-learning-to-simultaneously-recognize-and-localize-novel-concepts">Zero-Shot Object Detection: Learning to Simultaneously Recognize and Localize Novel Concepts</h1>
+<ul>
+<li>intro: Australian National University</li>
+<li>arxiv: https://arxiv.org/abs/1803.06049</li>
+</ul>
+<h1 id="zero-shot-object-detection-by-hybrid-region-embedding">Zero-Shot Object Detection by Hybrid Region Embedding</h1>
+<ul>
+<li>intro: Middle East Technical University &amp; Hacettepe University</li>
+<li>arxiv: https://arxiv.org/abs/1805.06157</li>
+<li>
+<h1 id="salient-object-detection">Salient Object Detection</h1>
+This task involves predicting the salient regions of an image given by human eye fixations.</li>
+</ul>
+<h1 id="best-deep-saliency-detection-models-cvpr-2016-2015">Best Deep Saliency Detection Models (CVPR 2016 &amp; 2015)</h1>
+<ul>
+<li>http://i.cs.hku.hk/~yzyu/vision.html</li>
+</ul>
+<h1 id="large-scale-optimization-of-hierarchical-features-for-saliency-prediction-in-natural-images">Large-scale optimization of hierarchical features for saliency prediction in natural images</h1>
+<ul>
+<li>paper: http://coxlab.org/pdfs/cvpr2014_vig_saliency.pdf</li>
+</ul>
+<h1 id="predicting-eye-fixations-using-convolutional-neural-networks">Predicting Eye Fixations using Convolutional Neural Networks</h1>
+<ul>
+<li>paper: http://www.escience.cn/system/file?fileId=72648</li>
+</ul>
+<h1 id="saliency-detection-by-multi-context-deep-learning">Saliency Detection by Multi-Context Deep Learning</h1>
+<ul>
+<li>paper: http://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Zhao_Saliency_Detection_by_2015_CVPR_paper.pdf</li>
+</ul>
+<h1 id="deepsaliency-multi-task-deep-neural-network-model-for-salient-object-detection">DeepSaliency: Multi-Task Deep Neural Network Model for Salient Object Detection</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1510.05484</li>
+</ul>
+<h1 id="supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection">SuperCNN: A Superpixelwise Convolutional Neural Network for Salient Object Detection</h1>
+<ul>
+<li>paper: www.shengfenghe.com/supercnn-a-superpixelwise-convolutional-neural-network-for-salient-object-detection.html</li>
+</ul>
+<h1 id="shallow-and-deep-convolutional-networks-for-saliency-prediction">Shallow and Deep Convolutional Networks for Saliency Prediction</h1>
+<ul>
+<li>intro: CVPR 2016</li>
+<li>arxiv: http://arxiv.org/abs/1603.00845</li>
+<li>github: https://github.com/imatge-upc/saliency-2016-cvpr</li>
+</ul>
+<h1 id="recurrent-attentional-networks-for-saliency-detection">Recurrent Attentional Networks for Saliency Detection</h1>
+<ul>
+<li>intro: CVPR 2016. recurrent attentional convolutional-deconvolution network (RACDNN)</li>
+<li>arxiv: http://arxiv.org/abs/1604.03227</li>
+</ul>
+<h1 id="two-stream-convolutional-networks-for-dynamic-saliency-prediction">Two-Stream Convolutional Networks for Dynamic Saliency Prediction</h1>
+<ul>
+<li>arxiv: http://arxiv.org/abs/1607.04730</li>
+</ul>
+<h1 id="unconstrained-salient-object-detection-via-proposal-subset-optimization">Unconstrained Salient Object Detection via Proposal Subset Optimization</h1>
+<ul>
+<li>intro: CVPR 2016</li>
+<li>project page: http://cs-people.bu.edu/jmzhang/sod.html</li>
+<li>paper: http://cs-people.bu.edu/jmzhang/SOD/CVPR16SOD_camera_ready.pdf</li>
+<li>github: https://github.com/jimmie33/SOD</li>
+<li>caffe model zoo: https://github.com/BVLC/caffe/wiki/Model-Zoo#cnn-object-proposal-models-for-salient-object-detection</li>
+</ul>
+<h1 id="dhsnet-deep-hierarchical-saliency-network-for-salient-object-detection">DHSNet: Deep Hierarchical Saliency Network for Salient Object Detection</h1>
+<ul>
+<li>paper: http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Liu_DHSNet_Deep_Hierarchical_CVPR_2016_paper.pdf</li>
+</ul>
+<h1 id="salient-object-subitizingbject-detection-cv-cnn-tutorial">Salient Object Subitizingbject Detection, CV, CNN, TUTORIAL</h1>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/object-detection.html" class="tag">Object Detection</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

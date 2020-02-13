@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>The evolution of image classification | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>The evolution of image classification</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#why-it-matters" style="border-bottom: 0px" title="Why it matters">Why it matters</a></li></ol></li><li><a class="toc-href" href="#lenet_1" style="border-bottom: 0px" title="LeNet">LeNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#pioneering-work" style="border-bottom: 0px" title="Pioneering work">Pioneering work</a></li></ol></li><li><a class="toc-href" href="#alexnet_1" style="border-bottom: 0px" title="AlexNet">AlexNet</a></li><li><a class="toc-href" href="#vggnet" style="border-bottom: 0px" title="VGGNet">VGGNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#deeper-is-better" style="border-bottom: 0px" title="Deeper is better">Deeper is better</a></li></ol></li><li><a class="toc-href" href="#googlenet_1" style="border-bottom: 0px" title="GoogLeNet">GoogLeNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#time-for-inception" style="border-bottom: 0px" title="Time for inception">Time for inception</a></li></ol></li><li><a class="toc-href" href="#resnet_1" style="border-bottom: 0px" title="ResNet">ResNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#connect-the-layers" style="border-bottom: 0px" title="Connect the layers">Connect the layers</a></li></ol></li><li><a class="toc-href" href="#densenet_1" style="border-bottom: 0px" title="DenseNet">DenseNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#connect-more" style="border-bottom: 0px" title="Connect more!">Connect more!</a></li></ol></li><li><a class="toc-href" href="#conclusion_1" style="border-bottom: 0px" title="Conclusion">Conclusion</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#global-trends" style="border-bottom: 0px" title="Global trends">Global trends</a></li><li><a class="toc-href" href="#disclaimer" style="border-bottom: 0px" title="Disclaimer">Disclaimer</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">The evolution of image classification</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 21, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/paper.html">paper</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#introduction" style="border-bottom: 0px" title="Introduction">Introduction</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#why-it-matters" style="border-bottom: 0px" title="Why it matters">Why it matters</a></li></ol></li><li><a class="toc-href" href="#lenet_1" style="border-bottom: 0px" title="LeNet">LeNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#pioneering-work" style="border-bottom: 0px" title="Pioneering work">Pioneering work</a></li></ol></li><li><a class="toc-href" href="#alexnet_1" style="border-bottom: 0px" title="AlexNet">AlexNet</a></li><li><a class="toc-href" href="#vggnet" style="border-bottom: 0px" title="VGGNet">VGGNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#deeper-is-better" style="border-bottom: 0px" title="Deeper is better">Deeper is better</a></li></ol></li><li><a class="toc-href" href="#googlenet_1" style="border-bottom: 0px" title="GoogLeNet">GoogLeNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#time-for-inception" style="border-bottom: 0px" title="Time for inception">Time for inception</a></li></ol></li><li><a class="toc-href" href="#resnet_1" style="border-bottom: 0px" title="ResNet">ResNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#connect-the-layers" style="border-bottom: 0px" title="Connect the layers">Connect the layers</a></li></ol></li><li><a class="toc-href" href="#densenet_1" style="border-bottom: 0px" title="DenseNet">DenseNet</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#connect-more" style="border-bottom: 0px" title="Connect more!">Connect more!</a></li></ol></li><li><a class="toc-href" href="#conclusion_1" style="border-bottom: 0px" title="Conclusion">Conclusion</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#global-trends" style="border-bottom: 0px" title="Global trends">Global trends</a></li><li><a class="toc-href" href="#disclaimer" style="border-bottom: 0px" title="Disclaimer">Disclaimer</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <p>In this blog post, we will talk about the evolution of image classification from a high-level perspective. The goal here is to try to understand the key changes that were brought along the years, and why they succeeded in solving our problems.</p>
+<h1 id="introduction">Introduction</h1>
+<h2 id="why-it-matters">Why it matters</h2>
+<p>Recent research in deep learning has been largely inspired by the way our brain works. When you think of it, it is fascinating to know that with a given input, our brain processes features that say let us know of the world that surrounds us.</p>
+<p>As a result, architectures are crucial for us, not only because many challenges rely on the tasks we can perform with them. In fact, the design of the networks themselves points us out to the representation that researchers were looking for, in order to better learn from the data.</p>
+<h1 id="lenet_1">LeNet</h1>
+<h2 id="pioneering-work">Pioneering work</h2>
+<p>Before starting, let's note that we would not have been successful if we simply used a raw multi-layer perceptron connected to each pixel of an image. On top of becoming quickly intractable, this direct operation is not very efficient as pixels are spatially correlated.</p>
+<p>Therefore, we first need to extract</p>
+<ol>
+<li>meaningful and</li>
+<li>low-dimensional features that we can work on.</li>
+</ol>
+<p>And that's where convolutional neural networks come in the game!</p>
+<p>To tackle this issue, Yann Le Cun's idea proceeds in multiple steps.
+<img alt="" src="https://stanford.edu/~shervine/images/LeNet.png"/>
+Source: LeCun et al., 1998</p>
+<p>First, an input image is fed to the network. Filters of a given size scan the image and perform convolutions. The obtained features then go through an activation function. Then, the output goes through a succession of pooling and other convolution operations.</p>
+<p>As you can see, features are reduced in dimension as the network goes on.</p>
+<p>At the end, high-level features are flattened and fed to fully connected layers, which will eventually yield class probabilities through a softmax layer.</p>
+<p>During training time, the network learns how to recognize the features that make a sample belong to a given class through backpropagation.</p>
+<p>To give an example of what such a network can 'see': let's say we have an image of a horse. The first filters may focus on the animal's overall shape. And then as we go deeper, we can reach a higher level of abstraction where details like eyes and ears can be captured.</p>
+<p>That way, ConvNets appear as a way to construct features that we would have had to handcraft ourselves otherwise.</p>
+<h1 id="alexnet_1">AlexNet</h1>
+<p>Convolution's rise to fame
+Then you could wonder, why have ConvNets not been trendy since 1998? The short answer is: we had not leveraged their full potential back then.
+<img alt="" src="https://stanford.edu/~shervine/images/AlexNet.png"/>
+Source: Krizhevsky et al., 2009</p>
+<p>Here, AlexNet takes the same top-down approach, where successive filters are designed to capture more and more subtle features. But here, his work explored several crucial details.</p>
+<ol>
+<li>
+<p>First, Krizhevsky introduced better non-linearity in the network with the ReLU activation, whose derivative is 0 if the feature is below 0 and 1 for positive values. This proved to be efficient for gradient propagation.</p>
+</li>
+<li>
+<p>Second, his paper introduced the concept of dropout as regularization. From a representation point of view, you force the network to forget things at random, so that it can see your next input data from a better perspective.</p>
+</li>
+</ol>
+<p>Just to give an example, after you finish reading this post, you will have most probably forgotten parts of it. And yet this is OK, because you will have only kept in mind what was essential.</p>
+<p>Well, hopefully.</p>
+<p>The same happens for neural networks, and leads the model to be more robust.</p>
+<p>Also, it introduced data augmentation. When fed to the network, images are shown with random translation, rotation, crop. That way, it forces the network to be more aware of the attributes of the images, rather than the images themselves.
+Finally, another trick used by AlexNet is to be deeper. You can see here that they stacked more convolutional layers before pooling operations. The representation captures consequently finer features that reveal to be useful for classification.</p>
+<p>This network largely outperformed what was state-of-the-art back in 2012, with a 15.4% top-5 error on the ImageNet dataset.</p>
+<h1 id="vggnet">VGGNet</h1>
+<h2 id="deeper-is-better">Deeper is better</h2>
+<p>The next big milestone of image classification further explored the last point that I mentioned: going deeper.</p>
+<p>And it works. This suggests that such networks can achieve a better hierarchical representation of visual data with more layers.
+<img alt="" src="https://stanford.edu/~shervine/images/VGGNet.png"/></p>
+<p>Source: Simonyan et al., 2014
+As you can see, something else is very special on this network. It contains almost exclusively 3 by 3 convolutions. This is curious, isn't?</p>
+<p>In fact, the authors were driven by three main reasons to do so:</p>
+<ol>
+<li>First, using small filters induces more non-linearity, which means more degrees of freedom for the network.</li>
+<li>Second, the fact of stacking these layers together enables the network to see more things than it looks like. For example, with two of these, the network in fact sees a 5x5 receptive field. And when you stack 3 of these filters, you have in fact a 7x7 receptive field! Therefore, the same feature extraction capabilities as in the previous examples can be achieved on this architecture as well.</li>
+<li>Third, using only small filters also limits the number of parameters, which is good when you want to go that deep.
+Quantitatively speaking, this architecture achieved a 7.3% top-5 error on ImageNet.</li>
+</ol>
+<h1 id="googlenet_1">GoogLeNet</h1>
+<h2 id="time-for-inception">Time for inception</h2>
+<p>Next, GoogLeNet came in the game. It bases its success on its inception modules.
+<img alt="" src="https://stanford.edu/~shervine/images/GoogLeNet.png"/>
+Source: Szegedy et al., 2015
+As you can see, convolutions with different filter sizes are processed on the same input, and then concatenated together.</p>
+<p>From a representation point of view, this allows the model to take advantage of multi-level feature extraction at each step. For example, general features can be extracted by the 5x5 filters at the same time that more local features are captured by the 3x3 convolutions.</p>
+<p>But then, you could tell me. Well that's great. But isn't that insanely expensive to compute?</p>
+<p>And I would say: very good remark! Actually, the Google team had a brilliant solution for this: 1x1 convolutions.</p>
+<p>On the one hand, it reduces the dimensionality of your features.
+On the other, it combines feature maps in a way that can be beneficial from a representation perspective.
+Then you could ask, why is it called inception? Well, you can see all of those modules as being networks stacked one over another inside a bigger network.</p>
+<p>And for the record, the best GoogLeNet ensemble achieved a 6.7% error on ImageNet.</p>
+<h1 id="resnet_1">ResNet</h1>
+<h2 id="connect-the-layers">Connect the layers</h2>
+<p>So all these networks we talked about earlier followed the same trend: going deeper. But at some point, we realize that stacking more layers does not lead to better performance. In fact, the exact opposite occurs. But why is that?</p>
+<p>In one word: the gradient, ladies and gentlemen.</p>
+<p>But don't worry, researchers found a trick to counter this effect. Here, the key concept developed by ResNet is residual learning.
+<img alt="" src="https://stanford.edu/~shervine/images/ResNet.png"/>
+Source: He et al., 2015
+As you can see, every two layers, there is an identity mapping via an element-wise addition. This proved to be very helpful for gradient propagation, as the error can be backpropagated through multiple paths.</p>
+<p>Also, from a representation point of view, this helps to combine different levels of features at each step of the network, just like we saw it with the inception modules.</p>
+<p>It is to this date one of the best performing network on ImageNet, with a 3.6% top-5 error rate.</p>
+<h1 id="densenet_1">DenseNet</h1>
+<h2 id="connect-more">Connect more!</h2>
+<p>An extension of this reasoning has been later proposed. DenseNet proposes entire blocks of layers connected to one another.
+<img alt="" src="https://stanford.edu/~shervine/images/DenseNet.png"/>
+Source: Huang et al., 2016
+This contributes to <strong>diversifying</strong> a lot more the <strong>features</strong> within those blocks.</p>
+<h1 id="conclusion_1">Conclusion</h1>
+<h2 id="global-trends">Global trends</h2>
+<p>A major pattern observed overall is that <strong>networks</strong> are designed to be <strong>deeper and deeper</strong>.</p>
+<p><strong>Computational tricks</strong> (ReLU, dropout, batch normalization) have been also introduced alongside them and had a significant impact in improving performance.</p>
+<p>We have also seen the apparition of <strong>modules</strong> that are able to capture rich features at each step of the network.</p>
+<p>Finally, another major point is the increasing use of <strong>connections between the layers</strong> of the network, which helps for producing diverse features and revealed to be useful for gradient propagation.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This article is written by Shervine, and the original post can be found <a href="https://stanford.edu/~shervine/blog/evolution-image-classification-explained.html">here</a>.</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/image-classification.html" class="tag">Image Classification</a>
+                    <a href="../../../../tag/cnn.html" class="tag">CNN</a>
+                    <a href="../../../../tag/2015.html" class="tag">2015</a>
+                    <a href="../../../../tag/paper.html" class="tag">PAPER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

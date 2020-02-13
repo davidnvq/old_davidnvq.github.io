@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Add Parameters in Pytorch | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Add Parameters in Pytorch</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#some-important-notes-about-pytorch-04" style="border-bottom: 0px" title="Some important notes about PyTorch 0.4">Some important notes about PyTorch 0.4</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#variable-and-tensor-class-are-merged-in-pytorch-04" style="border-bottom: 0px" title="Variable and Tensor class are merged in PyTorch 0.4">Variable and Tensor class are merged in PyTorch 0.4</a></li><li><a class="toc-href" href="#inputs-to-functions-and-modules-from-torchnn" style="border-bottom: 0px" title="Inputs to functions and modules from torch.nn">Inputs to functions and modules from torch.nn</a></li></ol></li><li><a class="toc-href" href="#parameters-of-a-module_1" style="border-bottom: 0px" title="Parameters of a module">Parameters of a module</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#create-a-module" style="border-bottom: 0px" title="Create a module">Create a module</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Add Parameters in Pytorch</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 21, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#some-important-notes-about-pytorch-04" style="border-bottom: 0px" title="Some important notes about PyTorch 0.4">Some important notes about PyTorch 0.4</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#variable-and-tensor-class-are-merged-in-pytorch-04" style="border-bottom: 0px" title="Variable and Tensor class are merged in PyTorch 0.4">Variable and Tensor class are merged in PyTorch 0.4</a></li><li><a class="toc-href" href="#inputs-to-functions-and-modules-from-torchnn" style="border-bottom: 0px" title="Inputs to functions and modules from torch.nn">Inputs to functions and modules from torch.nn</a></li></ol></li><li><a class="toc-href" href="#parameters-of-a-module_1" style="border-bottom: 0px" title="Parameters of a module">Parameters of a module</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#create-a-module" style="border-bottom: 0px" title="Create a module">Create a module</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <p>In this post, we will discuss about add <code>Paramter</code> to <code>Module</code> as the attributes which are listed in <code>Module.parameters</code> for further optimization steps.</p>
+<h1 id="some-important-notes-about-pytorch-04">Some important notes about PyTorch 0.4</h1>
+<h2 id="variable-and-tensor-class-are-merged-in-pytorch-04">Variable and Tensor class are merged in PyTorch 0.4</h2>
+<p>In previous version of PyTorch, Module&rsquo;s inputs and outputs must be <code>Variables</code>. Data <code>Tensor</code>s should be wrapped before forwarding them into a <code>Module</code>.</p>
+<p>But now, <code>Variable</code> class and <code>Tensor</code> class are merge into one. Therefore, we don&rsquo;t need to wrap Tensor anymore in PyTorch version 0.4.</p>
+<h2 id="inputs-to-functions-and-modules-from-torchnn">Inputs to functions and modules from torch.nn</h2>
+<p>Functions and modules from <code>torch.nn</code> process only batches of inputs stored in a tensor with an additional first dimension to index them, and produce a corresponding tensor with an additional dimension.</p>
+<p>E.g. a fully connected layer <span class="math">\(R^C -&gt; R^D\)</span> expects as input a tensor of size N &times; C and compute a tensor of size N &times; D, where <code>N</code> is the number of samples (size of a batch).</p>
+<p><strong>Tips</strong>: For a sample input, we can turn it into a batch of size 1:</p>
+<div class="highlight"><pre><span></span><span class="n">batch_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># for input of modules and functions.</span>
+<span class="n">tensor</span><span class="p">([[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([[</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="p">[</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">[</span> <span class="mi">4</span><span class="p">]])</span>
+</pre></div>
+<h1 id="parameters-of-a-module_1">Parameters of a module</h1>
+<p>Please refer to this tutorial <a href="https://documents.epfl.ch/users/f/fl/fleuret/www/dlc/dlc-handout-4b-modules-batch.pdf">document</a> for more information.</p>
+<h2 id="create-a-module">Create a <code>module</code></h2>
+<p>To create a Module, one has to inherit from the base class and implement the constructor <code>__init__(self, ...)</code> and forward pass <code>forward(self, x)</code>. Notice that <code>x</code> in <code>forward(self, x)</code> pass is a batch.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span> <span class="p">(</span><span class="n">Net</span> <span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span> <span class="fm">__init__</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+<p>As long as you use autograd-compliant operations, the backward pass is implemented automatically.</p>
+<p><code>Module</code>s added as attributes are seen by <code>Module.parameters()</code>, which returns an iterator over the model&rsquo;s parameters for optimization.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span> <span class="p">(</span><span class="n">Net</span> <span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span> <span class="fm">__init__</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+</pre></div>
+<p>Note: <code>nn.Conv2d</code> and <code>nn.Linear</code> actually are Modules.</p>
+<p>Parameters added as attributes are also seen by <code>Module.parameters()</code>.</p>
+<p>Parameters added in dictionaries or arrays are not seen.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Buggy</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Buggy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="mi">456</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ouch</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ouch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">542</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Buggy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+<span class="c1"># Output</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">123</span> <span class="p">,</span> <span class="mi">456</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">5</span> <span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span><span class="p">])</span>
+</pre></div>
+<p>The proper policy then is to use <code>Module.add_module(name, module)</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Buggy</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Buggy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="mi">456</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s1">'ahhh_0'</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">542</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Buggy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+<span class="c1"># Output</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">123</span> <span class="p">,</span> <span class="mi">456</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">5</span> <span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">21</span> <span class="p">,</span> <span class="mi">543</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">21</span><span class="p">])</span>
+</pre></div>
+<p>These modules are added as attributes, and can be accessed with <code>getattr</code>.</p>
+<p><code>Module.register_parameter(name, parameter)</code> allows to similarly register <code>Parameter</code>s explicitly.</p>
+<p>Another option is to add modules in a field of type <code>nn.ModuleList</code>, which is a list of modules properly dealt with by PyTorch&rsquo;s machinery.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="mi">456</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_list</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">125</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
+
+<span class="n">net</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+<span class="c1"># Output</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">123</span> <span class="p">,</span> <span class="mi">456</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">5</span> <span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">32</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">75</span> <span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">75</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">999</span> <span class="p">,</span> <span class="mi">125</span><span class="p">])</span>
+<span class="n">torch</span> <span class="o">.</span> <span class="n">Size</span> <span class="p">([</span><span class="mi">999</span><span class="p">])</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "true";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' }, Macros: {} }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/pytorch.html" class="tag">Pytorch</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

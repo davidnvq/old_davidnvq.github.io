@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Face Detector Report | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Face Detector Report</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#dataset" style="border-bottom: 0px" title="Dataset">Dataset</a></li><li><a class="toc-href" href="#timer-and-speed" style="border-bottom: 0px" title="Timer and speed">Timer and speed</a></li><li><a class="toc-href" href="#write-clean-code-like" style="border-bottom: 0px" title="Write clean code like">Write clean code like</a></li><li><a class="toc-href" href="#the-incredible-pytorch" style="border-bottom: 0px" title="The incredible pytorch">The incredible pytorch</a></li><li><a class="toc-href" href="#how-to-train" style="border-bottom: 0px" title="How to train">How to train</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#combined-result" style="border-bottom: 0px" title="Combined Result">Combined Result</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#methods" style="border-bottom: 0px" title="Methods">Methods</a></li></ol></li><li><a class="toc-href" href="#post-processing_1" style="border-bottom: 0px" title="Post Processing">Post Processing</a></li></ol></li><li><a class="toc-href" href="#current-work_1" style="border-bottom: 0px" title="Current work">Current work</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#table-of-deepresnet" style="border-bottom: 0px" title="Table of deepresnet">Table of deepresnet</a></li></ol></li><li><a class="toc-href" doing="" href="#what-im-doing-now_1" m="" now?'="" style="border-bottom: 0px" title="What I">What I'm doing now?</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#table-of-results-resnet101-layers" style="border-bottom: 0px" title="Table of results Resnet101 layers">Table of results Resnet101 layers</a></li><li><a class="toc-href" href="#the-best-is-wf_scale1_1" style="border-bottom: 0px" title="The best is wf_scale1:">The best is wf_scale1:</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#table-of-results-resnet101_new-2-layers" style="border-bottom: 0px" title="Table of results Resnet101_New 2 layers">Table of results Resnet101_New 2 layers</a></li></ol></li><li><a class="toc-href" href="#resnet101_newer-3-layers_1" style="border-bottom: 0px" title="Resnet101_newer 3 layers">Resnet101_newer 3 layers</a></li></ol></li><li><a class="toc-href" href="#to-do-list_1" style="border-bottom: 0px" title="To-do list">To-do list</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#data-analysis" style="border-bottom: 0px" title="Data analysis">Data analysis</a></li><li><a class="toc-href" href="#test-with-different-scales" style="border-bottom: 0px" title="Test with different scales">Test with different scales</a></li><li><a class="toc-href" href="#train-with-lower-anchors" style="border-bottom: 0px" title="Train with lower anchors">Train with lower anchors</a></li><li><a class="toc-href" href="#train-with-lower-connection" style="border-bottom: 0px" title="Train with lower connection">Train with lower connection</a></li><li><a class="toc-href" href="#train-with-focal_loss" style="border-bottom: 0px" title="Train with focal_loss">Train with focal_loss</a></li><li><a class="toc-href" href="#train-with-lower-topn" style="border-bottom: 0px" title="Train with lower topN">Train with lower topN</a></li><li><a class="toc-href" href="#build-tensorflow" style="border-bottom: 0px" title="Build Tensorflow">Build Tensorflow</a></li><li><a class="toc-href" href="#notes" style="border-bottom: 0px" title="NOTES">NOTES</a></li></ol></li><li><a class="toc-href" href="#result-on-face-dataset_1" style="border-bottom: 0px" title="Result on Face Dataset">Result on Face Dataset</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#widerface-dataset" style="border-bottom: 0px" title="WiderFace Dataset">WiderFace Dataset</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#table-of-results" style="border-bottom: 0px" title="Table of results">Table of results</a></li></ol></li><li><a class="toc-href" href="#resnet_newer_1" style="border-bottom: 0px" title="Resnet_newer">Resnet_newer</a></li><li><a class="toc-href" href="#resnet_maxout" style="border-bottom: 0px" title="Resnet_maxout">Resnet_maxout</a></li><li><a class="toc-href" href="#fddb-dataset" style="border-bottom: 0px" title="FDDB Dataset">FDDB Dataset</a></li><li><a class="toc-href" href="#afw-dataset" style="border-bottom: 0px" title="AFW Dataset">AFW Dataset</a></li><li><a class="toc-href" href="#pascal-dataset" style="border-bottom: 0px" title="Pascal Dataset">Pascal Dataset</a></li></ol></li><li><a class="toc-href" href="#charts-and-graphs_1" style="border-bottom: 0px" title="Charts and Graphs">Charts and Graphs</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#false-positive-in-different-ranges" style="border-bottom: 0px" title="False positive in different ranges.">False positive in different ranges.</a></li><li><a class="toc-href" href="#fpn-models" style="border-bottom: 0px" title="FPN models">FPN models</a></li><li><a class="toc-href" href="#afw-pascal-face-wider-face" style="border-bottom: 0px" title="AFW &amp; Pascal Face, Wider Face">AFW &amp; Pascal Face, Wider Face</a></li></ol></li><li><a class="toc-href" href="#deep-resnet-with-maxout_1" style="border-bottom: 0px" title="Deep Resnet with Maxout">Deep Resnet with Maxout</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Face Detector Report</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 23, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/paper.html">paper</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#dataset" style="border-bottom: 0px" title="Dataset">Dataset</a></li><li><a class="toc-href" href="#timer-and-speed" style="border-bottom: 0px" title="Timer and speed">Timer and speed</a></li><li><a class="toc-href" href="#write-clean-code-like" style="border-bottom: 0px" title="Write clean code like">Write clean code like</a></li><li><a class="toc-href" href="#the-incredible-pytorch" style="border-bottom: 0px" title="The incredible pytorch">The incredible pytorch</a></li><li><a class="toc-href" href="#how-to-train" style="border-bottom: 0px" title="How to train">How to train</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#combined-result" style="border-bottom: 0px" title="Combined Result">Combined Result</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#methods" style="border-bottom: 0px" title="Methods">Methods</a></li></ol></li><li><a class="toc-href" href="#post-processing_1" style="border-bottom: 0px" title="Post Processing">Post Processing</a></li></ol></li><li><a class="toc-href" href="#current-work_1" style="border-bottom: 0px" title="Current work">Current work</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#table-of-deepresnet" style="border-bottom: 0px" title="Table of deepresnet">Table of deepresnet</a></li></ol></li><li><a class="toc-href" doing="" href="#what-im-doing-now_1" m="" now?'="" style="border-bottom: 0px" title="What I">What I'm doing now?</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#table-of-results-resnet101-layers" style="border-bottom: 0px" title="Table of results Resnet101 layers">Table of results Resnet101 layers</a></li><li><a class="toc-href" href="#the-best-is-wf_scale1_1" style="border-bottom: 0px" title="The best is wf_scale1:">The best is wf_scale1:</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#table-of-results-resnet101_new-2-layers" style="border-bottom: 0px" title="Table of results Resnet101_New 2 layers">Table of results Resnet101_New 2 layers</a></li></ol></li><li><a class="toc-href" href="#resnet101_newer-3-layers_1" style="border-bottom: 0px" title="Resnet101_newer 3 layers">Resnet101_newer 3 layers</a></li></ol></li><li><a class="toc-href" href="#to-do-list_1" style="border-bottom: 0px" title="To-do list">To-do list</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#data-analysis" style="border-bottom: 0px" title="Data analysis">Data analysis</a></li><li><a class="toc-href" href="#test-with-different-scales" style="border-bottom: 0px" title="Test with different scales">Test with different scales</a></li><li><a class="toc-href" href="#train-with-lower-anchors" style="border-bottom: 0px" title="Train with lower anchors">Train with lower anchors</a></li><li><a class="toc-href" href="#train-with-lower-connection" style="border-bottom: 0px" title="Train with lower connection">Train with lower connection</a></li><li><a class="toc-href" href="#train-with-focal_loss" style="border-bottom: 0px" title="Train with focal_loss">Train with focal_loss</a></li><li><a class="toc-href" href="#train-with-lower-topn" style="border-bottom: 0px" title="Train with lower topN">Train with lower topN</a></li><li><a class="toc-href" href="#build-tensorflow" style="border-bottom: 0px" title="Build Tensorflow">Build Tensorflow</a></li><li><a class="toc-href" href="#notes" style="border-bottom: 0px" title="NOTES">NOTES</a></li></ol></li><li><a class="toc-href" href="#result-on-face-dataset_1" style="border-bottom: 0px" title="Result on Face Dataset">Result on Face Dataset</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#widerface-dataset" style="border-bottom: 0px" title="WiderFace Dataset">WiderFace Dataset</a><ol style="font-size:16px" type="a"><li><a class="toc-href" href="#table-of-results" style="border-bottom: 0px" title="Table of results">Table of results</a></li></ol></li><li><a class="toc-href" href="#resnet_newer_1" style="border-bottom: 0px" title="Resnet_newer">Resnet_newer</a></li><li><a class="toc-href" href="#resnet_maxout" style="border-bottom: 0px" title="Resnet_maxout">Resnet_maxout</a></li><li><a class="toc-href" href="#fddb-dataset" style="border-bottom: 0px" title="FDDB Dataset">FDDB Dataset</a></li><li><a class="toc-href" href="#afw-dataset" style="border-bottom: 0px" title="AFW Dataset">AFW Dataset</a></li><li><a class="toc-href" href="#pascal-dataset" style="border-bottom: 0px" title="Pascal Dataset">Pascal Dataset</a></li></ol></li><li><a class="toc-href" href="#charts-and-graphs_1" style="border-bottom: 0px" title="Charts and Graphs">Charts and Graphs</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#false-positive-in-different-ranges" style="border-bottom: 0px" title="False positive in different ranges.">False positive in different ranges.</a></li><li><a class="toc-href" href="#fpn-models" style="border-bottom: 0px" title="FPN models">FPN models</a></li><li><a class="toc-href" href="#afw-pascal-face-wider-face" style="border-bottom: 0px" title="AFW &amp; Pascal Face, Wider Face">AFW &amp; Pascal Face, Wider Face</a></li></ol></li><li><a class="toc-href" href="#deep-resnet-with-maxout_1" style="border-bottom: 0px" title="Deep Resnet with Maxout">Deep Resnet with Maxout</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="dataset">Dataset</h1>
+<p>http://www.face-rec.org/databases/</p>
+<h1 id="timer-and-speed">Timer and speed</h1>
+<p>https://github.com/ShuangXieIrene/ssds.pytorch/blob/master/lib/utils/timer.py
+https://github.com/ShuangXieIrene/ssds.pytorch/blob/master/lib/ssds.py</p>
+<h1 id="write-clean-code-like">Write clean code like</h1>
+<p>https://github.com/DavexPro/pytorch-pose-estimation/blob/master/pose_estimation.py</p>
+<h1 id="the-incredible-pytorch">The incredible pytorch</h1>
+<p>https://www.ritchieng.com/the-incredible-pytorch/
+Face problems
+https://www.adrianbulat.com/
+FERA 2017 - Addressing Head Pose in the Third Facial Expression
+Recognition and Analysis Challenge - 2017 Dataset
+https://arxiv.org/pdf/1702.04174.pdf</p>
+<p>consecutively </p>
+<p>competitive results over the compared baseline methods.</p>
+<p>earlier works/ efforts
+the subsequent layer
+these models usually heavily relied on
+laborious feature engineering</p>
+<p>Recent advances in deep neural networks and
+representation learning have substantially improved
+the performance of text classification tasks.
+The dominant approaches are recurrent neural net</p>
+<h1 id="how-to-train">How to train</h1>
+<p>https://www.youtube.com/watch?v=Rgpfk6eYxJA</p>
+<h2 id="combined-result">Combined Result</h2>
+<h3 id="methods">Methods</h3>
+<p><strong>SSH</strong>: Like HR, a four level image pyramid is deployed. To form the pyramid, the image is first scaled
+to have a shortest side of up to 800 pixels and the longest side less than 1200 pixels. Then, we scale the image to have min sizes of 500, 800, 1200, and 1600 pixels in the pyramid. All modules detect faces on all pyramid levels, except M3
+which is not applied to the largest level.</p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+<th>FDDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale Face Val</td>
+<td>86.8</td>
+<td>86.7</td>
+<td>77.2</td>
+<td>_</td>
+<td>_</td>
+<td>96.0</td>
+</tr>
+<tr>
+<td>SSH (Pyramid) Val</td>
+<td>93.1</td>
+<td>92.1</td>
+<td>84.5</td>
+<td>_</td>
+<td>98.27</td>
+<td>98.1</td>
+</tr>
+<tr>
+<td>HR Val(Tiny Face Detector)</td>
+<td>91.9</td>
+<td>90.8</td>
+<td>82.3</td>
+<td>_</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td>Face R-CNN Val</td>
+<td>93.8</td>
+<td>92.2</td>
+<td>82.9</td>
+<td>_</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td>Face R-FCN Val</td>
+<td>94.7</td>
+<td>93.5</td>
+<td>87.4</td>
+<td>_</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td>Seeing Small Faces Val</td>
+<td>94.9</td>
+<td>93.3</td>
+<td>86.1</td>
+<td>99.85</td>
+<td>99.23</td>
+<td>97.5</td>
+</tr>
+<tr>
+<td>SFD Val</td>
+<td>93.7</td>
+<td>92.4</td>
+<td>85.2</td>
+<td>99.85</td>
+<td>98.49</td>
+<td>98.3</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 18)</td>
+<td>94.2</td>
+<td>92.8</td>
+<td>86.1</td>
+<td>_</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>OURS Val without  FPC</td>
+<td>93.7</td>
+<td>92.2</td>
+<td>84.6</td>
+<td>99.91</td>
+<td>99.28</td>
+<td>98.4</td>
+</tr>
+<tr>
+<td>Our Val with FPC</td>
+<td>94.3</td>
+<td>93.2</td>
+<td>84.8</td>
+<td>99.89</td>
+<td>99.28</td>
+<td>98.4</td>
+</tr>
+<tr>
+<td>Retinanet with Correction</td>
+<td>95.2</td>
+<td>93.6</td>
+<td>85.9</td>
+<td>99.91</td>
+<td>99.37</td>
+<td>98.8</td>
+</tr>
+</tbody>
+</table>
+<p>Retinanet with Correction CNN</p>
+<h2 id="post-processing_1">Post Processing</h2>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale Face Val</td>
+<td>86.8</td>
+<td>86.7</td>
+<td>77.2</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>SSH (Pyramid) Val</td>
+<td>93.1</td>
+<td>92.1</td>
+<td>84.5</td>
+<td>_</td>
+<td>98.27</td>
+</tr>
+<tr>
+<td>HR Val</td>
+<td>91.9</td>
+<td>90.8</td>
+<td>82.3</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-CNN Val</td>
+<td>93.8</td>
+<td>92.2</td>
+<td>82.9</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-FCN Val</td>
+<td>94.7</td>
+<td>93.5</td>
+<td>87.4</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Seeing Small Faces Val</td>
+<td>94.9</td>
+<td>93.3</td>
+<td>86.1</td>
+<td>99.85</td>
+<td>99.23</td>
+</tr>
+<tr>
+<td>SFD Val</td>
+<td>93.7</td>
+<td>92.4</td>
+<td>85.2</td>
+<td>99.85</td>
+<td>98.49</td>
+</tr>
+<tr>
+<td>OURS Val</td>
+<td>93.7</td>
+<td>92.2</td>
+<td>84.6</td>
+<td>99.89</td>
+<td>99.37</td>
+</tr>
+<tr>
+<td>OURS Val</td>
+<td>93.7</td>
+<td>92.2</td>
+<td>84.6</td>
+<td>99.91</td>
+<td>99.37</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 18)</td>
+<td>94.2%</td>
+<td>92.8%</td>
+<td>53.4%</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>remove_low_iou &lt; 0.5 (a)</td>
+<td>81.9%</td>
+<td>86.1%</td>
+<td>82.3%</td>
+<td>99.89</td>
+<td>99.37</td>
+</tr>
+<tr>
+<td>remove_low_iou &lt; 0.5 (b)</td>
+<td>81.8%</td>
+<td>86.0%</td>
+<td>82.1%</td>
+<td>99.89</td>
+<td>99.37</td>
+</tr>
+<tr>
+<td>remove_low_iou &lt; 0.5 (c)</td>
+<td>81.7%</td>
+<td>86.0%</td>
+<td>82.3%</td>
+<td>99.89</td>
+<td>99.37</td>
+</tr>
+<tr>
+<td>remove_low_iou &lt; 0.5 (d)</td>
+<td>_%</td>
+<td>_%</td>
+<td>_%</td>
+<td>99.89</td>
+<td>99.37</td>
+</tr>
+</tbody>
+</table>
+<p>(a) set iou &gt; 0.5 = 1, iou &lt; 0.5 = np.sqrt(01.*score)
+(b) set iou &gt; 0.5 = 1, iou &lt; 0.5 = 0.0
+(c) set iou &gt; 0.5 = 1, iou &lt; 0.5 = score
+(d) set iou &gt; 0.5 = score, iou &lt; 0.5 = 0.1</p>
+<p>(b) Set iou &gt; 0.5 -&gt; np.sqrt(0.99<em>score), iou &lt; 0.5 -&gt; np.sqrt(0.01</em>score)</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Num_layers</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resnet101</td>
+<td>4</td>
+<td>Loss ratio (4:1), IoU Thresholds: 0.3, 0.1, topN = 5</td>
+</tr>
+<tr>
+<td>Resnet101_New</td>
+<td>2</td>
+<td>Loss ratio (4:1), IoU Thresholds: 0.5, 0.3, topN = 4</td>
+</tr>
+<tr>
+<td>Resnet101_Newer</td>
+<td>3</td>
+<td>Loss ratio (4:1), IoU Thresholds: 0.5, 0.3, topN = 4</td>
+</tr>
+<tr>
+<td>Resnet101_Neweest</td>
+<td>4</td>
+<td>Loss ratio (4:1), IoU Thresholds: 0.5, 0.1, topN = 4</td>
+</tr>
+</tbody>
+</table>
+<h1 id="current-work_1">Current work</h1>
+<p>ssh amazon_server; chạy predict_Resnet101_New, with 2 layers, </p>
+<h3 id="table-of-deepresnet">Table of deepresnet</h3>
+<p>Ket qua quen khong ghi chep? Maybe model <code>Resnet101/best_val_model.pkl</code>
+Predict on VAL with Resnet101/best_val_model.pkl (num_layers=4); 
+File     | Easy  | Medium | Hard
+---------|-------|--------|-------
+min_500  | 89.9% | 87.4%  | 64.2%
+min_640  | 91.1% | 88.1%  | 75.0%
+min_800  | 91.0% | 89.1%  | 79.6%
+min_1200 | 89.9% | 88.8%  | 82.4%
+min_1600 | 89.9% | 87.4%  | 81.7%
+original | 92.1% | 89.6%  | 78.6%</p>
+<h1 id="what-im-doing-now_1">What I'm doing now?</h1>
+<ul>
+<li>
+<p>Prediction on Wider_val, test with old method: </p>
+<ul>
+<li>The result saved at <code>Dropbox/Resnet101</code></li>
+<li>The screen session: <code>wf_prediction_final</code></li>
+<li>On <code>dais</code></li>
+<li>Used file <code>widerface_pred/wider_benchmark.sh</code>, <code>widerface_pred/benchmark_eval.py</code>.</li>
+</ul>
+</li>
+<li>
+<p>Prediction on Wider_val, test with <code>new</code> method: </p>
+<ul>
+<li>The result saved at <code>Dropbox/WIDER_test</code>, <code>Dropbox/WIDER_val</code>, </li>
+<li>The screen session: <code>wf</code></li>
+<li>Use file <code>prediction/wf_prediction_multi_scale.sh</code></li>
+<li><code>max_scale = (1980 * 1980/ (w * h)) ** (0.5)</code></li>
+<li>On <code>dais</code></li>
+</ul>
+</li>
+<li>
+<p>Prediction on Wider_val with :</p>
+<ul>
+<li>On <code>amazon_server</code></li>
+<li>Use file <code>prediction/wf_prediction_multi_scale.sh</code></li>
+<li><code>max_scale = (2400 * 2400/ (w * h)) ** (0.5)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="table-of-results-resnet101-layers">Table of results Resnet101 layers</h3>
+<p>Update on 25-Sept
+Predict on VAL with Resnet101/best_val_loss_model.pkl (num_layers=4); 
+score_thresh=0.1;
+nms_thresh=0.3;</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+<th>Medium</th>
+<th>Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min_500</td>
+<td>87.6%</td>
+<td>82.6%</td>
+<td>65.7%</td>
+</tr>
+<tr>
+<td>min_640</td>
+<td>91.5%</td>
+<td>88.6%</td>
+<td>76.3%</td>
+</tr>
+<tr>
+<td>min_800</td>
+<td>91.5%</td>
+<td>89.7%</td>
+<td>80.6%</td>
+</tr>
+<tr>
+<td>min_1200</td>
+<td>89.9%</td>
+<td>88.8%</td>
+<td>82.4%</td>
+</tr>
+<tr>
+<td>min_1600</td>
+<td>89.9%</td>
+<td>87.9%</td>
+<td>82.8%</td>
+</tr>
+<tr>
+<td>original</td>
+<td>92.5%</td>
+<td>90.1%</td>
+<td>79.7%</td>
+</tr>
+<tr>
+<td>wf_scale0</td>
+<td>92.7%</td>
+<td>91.3%</td>
+<td>83.6%</td>
+</tr>
+<tr>
+<td>wf_scale1</td>
+<td>92.9%</td>
+<td>91.7%</td>
+<td>86.0%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes max &lt; 8)</td>
+<td>92.9%</td>
+<td>91.7%</td>
+<td>86.1%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes max &lt; 10)</td>
+<td>93.1%</td>
+<td>91.9%</td>
+<td>86.0%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 10)</td>
+<td>93.3%</td>
+<td>92.2%</td>
+<td>81.6%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 12)</td>
+<td>93.6%</td>
+<td>92.5%</td>
+<td>72.9%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 15)</td>
+<td>93.9%</td>
+<td>92.8%</td>
+<td>62.3%</td>
+</tr>
+<tr>
+<td>wf_scale1 (Remove tiny boxes min &lt; 18)</td>
+<td>94.2%</td>
+<td>92.8%</td>
+<td>53.4%</td>
+</tr>
+<tr>
+<td>wf_scale2</td>
+<td>92.2%</td>
+<td>91.7%</td>
+<td>86.0%</td>
+</tr>
+<tr>
+<td>wf_scale0.45 (nms_thresh=0.45)</td>
+<td>92.7%</td>
+<td>91.6%</td>
+<td>85.7%</td>
+</tr>
+<tr>
+<td>wf_scale3_2400x2400_0.3</td>
+<td>92.8%</td>
+<td>91.7%</td>
+<td>86.0%</td>
+</tr>
+<tr>
+<td>wf_scale3_2400x2400_0.45</td>
+<td>92.7%</td>
+<td>91.6%</td>
+<td>85.9%</td>
+</tr>
+<tr>
+<td>WIDER_Val_0.3 (nms_thresh=0.3)</td>
+<td>92.3%</td>
+<td>91.1%</td>
+<td>83.0%</td>
+</tr>
+<tr>
+<td>WIDER_Val_0.45 (nms_thresh=0.45)</td>
+<td>92.1%</td>
+<td>90,7%</td>
+<td>83.1%</td>
+</tr>
+<tr>
+<td>(1) merge500_640</td>
+<td>91.5%</td>
+<td>88.2%</td>
+<td>71.0%</td>
+</tr>
+<tr>
+<td>(2) merge500_640_800_1200</td>
+<td>91.8%</td>
+<td>90.7%</td>
+<td>81.5%</td>
+</tr>
+<tr>
+<td>(3) merge500_640_800_1200_1600</td>
+<td>91.8%</td>
+<td>90.4%</td>
+<td>83.2%</td>
+</tr>
+<tr>
+<td>(1) mix_640_800 (filter)</td>
+<td>91.5%</td>
+<td>89.3%</td>
+<td>75.0%</td>
+</tr>
+<tr>
+<td>(2) mix_640_800_...1600_original(filter)</td>
+<td>91.8%</td>
+<td>91.0%</td>
+<td>84.0%</td>
+</tr>
+<tr>
+<td>(3) mix_640_800_...1600_original(filter)</td>
+<td>91.7%</td>
+<td>90.9%</td>
+<td>83.9%</td>
+</tr>
+<tr>
+<td>(3) mix_640_800_...1600_original(filter)</td>
+<td>91.7%</td>
+<td>90.9%</td>
+<td>83.9%</td>
+</tr>
+<tr>
+<td>(4) mix_640_800_...1600_original(filter)</td>
+<td>90.6%</td>
+<td>90.4%</td>
+<td>83.7%</td>
+</tr>
+<tr>
+<td>(5) mix_640_800_...1600_original(filter)</td>
+<td>91.8%</td>
+<td>91.0%</td>
+<td>83.9%</td>
+</tr>
+<tr>
+<td>(6) mix_640_800_...1600_original(filter)</td>
+<td>91.8%</td>
+<td>91.0%</td>
+<td>84.0%</td>
+</tr>
+<tr>
+<td>(7) mix_640_800_...1600_original(filter)</td>
+<td>92.0%</td>
+<td>91.1%</td>
+<td>84.1%</td>
+</tr>
+<tr>
+<td>(7) mix_640_800_...1920_original(filter)</td>
+<td>91.6%</td>
+<td>90.9%</td>
+<td>84.4%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<h2 id="the-best-is-wf_scale1_1">The best is wf_scale1:</h2>
+<ul>
+<li>wf_scale1: </li>
+<li>score_thresh=0.1, </li>
+<li>nms_thresh=0.3; </li>
+<li>scale: 0.5 -&gt; 0.5 -&gt; 1 -&gt; 2. -&gt; max_scale (including max_scale)</li>
+<li>remove tiny_faces min(w, h) &lt; 15: for detection big faces</li>
+<li>keep the same for small faces.</li>
+</ul>
+</blockquote>
+<p>Update on 26-Sept
+<em> wf_scale0: score_thresh=0.1, nms_thresh=0.3; scale: 0.5 -&gt; 0.5 -&gt; 1 -&gt; 2. -&gt; max_scale (except max_scale)
+</em> wf_scale1: score_thresh=0.1, nms_thresh=0.3; scale: 0.5 -&gt; 0.5 -&gt; 1 -&gt; 2. -&gt; max_scale (including max_scale)<br/>
+The code from predict_wf_multi_scale.py</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">img_paths</span><span class="p">[:]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'predict image index'</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">load_img</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+
+    <span class="n">img_name</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">event_name</span> <span class="o">=</span> <span class="n">img_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">max_scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1980</span> <span class="o">*</span> <span class="mi">1980</span> <span class="o">/</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">h</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">img_boxes</span><span class="p">,</span> <span class="n">img_scores</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">flip_test</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">score_thresh</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                  <span class="n">nms_thresh</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">img_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">img_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">scale</span> <span class="o">&lt;</span> <span class="n">max_scale</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">*=</span> <span class="mi">2</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">max_scale</span> <span class="k">if</span> <span class="n">scale</span> <span class="o">&gt;</span> <span class="n">max_scale</span> <span class="k">else</span> <span class="n">scale</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">scale_predict</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                                  <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">score_thresh</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                  <span class="n">nms_thresh</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">img_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">img_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+<p>The code from scale_predict function </p>
+<div class="highlight"><pre><span></span>    <span class="k">if</span> <span class="n">scale</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+        <span class="c1"># shrink only to detect big faces</span>
+        <span class="n">keep_big</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">boxes</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                              <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">30</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">keep_big</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">&gt;=</span> <span class="mf">1.5</span><span class="p">:</span>
+        <span class="c1"># enlarge only to detect small faces</span>
+        <span class="n">keep_small</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">boxes</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">120</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">keep_small</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+<ul>
+<li>
+<p>wf_scale2: score_thresh=0.1, nms_thresh=0.3; scale: 0.25 -&gt; 0.5 -&gt; 1 -&gt; 2. -&gt; max_scale (including max_scale)</p>
+</li>
+<li>
+<p>merge (1), (2), (3) simply just concat all and then perform box_vote</p>
+</li>
+<li>(1) mix_640_800(filter):</li>
+<li>(2) mix_640_800_..._original(filter):  </li>
+<li>mix (1) and (2) use the script below:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="c1"># shrink only to detect big faces</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="k">continue</span>
+<span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">1.5</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">120</span><span class="p">:</span>
+        <span class="k">continue</span>
+</pre></div>
+<ul>
+<li>(3) mix_640_800_..._original(filter): Change the ratio &gt; 2.0 and the result reduce</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="c1"># shrink only to detect big faces</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="k">continue</span>
+<span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">2.0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">120</span><span class="p">:</span>
+        <span class="k">continue</span>
+</pre></div>
+<ul>
+<li>
+<p>(4) mix_640_800_..._original(filter): Change the upper ratio &gt; 1.0 and the result reduce.</p>
+</li>
+<li>
+<p>(5) mix_640_800_..._original(filter): keep upper ratio = 1.5, np.minimum &gt; 100</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="c1"># shrink only to detect big faces</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="k">continue</span>
+<span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">continue</span>
+</pre></div>
+<ul>
+<li>(6) mix_640_800_..._original(filter): keep upper ratio = 1.5, np.minimum &gt; 100, remove all boxes np.maximum(w, h) &lt; 6</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="c1"># shrink only to detect big faces</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="k">continue</span>
+<span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">continue</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+    <span class="k">continue</span>
+</pre></div>
+<ul>
+<li>(6) mix_640_800_..._original(filter): The same as mix (1), mix(2) but add iou_thresh=0.45 for box_vote()</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="n">img_names</span><span class="p">:</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">box_vote</span><span class="p">(</span><span class="n">merged_boxes</span><span class="p">[</span><span class="n">img_name</span><span class="p">],</span>
+                    <span class="n">merged_scores</span><span class="p">[</span><span class="n">img_name</span><span class="p">],</span>
+                    <span class="n">iou_thresh</span><span class="o">=</span><span class="mf">0.45</span><span class="p">)</span>
+</pre></div>
+<h3 id="table-of-results-resnet101_new-2-layers">Table of results Resnet101_New 2 layers</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+<th>Medium</th>
+<th>Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min_500</td>
+<td>89.9%</td>
+<td>87.4%</td>
+<td>64.2%</td>
+</tr>
+<tr>
+<td>min_640</td>
+<td>91.1%</td>
+<td>88.1%</td>
+<td>75.0%</td>
+</tr>
+<tr>
+<td>min_800</td>
+<td>91.0%</td>
+<td>89.1%</td>
+<td>79.6%</td>
+</tr>
+<tr>
+<td>min_1200</td>
+<td>89.6%</td>
+<td>89.0%</td>
+<td>83.0%</td>
+</tr>
+<tr>
+<td>min_1600</td>
+<td>89.9%</td>
+<td>87.4%</td>
+<td>81.7%</td>
+</tr>
+<tr>
+<td>original</td>
+<td>92.0%</td>
+<td>89.5%</td>
+<td>78.6%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="resnet101_newer-3-layers_1">Resnet101_newer 3 layers</h2>
+<p>Ket qua khong ghi chep - nhung xac nhan la dung
+Update 26-Sept
+File     | Easy  | Medium | Hard
+---------|-------|--------|-------
+min_400  | 87.9% | 80.7%  | 52.9%
+min_640  | 90.3% | 87.0%  | 72.0%
+min_1280 | 89.9% | 87.5%  | 81.2%
+min_1600 | 86.4% | 86.0%  | 80.3%
+min_1920 | 82.0% | 83.0%  | 77.6%
+original | 82.6% | 83.0%  | 77.6%</p>
+<h1 id="to-do-list_1">To-do list</h1>
+<h2 id="data-analysis">Data analysis</h2>
+<p>Done
+* Data analysis on WiderFace Validation, Test
+    * Make a ipython notebook file for Validation and Test:
+    * Height, width of dataset
+    * Size of bounding boxes
+    * Number of bboxes
+    * Number per images</p>
+<ul>
+<li>
+<p>Data analysis on AFW Face</p>
+</li>
+<li>
+<p>Data analysis on Pascal Face</p>
+</li>
+</ul>
+<h2 id="test-with-different-scales">Test with different scales</h2>
+<p>Done</p>
+<ul>
+<li>Make a python script to run on AFW Face.</li>
+<li>Go to school to run it? May be.</li>
+</ul>
+<h2 id="train-with-lower-anchors">Train with lower anchors</h2>
+<p>Not yet</p>
+<h2 id="train-with-lower-connection">Train with lower connection</h2>
+<p>Not yet </p>
+<h2 id="train-with-focal_loss">Train with focal_loss</h2>
+<p>Not yet</p>
+<h2 id="train-with-lower-topn">Train with lower topN</h2>
+<p>Not yet</p>
+<ul>
+<li>topN = 4</li>
+</ul>
+<h2 id="build-tensorflow">Build Tensorflow</h2>
+<h2 id="notes">NOTES</h2>
+<p>In order to use previous DeepResnet101, just change the number of CNN layers in prediction block to <code>4</code>.</p>
+<h1 id="result-on-face-dataset_1">Result on Face Dataset</h1>
+<h2 id="widerface-dataset">WiderFace Dataset</h2>
+<ul>
+<li>
+<p>Việc cần l&agrave;m:</p>
+</li>
+<li>
+<p>Retrain lại model with better accuracy!</p>
+<ul>
+<li>IOU Threshold &lt;0.3, 0.1&gt;</li>
+</ul>
+</li>
+<li>
+<p>Build CNN </p>
+</li>
+<li>
+<p>Write the paper.</p>
+</li>
+</ul>
+<h3 id="table-of-results">Table of results</h3>
+<h2 id="resnet_newer_1">Resnet_newer</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+<th>Medium</th>
+<th>Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min_400</td>
+<td>87.9%</td>
+<td>80.7%</td>
+<td>52.9%</td>
+</tr>
+<tr>
+<td>min_640</td>
+<td>90.3%</td>
+<td>87.0%</td>
+<td>72.0%</td>
+</tr>
+<tr>
+<td>min_1280</td>
+<td>89.9%</td>
+<td>87.5%</td>
+<td>81.2%</td>
+</tr>
+<tr>
+<td>min_1600</td>
+<td>86.4%</td>
+<td>86.0%</td>
+<td>80.3%</td>
+</tr>
+<tr>
+<td>min_1920</td>
+<td>82.0%</td>
+<td>83.0%</td>
+<td>77.6%</td>
+</tr>
+<tr>
+<td>original</td>
+<td>82.6%</td>
+<td>83.0%</td>
+<td>77.6%</td>
+</tr>
+<tr>
+<td>mix1</td>
+<td>93.4%</td>
+<td>91.8%</td>
+<td>84.1%</td>
+</tr>
+<tr>
+<td>mix2</td>
+<td>93.7%</td>
+<td>92.2%</td>
+<td>80.1%</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+<th>Medium</th>
+<th>Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>remove_low_iou &lt; 0.3</td>
+<td>93.8%</td>
+<td>92.4%</td>
+<td>83.9%</td>
+</tr>
+<tr>
+<td>remove_low_iou &lt; 0.5</td>
+<td>95.0%</td>
+<td>93.3%</td>
+<td>84.4%</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>min_640
+    just rescale the smaller size to 640 and keep the ratio unchanged</li>
+<li>original
+    just keep the same size and pass it to the network</li>
+<li>mix1
+    all the sizes with</li>
+<li>mix2
+    the same as mix1, but remove the tiny boxes &lt; 8</li>
+</ol>
+<h2 id="resnet_maxout">Resnet_maxout</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+<th>Medium</th>
+<th>Hard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min_640</td>
+<td>90.2%</td>
+<td>86.5%</td>
+<td>69.4</td>
+</tr>
+<tr>
+<td>min_1280</td>
+<td>89.1%</td>
+<td>87.5%</td>
+<td>80.5%</td>
+</tr>
+<tr>
+<td>min_1600</td>
+<td>87.8%</td>
+<td>86.4%</td>
+<td>79.8%</td>
+</tr>
+<tr>
+<td>min_1920</td>
+<td>82.0%</td>
+<td>83.0%</td>
+<td>77.6%</td>
+</tr>
+<tr>
+<td>original</td>
+<td>83.4%</td>
+<td>82.6%</td>
+<td>76.1%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fddb-dataset">FDDB Dataset</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Easy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min_640</td>
+<td>96.6%</td>
+</tr>
+<tr>
+<td>original</td>
+<td>93.5%</td>
+</tr>
+<tr>
+<td>SFD</td>
+<td>98.3%</td>
+</tr>
+<tr>
+<td>CVPR2018</td>
+<td>97.5%</td>
+</tr>
+<tr>
+<td>max_640</td>
+<td>97.5%</td>
+</tr>
+<tr>
+<td>Deepresnet max_640</td>
+<td>97.9%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="afw-dataset">AFW Dataset</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>DeepResnet</th>
+<th>Resnet101</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>afw_deepresnet_1 (0.5, 1, -1)</td>
+<td>99.32%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_2 (0.25)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_3 (0.5)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_4 (1)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_5 (2)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_6 (max)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_7 (min_size=640)</td>
+<td>99.91%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_8 (0.5, 1)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_9 (0.5, 1, 2)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>afw_deepresnet_10 (0.5, 1, 2, max)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>
+<p>afw_deepresnet_1</p>
+<ul>
+<li>Pyramid prediction: <ul>
+<li>0.5, </li>
+<li>1, </li>
+<li>1 - flip</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>afw_deepresnet_2</p>
+<ul>
+<li>Pyramid prediction:<ul>
+<li>0.5</li>
+<li>1</li>
+<li>1 - flip</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>afw_deepresnet_2</p>
+<ul>
+<li>Pyramid prediction:<ul>
+<li>0.5</li>
+<li>1</li>
+<li>1 - flip</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">))</span>
+        <span class="p">])</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">loc_preds</span><span class="p">,</span> <span class="n">cls_preds</span><span class="p">,</span> <span class="n">fm_sizes</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">loc_preds</span> <span class="o">=</span> <span class="n">loc_preds</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+        <span class="n">cls_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">cls_preds</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+        <span class="n">box_coder</span> <span class="o">=</span> <span class="n">get_box_coder</span><span class="p">(</span><span class="n">fm_sizes</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">boxes</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">box_coder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">loc_preds</span><span class="p">,</span> <span class="n">cls_preds</span><span class="p">,</span>
+                                                 <span class="n">score_thresh</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                 <span class="n">nms_thresh</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">boxes</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">scores</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+<p><strong>Some comments here:</strong>
+- Use pyramid prediction <code>afw_deepresnet_1</code> gives a lot of false positives, predicting the areas including b&agrave;n tay, đ&ugrave;i, ngực, bụng, tường as <code>face</code>. Thường th&igrave; những trường hợp False positives n&agrave;y c&oacute; sizes lớn (&gt; 300).</p>
+<ul>
+<li>
+<p>Conduct post-processing to filter the false positives:</p>
+<ul>
+<li>Set <code>confidence score</code> of all boxes of IoU with <code>IoUwith(gt_boxes) &lt; 0.5</code> to <code>0.1</code> then: <code>mAP = 99.92</code>.   </li>
+<li>Set <code>confidence score</code> of all boxes of IoU with <code>IoUwith(gt_boxes) &lt; 0.3</code> to <code>0.1</code> then: <code>mAP = 99.99</code>.</li>
+<li>Set <code>confidence score</code> of all boxes of IoU with <code>IoUwith(gt_boxes) &lt; 0.5</code> to <code>0.0</code> then: <code>mAP = 95.58</code>.</li>
+<li>Set <code>confidence score</code> of all boxes of IoU with <code>IoUwith(gt_boxes) &lt; 0.3</code> to <code>0.0</code> then: <code>mAP = 99.99</code>.</li>
+<li>
+<p>Set <code>confidence score</code> of all boxes of IoU with <code>IoUwith(gt_boxes) &lt; 0.2</code> to <code>0.0</code> then: <code>mAP = 99.99</code>.</p>
+</li>
+<li>
+<p>Remove the <code>false positive</code> boxes then: <code>mAP = 99.33</code>?.  </p>
+</li>
+</ul>
+<h2 id="pascal-dataset">Pascal Dataset</h2>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>DeepResnet</th>
+<th>Resnet101</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>max_640_deepresnet101</td>
+<td>99.16%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>min_640_deepresnet101</td>
+<td>98.43%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>original_deepresnet101</td>
+<td>98.25</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>max_640_deepresnet101: resize the larger size to 640, and keep the ratios w:h unchanged.</li>
+<li>min_640_deepresnet101: resize the smaller size to 640, and keep the ratios w:h unchanged.</li>
+<li>
+<p>original_deepresnet101: keep the original size.</p>
+<p>File not in dataset 2008_000210.jpg 1.0 139 94 325 267</p>
+</li>
+</ul>
+<h1 id="charts-and-graphs_1">Charts and Graphs</h1>
+<h2 id="false-positive-in-different-ranges">False positive in different ranges.</h2>
+<p>Fig 1.a Number of false positives</p>
+<p>Fig 1.b Confidence of False positive samples</p>
+<p>Fig. 1: (a) Comparison of the number of false positives in different ranges. (b)
+Comparison of the mAP gains by progressively removing false positives; from
+right to left, the detector is performing better as false positives are removed
+according to their confidence scores</p>
+<h2 id="fpn-models">FPN models</h2>
+<h2 id="afw-pascal-face-wider-face">AFW &amp; Pascal Face, Wider Face</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Type</th>
+<th>num_layers</th>
+<th>AFW Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resnet101/best_val_loss_model.pkl</td>
+<td>DeepResnet</td>
+<td>4</td>
+<td>99.89%</td>
+</tr>
+<tr>
+<td>Resnet101/best_val_model.pkl</td>
+<td>DeepResnet</td>
+<td>4</td>
+<td>99.92%</td>
+</tr>
+</tbody>
+</table>
+<h1 id="deep-resnet-with-maxout_1">Deep Resnet with Maxout</h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torchcv.models.deep_fpnresnet.fpn</span> <span class="kn">import</span> <span class="n">DeepLabFPN101</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="kn">as</span> <span class="nn">F</span>
+
+<span class="k">class</span> <span class="nc">PredictBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_anchors</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PredictBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_anchors</span> <span class="o">=</span> <span class="n">num_anchors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">num_classes</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loc_head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_head</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_anchors</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls_head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_head</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_anchors</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_make_head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_planes</span><span class="p">):</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="sd">'''</span>
+<span class="sd">        Change back to previous DeepResnet model, </span>
+<span class="sd">        num_layers = 4</span>
+<span class="sd">        '''</span>
+        <span class="n">num_layers</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(</span><span class="bp">True</span><span class="p">))</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">out_planes</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">loc_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loc_head</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">cls_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_head</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">loc_pred</span> <span class="o">=</span> <span class="n">loc_pred</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="n">cls_pred</span> <span class="o">=</span> <span class="n">cls_pred</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="n">loc_pred</span> <span class="o">=</span> <span class="n">loc_pred</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">loc_pred</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">cls_pred</span> <span class="o">=</span> <span class="n">cls_pred</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">cls_pred</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loc_pred</span><span class="p">,</span> <span class="n">cls_pred</span>
+
+
+<span class="k">class</span> <span class="nc">DeepFPNResnet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">fpn</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeepFPNResnet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_anchors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extractor</span> <span class="o">=</span> <span class="n">fpn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">dropout</span>
+
+        <span class="c1"># Freezing those layers</span>
+        <span class="n">frozen_layer_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'conv1'</span><span class="p">,</span> <span class="s1">'bn1'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">frozen_layer_name</span> <span class="ow">in</span> <span class="n">frozen_layer_names</span><span class="p">:</span>
+            <span class="n">frozen_layer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extractor</span><span class="p">,</span> <span class="n">frozen_layer_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">frozen_layer</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+                <span class="n">param</span><span class="o">.</span><span class="n">requies_grad</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">num_classes</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num_anchor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_anchors</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span> <span class="o">+=</span> <span class="p">[</span><span class="n">PredictBlock</span><span class="p">(</span><span class="n">num_anchor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
+                    <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fm_sizes_return</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">loc_preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cls_preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">,</span> <span class="n">h3</span><span class="p">,</span> <span class="n">h4</span><span class="p">,</span> <span class="n">h5</span><span class="p">,</span> <span class="n">h6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractor</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="c1"># print("h1.shape", h1.shape)</span>
+        <span class="c1"># print("h2.shape", h2.shape)</span>
+        <span class="c1"># print("h3.shape", h3.shape)</span>
+        <span class="c1"># print("h4.shape", h4.shape)</span>
+        <span class="c1"># print("h5.shape", h5.shape)</span>
+        <span class="c1"># print("h6.shape", h6.shape)</span>
+
+        <span class="n">loc_pred1</span><span class="p">,</span> <span class="n">cls_pred1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">h1</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred1</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred1</span><span class="p">)</span>
+
+        <span class="n">loc_pred2</span><span class="p">,</span> <span class="n">cls_pred2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="n">h2</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred2</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred2</span><span class="p">)</span>
+
+        <span class="n">loc_pred3</span><span class="p">,</span> <span class="n">cls_pred3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="n">h3</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred3</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred3</span><span class="p">)</span>
+
+        <span class="n">loc_pred4</span><span class="p">,</span> <span class="n">cls_pred4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">3</span><span class="p">](</span><span class="n">h4</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred4</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred4</span><span class="p">)</span>
+
+        <span class="n">loc_pred5</span><span class="p">,</span> <span class="n">cls_pred5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">4</span><span class="p">](</span><span class="n">h5</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred5</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred5</span><span class="p">)</span>
+
+        <span class="n">loc_pred6</span><span class="p">,</span> <span class="n">cls_pred6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_layers</span><span class="p">[</span><span class="mi">5</span><span class="p">](</span><span class="n">h6</span><span class="p">)</span>
+        <span class="n">loc_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc_pred6</span><span class="p">)</span>
+        <span class="n">cls_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_pred6</span><span class="p">)</span>
+
+        <span class="n">loc_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">loc_preds</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># []</span>
+        <span class="n">cls_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">cls_preds</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># []</span>
+
+        <span class="c1"># print("loc_preds", loc_preds.size())</span>
+        <span class="c1"># print("cls_preds", cls_preds.size())</span>
+
+        <span class="k">if</span> <span class="n">fm_sizes_return</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">fm_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">h1</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">h2</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">h3</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span>
+                        <span class="n">h4</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">h5</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="n">h6</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]]</span>
+            <span class="k">return</span> <span class="n">loc_preds</span><span class="p">,</span> <span class="n">cls_preds</span><span class="p">,</span> <span class="n">fm_sizes</span>
+
+        <span class="k">return</span> <span class="n">loc_preds</span><span class="p">,</span> <span class="n">cls_preds</span>
+
+
+<span class="k">class</span> <span class="nc">WrapModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">fpn</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">WrapModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">DeepFPNResnet</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">fpn</span><span class="o">=</span><span class="n">fpn</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fm_sizes_return</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fm_sizes_return</span><span class="o">=</span><span class="n">fm_sizes_return</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">'cuda'</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+
+    <span class="n">fpn</span> <span class="o">=</span> <span class="n">DeepLabFPN101</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">DeepFPNResnet</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fpn</span><span class="o">=</span><span class="n">fpn</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">WrapModel</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fpn</span><span class="o">=</span><span class="n">fpn</span><span class="p">)</span>
+
+    <span class="n">net</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">model_path</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">model_path</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">net</span><span class="p">,</span> <span class="n">start_epoch</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s1">'cuda:0'</span> <span class="p">:</span> <span class="n">device</span><span class="p">})</span>
+        <span class="n">start_epoch</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s1">'epoch'</span><span class="p">]</span>
+        <span class="n">params_tensors</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s1">'net'</span><span class="p">]</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">params_tensors</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"[INFO] --load pretrained model: {model_path}"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">" | "</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"train_loss: {state_dict['loss']:.2f}"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">" | "</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"epoch: {start_epoch}"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">net</span><span class="p">,</span> <span class="n">start_epoch</span>
+
+
+<span class="k">class</span> <span class="nc">Rectifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Rectifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># 28 -&gt; 14 -&gt; 7 -&gt; 3 -&gt; 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"conv3"</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv4</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"conv4"</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">max_pool2d</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">h</span>
+</pre></div>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/face-detection.html" class="tag">Face Detection</a>
+                    <a href="../../../../tag/2018.html" class="tag">2018</a>
+                    <a href="../../../../tag/paper.html" class="tag">PAPER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

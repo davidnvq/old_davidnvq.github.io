@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Thiên tài không bằng cấp Michael Faraday | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Thiên tài không bằng cấp Michael Faraday</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#tu-cau-be-dong-sach-ngheo-ham-hoc" style="border-bottom: 0px" title="Từ cậu b&eacute; đ&oacute;ng s&aacute;ch ngh&egrave;o ham học">Từ cậu b&eacute; đ&oacute;ng s&aacute;ch ngh&egrave;o ham học</a></li><li><a class="toc-href" href="#phu-ta-phong-thi-nghiem-voi-giao-su-davy" style="border-bottom: 0px" title="Phụ t&aacute; ph&ograve;ng th&iacute; nghiệm với gi&aacute;o sư Davy">Phụ t&aacute; ph&ograve;ng th&iacute; nghiệm với gi&aacute;o sư Davy</a></li><li><a class="toc-href" href="#den-nha-bac-hoc-thien-tai-khong-bang-cap" style="border-bottom: 0px" title="Đến nh&agrave; b&aacute;c học thi&ecirc;n t&agrave;i kh&ocirc;ng bằng cấp">Đến nh&agrave; b&aacute;c học thi&ecirc;n t&agrave;i kh&ocirc;ng bằng cấp</a></li><li><a class="toc-href" href="#nhung-nam-cuoi-cuoc-doi" style="border-bottom: 0px" title="Những năm cuối cuộc đời">Những năm cuối cuộc đời</a></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Thiên tài không bằng cấp Michael Faraday</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 21, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/other.html">other</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#tu-cau-be-dong-sach-ngheo-ham-hoc" style="border-bottom: 0px" title="Từ cậu b&eacute; đ&oacute;ng s&aacute;ch ngh&egrave;o ham học">Từ cậu b&eacute; đ&oacute;ng s&aacute;ch ngh&egrave;o ham học</a></li><li><a class="toc-href" href="#phu-ta-phong-thi-nghiem-voi-giao-su-davy" style="border-bottom: 0px" title="Phụ t&aacute; ph&ograve;ng th&iacute; nghiệm với gi&aacute;o sư Davy">Phụ t&aacute; ph&ograve;ng th&iacute; nghiệm với gi&aacute;o sư Davy</a></li><li><a class="toc-href" href="#den-nha-bac-hoc-thien-tai-khong-bang-cap" style="border-bottom: 0px" title="Đến nh&agrave; b&aacute;c học thi&ecirc;n t&agrave;i kh&ocirc;ng bằng cấp">Đến nh&agrave; b&aacute;c học thi&ecirc;n t&agrave;i kh&ocirc;ng bằng cấp</a></li><li><a class="toc-href" href="#nhung-nam-cuoi-cuoc-doi" style="border-bottom: 0px" title="Những năm cuối cuộc đời">Những năm cuối cuộc đời</a></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <blockquote>
+<p>Michael Faraday l&agrave; nh&agrave; b&aacute;c học được cả thế giới biết đến bởi &ocirc;ng ch&iacute;nh l&agrave; người c&oacute; c&ocirc;ng lớn nhất trong việc biến từ th&agrave;nh điện - nguồn năng lượng sạch v&agrave; phổ biến nhất ng&agrave;y nay.</p>
+</blockquote>
+<h1 id="tu-cau-be-dong-sach-ngheo-ham-hoc">Từ cậu b&eacute; đ&oacute;ng s&aacute;ch ngh&egrave;o ham học</h1>
+<p>Michael Faraday sinh ng&agrave;y 22/9/1791 ở Newington Butts, ngoại &ocirc; Lu&acirc;n Đ&ocirc;n, trong một gia đ&igrave;nh ngh&egrave;o c&oacute; bố l&agrave;m nghề thợ r&egrave;n. Từ nhỏ, Faraday đ&atilde; tỏ ra th&ocirc;ng minh v&agrave; hiếu học, nhưng phải sớm nghỉ học để phụ gi&uacute;p gia đ&igrave;nh.</p>
+<p>Khi đời sống của gia đ&igrave;nh c&agrave;ng kh&oacute; khăn, năm 1804, khi mới 13 tuổi, Faraday đến xin việc tại &ldquo;Hiệu b&aacute;n s&aacute;ch v&agrave; đ&oacute;ng s&aacute;ch Rit&ocirc;&rdquo; ở Lu&acirc;n Đ&ocirc;n. Faraday vừa học nghề đ&oacute;ng s&aacute;ch, vừa tự học qua việc đọc s&aacute;ch. &Ocirc;ng đặc biệt ch&uacute; &yacute; đến c&aacute;c quyển s&aacute;ch về khoa học v&agrave; c&ograve;n tự l&agrave;m th&iacute; nghiệm đơn giản để kiểm nghiệm lại những điều khẳng định trong s&aacute;ch. Cứ thế trong thời gian rảnh rỗi, Faraday lại say m&ecirc; c&ugrave;ng những điều l&yacute; th&uacute; của khoa học, nhất l&agrave; lĩnh vực điện năng. Cho đến một ng&agrave;y, anh thợ đ&oacute;ng s&aacute;ch trẻ Faraday h&aacute;o hức dự c&aacute;c lớp học buổi tối do Hội Triết học tổ chức để trau dồi kiến thức, b&ugrave; lại khoảng thời gian kh&ocirc;ng được cắp s&aacute;ch đến trường. Faraday ham học đến nỗi đ&ecirc;m n&agrave;o cũng đọc s&aacute;ch tới khuya khiến cho nhiều lần ngủ gật trong giờ l&agrave;m việc.</p>
+<p>Năm 1812, Faraday được người chủ hiệu s&aacute;ch tặng cho một tấm v&eacute; tham dự buổi thuyết giảng của gi&aacute;o sư H&oacute;a học Humphry Davy, hội vi&ecirc;n Hội Khoa học Ho&agrave;ng gia Lu&acirc;n Đ&ocirc;n. Faraday sau đ&oacute; đ&oacute;ng một quyển s&aacute;ch c&oacute; t&ecirc;n &ldquo;Ghi ch&eacute;p về buổi diễn thuyết của tước sĩ Humphry Davy&rdquo; v&agrave; một bức thư tự tiến cử gửi tới gi&aacute;o sư Davy. Nội dung ghi ch&eacute;p c&ugrave;ng những kiến giải ri&ecirc;ng của Faraday thể hiện trong quyển s&aacute;ch đ&atilde; khiến gi&aacute;o sư Davy hết sức ấn tượng.</p>
+<h1 id="phu-ta-phong-thi-nghiem-voi-giao-su-davy">Phụ t&aacute; ph&ograve;ng th&iacute; nghiệm với gi&aacute;o sư Davy</h1>
+<p>Th&aacute;ng 10/1812, cuộc đời Faraday đ&atilde; bước hẳn sang một trang mới khi được nhận l&agrave;m phụ t&aacute; ở ph&ograve;ng th&iacute; nghiệm của gi&aacute;o sư Davy. D&ugrave; chỉ nhận được số lương &iacute;t ỏi, Faraday vẫn hăng h&aacute;i với c&ocirc;ng việc. Faraday kh&ocirc;ng những ghi ch&eacute;p rất ch&iacute;nh x&aacute;c c&aacute;c &yacute; tưởng khoa học của Davy m&agrave; c&ograve;n tham gia đ&oacute;ng g&oacute;p &yacute; kiến, ph&acirc;n t&iacute;ch c&aacute;c số liệu thực nghiệm, nhận x&eacute;t c&aacute;c kết luận kh&aacute;i qu&aacute;t của nh&agrave; b&aacute;c học. Faraday được thăng chức trợ l&yacute; khoa học v&agrave;o th&aacute;ng 3/1813.</p>
+<p>Từ năm 1813-1815, trong c&aacute;c chuyến đi đến Ph&aacute;p, &Yacute; của gi&aacute;o sư Davy, Faraday đều được đi c&ugrave;ng v&agrave; c&oacute; cơ hội gặp gỡ, học hỏi từ nhiều nh&agrave; b&aacute;c học như Amp&egrave;re, De la Rive... Faraday đ&atilde; rất chịu kh&oacute; ghi ch&eacute;p v&agrave; t&iacute;ch lũy kiến thức trong suốt h&agrave;nh tr&igrave;nh.</p>
+<p>Lần đầu ti&ecirc;n Faraday viết một luận văn khoa học l&agrave; v&agrave;o năm 1816 dưới sự chỉ đạo của gi&aacute;o sư Davy. Chỉ trong 2 năm sau đ&oacute;, &ocirc;ng tiếp tục c&oacute; tới 17 b&agrave;i luận văn ph&acirc;n t&iacute;ch H&oacute;a học.</p>
+<p>Từ năm 1818 đến năm 1823, trong qu&aacute; tr&igrave;nh nghi&ecirc;n cứu để phục chế th&eacute;p Faraday đ&atilde; s&aacute;ng tạo ra phương ph&aacute;p ph&acirc;n t&iacute;ch kim loại.</p>
+<p>Năm 1821, Faraday cưới Sarah Barnard. Mặc d&ugrave; đ&atilde; lập gia đ&igrave;nh, người phụ t&aacute; của gi&aacute;o sư Davy vẫn cần c&ugrave; ng&agrave;y hai buổi tới chuẩn bị b&agrave;i giảng cho c&aacute;c gi&aacute;o sư của Hội khoa học Ho&agrave;ng gia, v&agrave; nhiều buổi trưa, buổi tối anh vẫn cặm cụi ở lại ph&ograve;ng th&iacute; nghiệm đọc nốt một chương s&aacute;ch hay l&agrave;m nốt một th&iacute; nghiệm dở dang.</p>
+<p>Năm 1824, Faraday được bầu l&agrave;m hội vi&ecirc;n Hội Khoa học Ho&agrave;ng gia Lu&acirc;n Đ&ocirc;n v&agrave; bắt đầu giảng dạy tại Học viện Ho&agrave;ng gia Anh.</p>
+<p>Năm 1825, Faraday bắt tay v&agrave;o việc nghi&ecirc;n cứu loại kh&iacute; thể d&ugrave;ng để chiếu s&aacute;ng cho th&agrave;nh phố Lu&acirc;n Đ&ocirc;n. Loại kh&iacute; n&agrave;y được đặt t&ecirc;n l&agrave; kh&iacute; Clo. Cũng trong năm n&agrave;y, Faraday được giao tr&aacute;ch nhiệm chỉ đạo ph&ograve;ng th&iacute; nghiệm.</p>
+<h1 id="den-nha-bac-hoc-thien-tai-khong-bang-cap">Đến nh&agrave; b&aacute;c học thi&ecirc;n t&agrave;i kh&ocirc;ng bằng cấp</h1>
+<p>Giai đoạn năm 1830-1839 l&agrave; thời kỳ m&agrave; Faraday đạt được nhiều th&agrave;nh quả khoa học nhất. &Ocirc;ng bắt tay v&agrave;o việc nghi&ecirc;n cứu vật l&yacute; m&agrave; cơ bản l&agrave; phần điện học hiện đại.</p>
+<p>Ng&agrave;y 24/11/1831, Faraday b&aacute;o c&aacute;o trước Học viện Ho&agrave;ng gia về vấn đề ph&aacute;t hiện cảm ứng của điện từ. &Ocirc;ng vinh dự được mời giữ chức chủ tịch Hội Khoa học Ho&agrave;ng gia nhưng đ&atilde; từ chối để chuy&ecirc;n t&acirc;m theo đuổi c&aacute;c nghi&ecirc;n cứu khoa học.</p>
+<p><img alt="Th&iacute; nghiệm của Faraday về cảm ứng điện từ năm 1931 - Ảnh: en.wikipedia.org" src="http://review.siu.edu.vn/Upload/Siu42/faraday-2.png"/></p>
+<p>Năm 1833, Faraday được cử l&agrave;m gi&aacute;o sư h&oacute;a học ở Học viện Ho&agrave;ng gia thay thế gi&aacute;o sư Davy, cũng ch&iacute;nh năm n&agrave;y Faraday đưa ra l&yacute; thuyết v&agrave; hiện tượng điện ph&acirc;n, đặt cơ sở l&yacute; luận cho c&aacute;c ng&agrave;nh c&ocirc;ng nghiệp điện - h&oacute;a. &Ocirc;ng ph&aacute;t biểu về c&aacute;c định luật định t&iacute;nh, định lượng. Ch&iacute;nh c&aacute;c từ: "điện ph&acirc;n", "điện cực", "Ion" l&agrave; do &ocirc;ng đặt ra.</p>
+<p>Năm 1838, Faraday tiếp tục n&ecirc;u ra hai kh&aacute;i niệm: từ trường điện, đường sức.</p>
+<p>Năm 1843, Faraday đưa ra l&yacute; thuyết về sự nhiễm điện bằng cảm ứng.</p>
+<p>Năm 1844, Faraday được viện H&agrave;n l&acirc;m Khoa học Paris c&ocirc;ng nhận l&agrave; người kế tục Dalton trong số 8 th&agrave;nh vi&ecirc;n nước ngo&agrave;i của Viện.</p>
+<p>Năm 1846, &ocirc;ng kh&aacute;m ph&aacute; ra rằng năng lượng tĩnh điện được định vị trong c&aacute;c chất điện m&ocirc;i, kh&aacute;m ph&aacute; n&agrave;y chuẩn bị cho sự xuất hiện l&yacute; thyết điện tử của Maxwell sau n&agrave;y. C&ugrave;ng với kh&aacute;m ph&aacute; đ&oacute;, Faraday t&igrave;m ra "hằng số điện m&ocirc;i".</p>
+<p>Để thưởng c&ocirc;ng lao cho &ocirc;ng, nữ ho&agrave;ng Victoria đ&atilde; tặng &ocirc;ng ng&ocirc;i nh&agrave; ở Hampton Court v&agrave; phong cho chức Hầu tước, &ocirc;ng chỉ nhận nh&agrave; với sự biết ơn, v&agrave; từ chối tước vị.</p>
+<p>Ngo&agrave;i thời gian d&agrave;nh cho khoa học, Faraday c&ograve;n l&agrave; người thầy xuất sắc. &Ocirc;ng c&oacute; tr&aacute;ch nhiệm cao v&agrave; rất quan t&acirc;m đến phương ph&aacute;p giảng dạy phải thực nghiệm để x&acirc;y dựng h&igrave;nh tượng trực quan. Cho tới tận ng&agrave;y nay, Học viện Ho&agrave;ng gia Anh vẫn duy tr&igrave; những nguy&ecirc;n tắc giảng dạy m&agrave; Faraday đ&atilde; đề ra bằng kinh nghiệm v&agrave; l&ograve;ng tận t&acirc;m với c&ocirc;ng việc của &ocirc;ng.</p>
+<h1 id="nhung-nam-cuoi-cuoc-doi">Những năm cuối cuộc đời</h1>
+<p>Ng&agrave;y 20/3/1862 l&agrave; ng&agrave;y cuối c&ugrave;ng đ&aacute;nh dấu c&ocirc;ng việc nghi&ecirc;n cứu của Michael Faraday. Trong cuốn sổ ghi kết quả nghi&ecirc;n cứu của &ocirc;ng người ta đọc được con số th&iacute; nghiệm cuối c&ugrave;ng của &ocirc;ng: 16041.</p>
+<p>M&ugrave;a h&egrave; 1867, &ocirc;ng bị điếc v&agrave; mất tr&iacute; nhớ, &ocirc;ng qua đời ng&agrave;y 25/8/1867 thọ 76 tuổi tại Hampton Court. Faraday đ&atilde; để lại cho nh&acirc;n loại những ph&aacute;t minh vĩ đại.</p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/inspiration.html" class="tag">Inspiration</a>
+                    <a href="../../../../tag/other.html" class="tag">OTHER</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

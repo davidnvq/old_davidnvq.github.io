@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Cifar10 | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main id="index" class="index container">
+        <br>
+        <div class="container">        
+              <h3><span>Posts with tag</span> <span>Cifar10</span></h3>
+              <form class="filter d-flex align-items-center">
+                    <span style="position: relative; display: inline-block; direction: ltr;">
+                        <input type="search" v-model="filter" class="form-control" placeholder="Filter by title or tag" autocomplete="off" spellcheck="false" />
+                    </span>
+                </form>
+                
+                <nav>
+                    <ul class="double-list">
+                        <li v-for="(item, idx) in filteredItems">
+                            <a :href="item.url">{{ idx + 1 }}. {{ item.title }}</a>
+                            <span class="date">{{ item.date }}</span>
+                        </li>
+                    </ul>
+                </nav>
+            
+                <div class="tags" style="text-align: center">
+                        <a href="../tag/tutorial.html" class="tag">TUTORIAL (23)</a>
+                        <a href="../tag/other.html" class="tag">OTHER (10)</a>
+                        <a href="../tag/make.html" class="tag">Make (1)</a>
+                        <a href="../tag/automation.html" class="tag">Automation (1)</a>
+                        <a href="../tag/jupyter-notebook.html" class="tag">Jupyter Notebook (1)</a>
+                        <a href="../tag/face-detection.html" class="tag">Face Detection (4)</a>
+                        <a href="../tag/cdiscount.html" class="tag">Cdiscount (1)</a>
+                        <a href="../tag/kaggle.html" class="tag">Kaggle (1)</a>
+                        <a href="../tag/afw.html" class="tag">AFW (1)</a>
+                        <a href="../tag/matlab.html" class="tag">Matlab (1)</a>
+                        <a href="../tag/2018.html" class="tag">2018 (1)</a>
+                        <a href="../tag/paper.html" class="tag">PAPER (4)</a>
+                        <a href="../tag/ojbect-detection.html" class="tag">Ojbect Detection (1)</a>
+                        <a href="../tag/resnet.html" class="tag">Resnet (2)</a>
+                        <a href="../tag/cifar10.html" class="tag">Cifar10 (1)</a>
+                        <a href="../tag/tensorflow.html" class="tag">Tensorflow (2)</a>
+                        <a href="../tag/pytorch.html" class="tag">Pytorch (6)</a>
+                        <a href="../tag/pelican.html" class="tag">Pelican (1)</a>
+                        <a href="../tag/deep-learning.html" class="tag">Deep Learning (1)</a>
+                        <a href="../tag/book.html" class="tag">BOOK (1)</a>
+                        <a href="../tag/dac-nhan-tam.html" class="tag">Đắc Nhân Tâm (1)</a>
+                        <a href="../tag/object-detection.html" class="tag">Object Detection (2)</a>
+                        <a href="../tag/challenge.html" class="tag">Challenge (1)</a>
+                        <a href="../tag/contest.html" class="tag">Contest (1)</a>
+                        <a href="../tag/cnn.html" class="tag">CNN (3)</a>
+                        <a href="../tag/git.html" class="tag">GIT (1)</a>
+                        <a href="../tag/inspiration.html" class="tag">Inspiration (4)</a>
+                        <a href="../tag/image-classification.html" class="tag">Image Classification (1)</a>
+                        <a href="../tag/2015.html" class="tag">2015 (1)</a>
+                        <a href="../tag/data-parallel.html" class="tag">Data Parallel (1)</a>
+                        <a href="../tag/data-loader.html" class="tag">Data Loader (1)</a>
+                        <a href="../tag/cheatsheet.html" class="tag">Cheatsheet (1)</a>
+                        <a href="../tag/bash.html" class="tag">Bash (1)</a>
+                        <a href="../tag/maxout.html" class="tag">Maxout (1)</a>
+                        <a href="../tag/icml.html" class="tag">ICML (1)</a>
+                        <a href="../tag/dropout.html" class="tag">Dropout (1)</a>
+                        <a href="../tag/2013.html" class="tag">2013 (1)</a>
+                        <a href="../tag/slim.html" class="tag">Slim (1)</a>
+                        <a href="../tag/fine-tuning.html" class="tag">Fine-tuning (1)</a>
+                        <a href="../tag/image-recognition.html" class="tag">Image Recognition (1)</a>
+                        <a href="../tag/alexnet.html" class="tag">Alexnet (1)</a>
+                        <a href="../tag/imagenet.html" class="tag">ImageNet (1)</a>
+                        <a href="../tag/2012.html" class="tag">2012 (1)</a>
+                </div>  
+        </div>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+
+<script>
+        items = [
+            { title: "CIFAR-10 with Resnet", url: "/blog/tutorial/2018/cifar-10-with-resnet/",
+             category: "tutorial", 
+            date: "22.08.2018", tags: ["Resnet","Cifar10","TUTORIAL",]},
+        ]
+        mycategories = ['paper', 'book', 'tutorial', 'other']
+
+        function contains(text, filter) {
+            return text.toLowerCase().indexOf(filter.toLowerCase()) > -1
+        }
+
+        var index = new Vue({
+            el: '#index',
+            data: {
+                filter: '',
+                items: items,
+                mycategories: mycategories
+            },
+            methods: {
+                toogle_nav: function(event) {
+                    this.show = !this.show;
+                }
+            },
+            computed: {
+                filteredItems() {
+                    return this.items.filter(item => {
+                        searches = [item.title].concat(item.tags);
+                        query = searches.map(x => contains(x, this.filter));
+                        return query.some(x => x == true);
+                    })
+                }
+            }
+        })
+</script>
+
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Quang Nguyen">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <title>Result on Face Detection | Quang Nguyen</title>
+        <link rel="alternate" type="application/atom+xml" title="Quang Nguyen blog atom feed" href="/feeds/all.atom.xml" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <link rel="stylesheet" href="/theme/css/main.css">
+        <link rel="stylesheet" href="/theme/css/ipynb-fix.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="https://quanguet.github.io/favicon.ico">
+    </head>
+
+    <body id="body" class="text-justify" onresize="changetextbutton()">
+            <header id="mynavbar" class="navbar navbar-expand navbar-dark">
+                    <div class="container flex-column flex-md-row bd-navbar">
+                        <a class="navbar-brand" href="/" title="Home" class="title">Quang Nguyen</a></li>
+
+                        <div class="navbar-nav-scroll">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item"><a class="nav-link" href="/archives.html" title="Blog Posts">Blog Posts</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/#bio" title="About">About</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <ul class="social navbar-nav flex-row ml-md-auto d-md-flex">
+                                <li class="nav-item"><a class="nav-link social" href="https://github.com/quangdtsc" title="Quang's Github" rel="me"><i class="fab fa-github"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://twitter.com/quanguet" title="Quang's Twitter" rel="me"><i class="fab fa-twitter"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://facebook.com/quanghus" title="Quang's Facebook" rel="me"><i class="fab fa-facebook"></i></a></li>
+                                <li class="nav-item"><a class="nav-link social" href="https://www.linkedin.com/in/quanguet" title="Quang's LinkedIn" rel="me"><i class="fab fa-linkedin-in"></i></a></li>
+                            </ul>
+                        -->
+                    </div>
+            </header>
+
+
+<main role="main" class="article container">
+    <article>
+        <header>
+            <div class="btn-group">
+                    <button id ="mytoc" style="position: fixed; right:2px;" type="button" class="btn-content dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="mytoc">
+                        <div id='toc' style="min-width:300px; max-width:450px;min-height:200px;max-height:450px; overflow: scroll; white-space:nowrap;"> 
+
+                            <a href="#" style="margin:20px">
+                                <strong>Result on Face Detection</strong> 
+                            </a>                   
+                            <div class="dropdown-divider"></div>
+
+                            <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#benchmarks" style="border-bottom: 0px" title="Benchmarks">Benchmarks</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#validation" style="border-bottom: 0px" title="Validation">Validation</a></li><li><a class="toc-href" href="#test" style="border-bottom: 0px" title="Test">Test</a></li></ol></li><li><a class="toc-href" href="#methods_1" style="border-bottom: 0px" title="Methods">Methods</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#hr-finding-tiny-faces" style="border-bottom: 0px" title="HR - Finding Tiny Faces">HR - Finding Tiny Faces</a></li><li><a class="toc-href" href="#face-r-cnn" style="border-bottom: 0px" title="Face R-CNN">Face R-CNN</a></li><li><a class="toc-href" href="#scaleface" style="border-bottom: 0px" title="ScaleFace">ScaleFace</a></li><li><a class="toc-href" href="#ssh" style="border-bottom: 0px" title="SSH">SSH</a></li><li><a class="toc-href" href="#sfd" style="border-bottom: 0px" title="SFD">SFD</a></li><li><a class="toc-href" href="#face-r-fcn" style="border-bottom: 0px" title="Face R-FCN">Face R-FCN</a></li><li><a class="toc-href" href="#mscnn" style="border-bottom: 0px" title="MSCNN">MSCNN</a></li><li><a class="toc-href" href="#fan" style="border-bottom: 0px" title="FAN">FAN</a></li><li><a class="toc-href" href="#seeing-small-face-cvpr-2018" style="border-bottom: 0px" title="Seeing Small Face CVPR 2018">Seeing Small Face CVPR 2018</a></li><li><a class="toc-href" href="#pyramidbox" style="border-bottom: 0px" title="PyramidBox">PyramidBox</a></li></ol></li></ol>
+
+                        </div>
+                    </div>
+                    
+            </div> 
+
+            <h1 class="article header h1" style="color: rgb(53, 53, 144); font-size:30px;">Result on Face Detection</h1>
+            <section class="post-meta">
+                <time datetime="article.date.isoformat()" pubdate>August 24, 2018</time>
+                <span class="date-divider">/</span>
+                <a href="../../../../category/tutorial.html">tutorial</a>                    
+            </section>            
+        </header>
+        
+        <hr class="post-divider">
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div style="font-size:20px;">Table of contents</div>
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <ol style="font-size:17px" type="I"><li><a class="toc-href" href="#benchmarks" style="border-bottom: 0px" title="Benchmarks">Benchmarks</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#validation" style="border-bottom: 0px" title="Validation">Validation</a></li><li><a class="toc-href" href="#test" style="border-bottom: 0px" title="Test">Test</a></li></ol></li><li><a class="toc-href" href="#methods_1" style="border-bottom: 0px" title="Methods">Methods</a><ol style="font-size:16px" type="1"><li><a class="toc-href" href="#hr-finding-tiny-faces" style="border-bottom: 0px" title="HR - Finding Tiny Faces">HR - Finding Tiny Faces</a></li><li><a class="toc-href" href="#face-r-cnn" style="border-bottom: 0px" title="Face R-CNN">Face R-CNN</a></li><li><a class="toc-href" href="#scaleface" style="border-bottom: 0px" title="ScaleFace">ScaleFace</a></li><li><a class="toc-href" href="#ssh" style="border-bottom: 0px" title="SSH">SSH</a></li><li><a class="toc-href" href="#sfd" style="border-bottom: 0px" title="SFD">SFD</a></li><li><a class="toc-href" href="#face-r-fcn" style="border-bottom: 0px" title="Face R-FCN">Face R-FCN</a></li><li><a class="toc-href" href="#mscnn" style="border-bottom: 0px" title="MSCNN">MSCNN</a></li><li><a class="toc-href" href="#fan" style="border-bottom: 0px" title="FAN">FAN</a></li><li><a class="toc-href" href="#seeing-small-face-cvpr-2018" style="border-bottom: 0px" title="Seeing Small Face CVPR 2018">Seeing Small Face CVPR 2018</a></li><li><a class="toc-href" href="#pyramidbox" style="border-bottom: 0px" title="PyramidBox">PyramidBox</a></li></ol></li></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        
+        <h1 id="benchmarks">Benchmarks</h1>
+<h2 id="validation">Validation</h2>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale Face Val</td>
+<td>86.8</td>
+<td>86.7</td>
+<td>77.2</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>SSH (Pyramid) Val</td>
+<td>93.1</td>
+<td>92.1</td>
+<td>84.5</td>
+<td>_</td>
+<td>98.27</td>
+</tr>
+<tr>
+<td>HR Val</td>
+<td>91.9</td>
+<td>90.8</td>
+<td>82.3</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-CNN Val</td>
+<td>93.8</td>
+<td>92.2</td>
+<td>82.9</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-FCN Val</td>
+<td>94.7</td>
+<td>93.5</td>
+<td>87.4</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>FAN Val</td>
+<td>95.3</td>
+<td>94.2</td>
+<td>88.8</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Seeing Small Faces Val</td>
+<td>94.9</td>
+<td>93.3</td>
+<td>86.1</td>
+<td>99.85</td>
+<td>99.23</td>
+</tr>
+<tr>
+<td>SFD Val</td>
+<td>93.7</td>
+<td>92.4</td>
+<td>85.2</td>
+<td>99.85</td>
+<td>98.49</td>
+</tr>
+</tbody>
+</table>
+<h2 id="test">Test</h2>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale Face Test</td>
+<td>86.7</td>
+<td>86.6</td>
+<td>76.4</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td>HR Test</td>
+<td>91.5</td>
+<td>90.2</td>
+<td>81.3</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-CNN Test</td>
+<td>93.2</td>
+<td>91.6</td>
+<td>82.7</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>SSH (Pyramid) Test</td>
+<td>92.7</td>
+<td>91.5</td>
+<td>84.4</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>SFD Test</td>
+<td>92.8</td>
+<td>91.3</td>
+<td>84.0</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-FCN Test</td>
+<td>94.3</td>
+<td>93.1</td>
+<td>87.6</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Seeing Small Faces Test</td>
+<td>94.9</td>
+<td>93.5</td>
+<td>86.5</td>
+<td>99.85</td>
+<td>99.23</td>
+</tr>
+</tbody>
+</table>
+<h1 id="methods_1">Methods</h1>
+<h2 id="hr-finding-tiny-faces">HR - Finding Tiny Faces</h2>
+<p>Finding Tiny Faces. IEEE Conference on Computer Vision and 
+Pattern Recognition (CVPR), 2017. </p>
+<p>Peiyun Hu, Deva Ramanan
+Robotics Institute
+Carnegie Mellon University</p>
+<p>https://arxiv.org/pdf/1612.04402v1.pdf</p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HR Val</td>
+<td>91.9</td>
+<td>90.8</td>
+<td>82.3</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>HR Test</td>
+<td>91.5</td>
+<td>90.2</td>
+<td>81.3</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong></p>
+<p><img alt="" src="HR.png"/></p>
+<ul>
+<li>For the shared CNNs, we experimented with three different architectures: ResNet101, ResNet50, and VGG16</li>
+<li>Positive examples IoU &gt; 0.7</li>
+<li>Negative examples &lt; 0.3 </li>
+</ul>
+<p><strong>Contribution</strong>
+1. We provide an in-depth analysis of image resolution, object scale, and spatial context for the purposes of finding small faces. </p>
+<ol>
+<li>We demonstrate stateof-the-art results on massively-benchmarked face datasets (FDDB and WIDER FACE). In particular, when compared to prior art on WIDER FACE, our results reduce error by a factor of 2 (our models produce an AP of 81% while prior art ranges from 29-64%).</li>
+</ol>
+<h2 id="face-r-cnn">Face R-CNN</h2>
+<p>Hao Wang Zhifeng Li&lowast; Xing Ji Yitong Wang
+Tencent AI Lab, China</p>
+<p>Face R-CNN. arXiv preprint arXiv:1706.01061, 2017. </p>
+<p>Paper:  https://arxiv.org/pdf/1706.01061.pdf</p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Face R-CNN Val</td>
+<td>93.8</td>
+<td>92.2</td>
+<td>82.9</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-CNN Test</td>
+<td>93.2</td>
+<td>91.6</td>
+<td>82.7</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementations</strong></p>
+<p><img alt="" src="Face_R_CNN.png"/></p>
+<ul>
+<li>VGG19 with ImageNet pretrained model</li>
+<li>Positive examples IoU &gt; 0.5</li>
+<li>Negative examples 0.1 &lt; IoU &lt; 0.5 </li>
+<li>IoU of NMS = 0.7</li>
+</ul>
+<p><strong>Contribution</strong>
+The major contributions of this work are summarized as follows:</p>
+<ol>
+<li>Considering the specific property of face detection, we propose a Faster R-CNN based approach
+called Face R-CNN for face detection by integrating several newly developed techniques including
+center loss, online hard example mining, and multi-scale training.</li>
+<li>The proposed approach differs from the available Faster R-CNN based face detection methods.
+First, this is the first attempt to use the center loss to reduce the large intra-class variations in face
+detection. Second, the use of online hard example mining in our approach differs from the others.
+By appropriately setting the ratio between positive hard samples and negative hard samples, the
+combination of OHEM and center loss can lead to better performance.</li>
+<li>The proposed approach consistently obtains superior performance over the state-of-the-arts on
+two public-domain face detection benchmarks (WIDER FACE dataset [25] and FDDB dataset [28]).</li>
+</ol>
+<h2 id="scaleface">ScaleFace</h2>
+<p>Face Detection through Scale-Friendly Deep Convolutional Networks. arXiv preprint arXiv:1706.02863, 2017. </p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale Face Val</td>
+<td>86.8</td>
+<td>86.7</td>
+<td>77.2</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td>Scale Face Test</td>
+<td>86.7</td>
+<td>86.6</td>
+<td>76.4</td>
+<td>_</td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="" src="Scale_Face_result.png"/></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong>
+<img alt="" src="Scale_Face.png"/></p>
+<p><strong>Contribution</strong>
+* Runtime NVIDIA Titan X GPU
+900 x 1300 (7.1 fps)</p>
+<p><img alt="" src="ScaleFace_Runtime.png"/></p>
+<h2 id="ssh">SSH</h2>
+<p>SSH: Single Stage Headless Face Detector. IEEE International 
+Conference on Computer Vision (ICCV), 2017.
+Mahyar Najibi<em> Pouya Samangouei</em> Rama Chellappa Larry S. Davis</p>
+<p>University of Maryland</p>
+<p>https://arxiv.org/pdf/1708.03979.pdf </p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSH (Pyramid) Val</td>
+<td>93.1</td>
+<td>92.1</td>
+<td>84.5</td>
+<td>_</td>
+<td>98.27</td>
+</tr>
+<tr>
+<td>SSH (Pyramid) Test</td>
+<td>92.7</td>
+<td>91.5</td>
+<td>84.4</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong>
+<img alt="" src="SSH.png"/></p>
+<ul>
+<li>
+<p>Positive examples IoU &gt; 0.5, This is in contrast to the methods based on Faster RCNN which assign to each ground-truth at least one anchor
+with the highest IoU.</p>
+</li>
+<li>
+<p>Negative examples IoU &lt; 0.3</p>
+</li>
+</ul>
+<p><strong>Contribution</strong>
+* That is, it is able to achieve state-of-the-art results while removing the &ldquo;head&rdquo; of its underlying classification network &ndash; i.e. all fully connected layers in the VGG-16 which contains a large number of parameters. Additionally, instead of relying on an image pyramid to detect faces with various scales, SSH is scale-invariant by design.</p>
+<ul>
+<li>SSH beats the ResNet-101- based state-of-the-art on the WIDER dataset. Even though, unlike the current state-of-the-art, SSH does not use an image
+pyramid and is 5X faster. Moreover, if an image pyramid is deployed, our light-weight network achieves stateof-the-art on all subsets of the WIDER dataset, improving the AP by 2.5%. </li>
+</ul>
+<h2 id="sfd">SFD</h2>
+<p>S&sup3;FD: Single Shot Scale-invariant Face Detector. IEEE International Conference on Computer Vision (ICCV), 2017. 
+<strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SFD Val</td>
+<td>93.7</td>
+<td>92.4</td>
+<td>85.2</td>
+<td>99.85</td>
+<td>98.49</td>
+</tr>
+<tr>
+<td>SFD Test</td>
+<td>92.8</td>
+<td>91.3</td>
+<td>84.0</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p>Runtime 
+* The speed using Titan X 36 FPS  VGA-resolution (640 x 480)</p>
+<p><strong>Implementation</strong>
+<img alt="" src="sfd_architecture.png"/></p>
+<ul>
+<li><code>Loss = Cls_Loss * 4 + Loc_Loss</code></li>
+<li>
+<p>Negatives : Positives = 3 : 1 
+<strong>Contribution</strong></p>
+</li>
+<li>
+<p>Proposing a scale-equitable face detection framework
+with a wide range of anchor-associated layers and a
+series of reasonable anchor scales so as to handle different
+scales of faces well.</p>
+</li>
+<li>Presenting a scale compensation anchor matching
+strategy to improve the recall rate of small faces.</li>
+<li>Introducing a max-out background label to reduce the
+high false positive rate of small faces.</li>
+<li>Achieving state-of-the-art results on AFW, PASCAL
+face, FDDB and WIDER FACE with real-time speed.</li>
+</ul>
+<h2 id="face-r-fcn">Face R-FCN</h2>
+<p>Detecting Faces Using Region-based Fully
+Convolutional Networks
+<strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Face R-FCN Val</td>
+<td>94.7</td>
+<td>93.5</td>
+<td>87.4</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>Face R-FCN Test</td>
+<td>94.3</td>
+<td>93.1</td>
+<td>87.6</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong>
+<img alt="" src="Face_RFCN.png"/>
+* Resnet101 as base network</p>
+<ul>
+<li>
+<p>These anchors then map to the original image to calculate the IoU scores
+with the ground truth for further picking up with following rules: First, the anchors with highest IoU score are strictly kept as positive; Second, the anchors with IoU score above 0.7 are assigned as positive; Third, If the anchors have IoU score that is lower than 0.3, they are marked as negative.
+The R-FCN is then trained on the processed anchors (proposals) where the positive samples and negative samples are defined as IoU greater than 0.5 and between 0.1 and 0.5 respectively.</p>
+</li>
+<li>
+<p>In the testing stage, multi-scale testing is performed by scale image into
+an image pyramid for better detecting on both tiny and general faces.</p>
+</li>
+</ul>
+<p><strong>Contribution</strong></p>
+<h2 id="mscnn">MSCNN</h2>
+<p>A Unified Multi-scale Deep Convolutional Neural Network for Fast Object Detection, European Conference on Computer Vision (ECCV), 2016. </p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong>
+<img alt="" src="fan.png"/>
+<strong>Contribution</strong></p>
+<h2 id="fan">FAN</h2>
+<p>Face Attention Network: An Effective Face Detector for the Occluded Faces. arXiv preprint arXiv:1711.07246, 2017. </p>
+<p>https://arxiv.org/pdf/1711.07246.pdf</p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAN Val</td>
+<td>95.3</td>
+<td>94.2</td>
+<td>88.8</td>
+<td>_</td>
+<td>_</td>
+</tr>
+<tr>
+<td>FAN Test</td>
+<td>94.6</td>
+<td>93.6</td>
+<td>88.5</td>
+<td>_</td>
+<td>_</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong></p>
+<p><strong>Contribution</strong>
+In summary, there are three contributions in our paper.
+<em> We propose a anchor-level attention, which can well address the occlusion issue in the face detection task. One illustrative example for our detection results in the crowd case can be found in Figure 1.
+</em> A practical baseline setting is introduced based on the one-shot RetinaNet detector, which obtains comparable performance with fast computation speed.
+* Our FAN which integrates our reproduced one-shot RetinaNet and anchor-level attention significantly outperforms state-of-art detectors on the popular face detection benchmarks including WiderFace [34] and
+MAFA [6], especially in the occluded cases like MAFA.</p>
+<h2 id="seeing-small-face-cvpr-2018">Seeing Small Face CVPR 2018</h2>
+<p>Seeing Small Faces from Robust Anchor's Perspective. IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018. </p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seeing Small Faces Val</td>
+<td>94.9</td>
+<td>93.3</td>
+<td>86.1</td>
+<td>99.85</td>
+<td>99.23</td>
+</tr>
+<tr>
+<td>Seeing Small Faces Test</td>
+<td>94.9</td>
+<td>93.5</td>
+<td>86.5</td>
+<td>99.85</td>
+<td>99.23</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Runtime speed on single NVIDIA Titan X GPU with batch size 1:<ul>
+<li>85% on size 1400x1800 = 1s</li>
+<li>75.7% on size 600x1000 = 0.2s
+<strong>Implementation</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>Contribution</strong></p>
+<h2 id="pyramidbox">PyramidBox</h2>
+<p>PyramidBox: A Context-assisted Single Shot Face Detector. arXiv preprint arXiv:1803.07737, 2018. </p>
+<p><strong>Result</strong></p>
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>easy</th>
+<th>medium</th>
+<th>hard</th>
+<th>AFW</th>
+<th>Pascal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation</strong></p>
+<p><strong>Contribution</strong></p>
+        
+        <div class="metabox">
+            <hr class="post-divider">
+            <div class="tags" style='text-align: center'>
+                    <a href="../../../../tag/face-detection.html" class="tag">Face Detection</a>
+                    <a href="../../../../tag/tutorial.html" class="tag">TUTORIAL</a>
+            </div>
+        </div>
+    </article>
+</main>
+        <footer class="footer">
+            <div class="container" style="text-align: center">
+                <span class="text-muted"> Quang Nguyen &copy; 2018</span>
+            </div>
+        </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
+                if (window.outerWidth < 800) {
+                    if (document.getElementById("mytoc") != null ){
+                        document.getElementById("mytoc").innerHTML = "";
+                        var margin = "25px";
+                        document.getElementById("body").style.marginLeft = margin;                    
+                        document.getElementById("body").style.marginRight = margin ;
+                    }
+
+                }
+                function changetextbutton() {
+                    var w = window.outerWidth;
+                    var h = window.outerHeight;
+                    var txt = "";
+                    var margin = "20px"
+                    if (w > 850) {
+                        txt = "Contents";
+                    } else if (w <= 850) {
+                        txt = "";
+                        margin = "25px";
+                    }
+                    document.getElementById("mytoc").innerHTML = txt;
+                    document.getElementById("body").style.marginLeft = margin;                    
+                    document.getElementById("body").style.marginRight = margin ;                      
+                }
+        </script>
+            
+    </body>
+    
+</html>
